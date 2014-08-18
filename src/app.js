@@ -13,6 +13,7 @@ function newGame(){
             App.paused = false;
             App.ctx = document.querySelector('canvas').getContext('2d');
             App.game = new Game();
+            App.scenery = new Scenery();
             App.renderer = new Renderer(App.ctx);
 
             KeyboardJS.on('p', App.togglePause);
@@ -36,6 +37,7 @@ function newGame(){
             App.draw();
             if(!App.paused){
                 App.game.update();
+                App.scenery.update();
                 window.requestAnimationFrame(App.loop);
             }else{
                 App.renderer.paused();
@@ -46,13 +48,12 @@ function newGame(){
             App.ctx.fillStyle = '#000000';
             App.ctx.fillRect(0, 0, 400, 400);
 
-            var elements = App.game.getElements();
-            var l = elements.length;
-            var i = 0;
-            while(i < l){
-                App.renderer.drawElement(elements[i]);
-                i++;
-            }
+            App.drawList(App.scenery.getElements());
+            App.drawList(App.game.getElements());
+        },
+
+        drawList: function(list){
+            list.forEach(App.renderer.drawElement.bind(App.renderer));
         },
 
         handleKeys: function(keys){

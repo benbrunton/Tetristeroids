@@ -5,7 +5,7 @@ function Player(){
     this.lastFired = 0;
 
     this.type = 'ship';
-    this.location = [100, 100];
+    this.location = [170, 340];
     this.blocks = [
         {
             location: [0, 0], 

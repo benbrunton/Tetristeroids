@@ -8,11 +8,7 @@ Renderer.prototype.drawElement = function(element){
     var l = element.blocks.length;
     this.ctx.save();
     this.ctx.translate(loc[0], loc[1]);
-    while (i < l){
-        this.drawBlock(element.blocks[i])
-        i++
-    }
-
+    element.blocks.forEach(this.drawBlock.bind(this));
     this.ctx.restore();
 };
 
@@ -39,6 +35,13 @@ Renderer.prototype.drawBlock = function(block){
         case 'missile':
             this.ctx.fillStyle = 'yellow';
             this.ctx.fillRect(4, 2, 2, 4);
+            break;
+        case 'star':
+            this.ctx.fillStyle = 'white';
+            this.ctx.beginPath();
+            this.ctx.arc(0, 0, 1, 0, Math.PI*2, false);
+            this.ctx.fill();
+            this.ctx.closePath();
             break;
         default:
             break;

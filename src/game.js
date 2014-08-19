@@ -15,6 +15,11 @@ Game.prototype.update = function() {
     this.processAllMessages(messages);
 };
 
+Game.prototype.getCamera = function() {
+    var playerView = this.player.getView();
+    return playerView.location;
+};
+
 Game.prototype.getElements = function(){
     var elements = [];
     elements.push(this.player.getView());
@@ -34,7 +39,7 @@ Game.prototype.processAllMessages = function(messages){
 Game.prototype.processMessage = function(message){
     switch(message.msg){
         case 'standard-player-fire':
-            this.otherElements.push(new PlayerMissile(message.pos));
+            this.otherElements.push(new PlayerMissile(message.pos, message.rotation));
             break;
     }
 };

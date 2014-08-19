@@ -5,10 +5,10 @@ function Scenery(){
 }
 
 Scenery.prototype.update = function(){
-    this.stars.forEach(function(star){
-        star.location[1] += 10;
-    });
-    this.killStars();
+    // this.stars.forEach(function(star){
+    //     star.location[1] += 10;
+    // });
+    //this.killStars();
     this.generateStars();
 };
 

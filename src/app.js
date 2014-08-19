@@ -47,7 +47,7 @@ function newGame(){
         draw : function(){
             App.ctx.fillStyle = '#000000';
             App.ctx.fillRect(0, 0, 400, 400);
-
+            App.renderer.setCamera(App.game.getCamera());
             App.drawList(App.scenery.getElements());
             App.drawList(App.game.getElements());
         },

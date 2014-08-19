@@ -22,9 +22,20 @@ Renderer.prototype.drawElement = function(element){
 };
 
 Renderer.prototype.drawHud = function(elements) {
+    var cash = 0;
     elements.filter(function(element){
         return element.type === 'objective';
-    }).forEach(this.pointAtElement.bind(this))
+    }).forEach(this.pointAtElement.bind(this));
+
+    elements.forEach(function(element){
+        if(element.type === 'player'){
+            cash = element.cash;
+        }
+    });
+
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = '14px Arial';
+    this.ctx.fillText('cash : £' + cash, 320, 20);
 };
 
 Renderer.prototype.drawBlock = function(block){
@@ -82,6 +93,12 @@ Renderer.prototype.drawBlock = function(block){
         case 'star':
             this.ctx.fillStyle = 'white';
             this.drawCircle(0, 0, 1);
+            break;
+        case 'coin':
+            this.ctx.fillStyle = 'gold';
+            this.drawCircle(0, 0, 5);
+            this.ctx.fillStyle = 'yellow';
+            this.drawCircle(0, 0, 2);
             break;
         case 'planet':
             this.ctx.fillStyle = 'pink';

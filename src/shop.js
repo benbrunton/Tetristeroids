@@ -22,6 +22,7 @@ Shop.prototype.draw = function(data, player) {
     this.canvas.addEventListener('click', this.handleClick, false);
     this.buttons = [];
     this.player = player;
+    this.data = data;
     this.blocks = player.blocks.slice(0);
     this.ctx.fillStyle = '#000000';
     this.ctx.fillRect(0, 0, 400, 400);
@@ -53,7 +54,6 @@ Shop.prototype.drawGrid = function() {
                     w: 20,
                     h: 20,
                     execute: function(){
-                        console.log(i - 5, j - 5);
                         this.update(i - 5, j - 5);
                     }.bind(this)
                 });
@@ -84,7 +84,8 @@ Shop.prototype.update = function(x, y){
     }else if (this.selectedItem){
         this.replaceBlock(x, y, this.selectedItem);
     }
-    this.drawGrid();
+    this.player.blocks = this.blocks;
+    this.draw(this.data, this.player);
 };
 
 Shop.prototype.removeBlock = function(x, y){

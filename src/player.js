@@ -2,6 +2,8 @@ function Player(){
     
     this.messageQueue = [];
 
+    this.cash = 0;
+
     this.lastFired = 0;
 
     this.type = 'player';
@@ -60,12 +62,17 @@ Player.prototype.getView = function() {
         location: this.location,
         blocks: this.blocks,
         type: this.type,
-        rotation:this.rotation
+        rotation:this.rotation,
+        cash: this.cash
     };
 };
 
 Player.prototype.collision = function(collidedWith) {
-    
+    switch(collidedWith.type){
+        case 'cash':
+            this.cash += collidedWith.value;
+            break;
+    }
 };
 
 Player.prototype.power = function() {

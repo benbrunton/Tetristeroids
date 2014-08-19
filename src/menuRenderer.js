@@ -51,18 +51,18 @@ MenuRenderer.prototype.wait = function(callback){
 
 MenuRenderer.prototype.drawNextMission = function(topPos) {
     this.ctx.fillStyle = 'blue';
-    this.ctx.fillRect(50, topPos, 200, 40);
+    this.ctx.fillRect(80, topPos, 200, 40);
     this.ctx.fillStyle = 'white';
     this.ctx.font = '20px Arial';
-    this.ctx.fillText('begin next mission', 55, topPos + 20);
-    this.buttons.push({x: 50, y: topPos, w: 200, h: 40, action:'game'});
+    this.ctx.fillText('begin next mission', 85, topPos + 20);
+    this.buttons.push({x: 80, y: topPos, w: 200, h: 40, action:'game'});
 };
 
 MenuRenderer.prototype.drawShop = function(topPos) {
     this.ctx.fillStyle = 'blue';
-    this.ctx.fillRect(50, topPos, 200, 40);
+    this.ctx.fillRect(80, topPos, 200, 40);
     this.ctx.fillStyle = 'white';
     this.ctx.font = '20px Arial';
-    this.ctx.fillText('modify craft', 55, topPos + 20);
-    this.buttons.push({x: 50, y: topPos, w: 200, h: 40, action:'shop'});
+    this.ctx.fillText('modify craft', 85, topPos + 20);
+    this.buttons.push({x: 80, y: topPos, w: 200, h: 40, action:'shop'});
 };

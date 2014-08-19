@@ -45,6 +45,14 @@ Game.prototype.getMode = function(){
     return this.mode;
 };
 
+Game.prototype.getPlayer = function() {
+    return this.player.getView();
+};
+
+Game.prototype.updatePlayer = function(data){
+    this.player.blocks = data;
+};
+
 Game.prototype.getCamera = function() {
     var playerView = this.player.getView();
     return playerView.location;

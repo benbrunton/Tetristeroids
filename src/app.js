@@ -6,7 +6,8 @@ function newGame(){
             
             App.setup();
 
-            window.requestAnimationFrame(App.loop);
+            //window.requestAnimationFrame(App.loop);
+            App.drawShop();
         },
 
         setup : function(){
@@ -18,6 +19,7 @@ function newGame(){
             App.scenery = new Scenery();
             App.renderer = new Renderer(App.ctx);
             App.menuRenderer = new MenuRenderer(App.ctx);
+            App.shop = new Shop(App.ctx);
 
             KeyboardJS.on('p', App.togglePause);
             KeyboardJS.on('space', function(e){e.preventDefault();});
@@ -75,13 +77,22 @@ function newGame(){
                     App.loop();
                     
                 }else if(mode === 'shop'){
-                    //App.drawShop(data);
+                    App.drawShop(data);
                 }
 
                 App.menuRenderer.unbind();
                 
             });
 
+        },
+
+        drawShop: function(data){
+            App.shop.draw(data, App.game.getPlayer());
+            App.shop.wait(function(player){
+                App.game.updatePlayer(player);
+                App.shop.unbind();
+                App.drawMenu();
+            });
         },
 
         drawList: function(list){

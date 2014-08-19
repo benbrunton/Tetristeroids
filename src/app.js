@@ -95,7 +95,9 @@ function newGame(){
         drawShop: function(data){
             App.shop.draw(data, App.game.getPlayer());
             App.shop.wait(function(player){
-                App.game.updatePlayer(player);
+                if(player !== null){
+                    App.game.updatePlayer(player);
+                }
                 App.shop.unbind();
                 App.drawMenu();
             });
@@ -136,7 +138,7 @@ function newGame(){
             var levels = [];
 
             levels.push(new Level(level0));
-            levels.push(new Level(level0));
+            levels.push(new Level(level1));
             return levels;
         }
     };

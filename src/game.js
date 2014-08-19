@@ -51,6 +51,7 @@ Game.prototype.getPlayer = function() {
 
 Game.prototype.updatePlayer = function(data){
     this.player.blocks = data.blocks;
+    this.player.cash = data.cash;
 };
 
 Game.prototype.getCamera = function() {

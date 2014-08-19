@@ -5,15 +5,16 @@ function Shop(ctx){
     this.player = null;
     this.callback = function(){};
     this.buttons = [];
+    this.updates = {};
 
     this.items = [
-        {name: 'shield', level:0},
-        {name: 'generator', level:0},
-        {name: 'standard-gun', level:0},
-        {name: 'solid', level:0},
-        {name: 'engine', level:0},
-        {name: 'cockpit', level:0},
-        {name: 'none', level:0}
+        {name: 'shield', level:0, price: 200},
+        {name: 'generator', level:0, price: 200},
+        {name: 'standard-gun', level:0, price: 500},
+        {name: 'solid', level:0, price: 150},
+        {name: 'engine', level:0, price: 450},
+        {name: 'cockpit', level:0, price: 300},
+        {name: 'none', level:0, price:0}
     ];
 }
 
@@ -30,6 +31,19 @@ Shop.prototype.draw = function(data, player) {
     this.drawGrid();
 
     this.drawButtons(data);
+
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = '12px Arial';
+    this.ctx.fillText('cash : £' + this.player.cash, 320, 20);
+    this.ctx.fillText('cost : £' + this.calculateCost(), 320, 40);
+};
+
+Shop.prototype.calculateCost = function() {
+    var cost = 0;
+    for(var i in this.updates){
+        cost += this.updates[i];
+    }
+    return cost;
 };
 
 Shop.prototype.drawGrid = function() {
@@ -80,10 +94,19 @@ Shop.prototype.drawGrid = function() {
 Shop.prototype.update = function(x, y){
     if(this.selectedItem === 'none'){
         this.removeBlock(x, y);
+        delete this.updates[x + ':' + y];
         
     }else if (this.selectedItem){
         this.replaceBlock(x, y, this.selectedItem);
+        var cost = 0;
+        this.items.forEach(function(item){
+            if(item.name === this.selectedItem){
+                cost = item.price;
+            }
+        }.bind(this));
+        this.updates[x + ':' + y] = cost;
     }
+    
     this.player.blocks = this.blocks;
     this.draw(this.data, this.player);
 };
@@ -112,9 +135,19 @@ Shop.prototype.unbind = function() {
 
 Shop.prototype.clicks = function(e){
     if(e.layerX > 300 && e.layerX < 380 && e.layerY > 350 && e.layerY < 380){
+
+        
         this.player.blocks = this.blocks;
+        this.player.cash -= this.calculateCost();
+
+        if(this.player.cash < 0){
+            this.player = null;
+        }
+
         this.callback(this.player);
         this.callback = function(){};
+        this.updates = {};
+        return;
     }
 
     this.buttons.forEach(function(button){
@@ -135,7 +168,7 @@ Shop.prototype.drawButtons = function(data){
     this.ctx.fillRect(300, 350, 80, 30);
     this.ctx.fillStyle = 'white';
     this.ctx.font = '20px Arial';
-    this.ctx.fillText('back', 320, 372);
+    this.ctx.fillText('done', 320, 372);
 
     var xPos = 50;
     
@@ -147,7 +180,6 @@ Shop.prototype.drawButtons = function(data){
         this.buttons.push({
             x: xPos, y: 300, w: 20, h: 20, execute:function(){
                 this.selectedItem = item.name;
-                console.log(item.name);
             }.bind(this)
         });
         xPos += 22;

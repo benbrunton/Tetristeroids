@@ -38,20 +38,26 @@ function newGame(){
             
             App.mode = App.game.getMode();
 
-            if(App.mode === 'game'){
-                var keys = KeyboardJS.activeKeys();
-                App.handleKeys(keys);
-                App.draw();
-                if(!App.paused){
-                    var camera = App.game.getCamera();
-                    App.game.update();
-                    App.scenery.update(camera);
-                    window.requestAnimationFrame(App.loop);
-                }else{
-                    App.renderer.paused();
-                }
-            }else{
-                App.drawMenu();
+            switch(App.mode){
+                case 'game':
+                    var keys = KeyboardJS.activeKeys();
+                    App.handleKeys(keys);
+                    App.draw();
+                    if(!App.paused){
+                        var camera = App.game.getCamera();
+                        App.game.update();
+                        App.scenery.update(camera);
+                        window.requestAnimationFrame(App.loop);
+                    }else{
+                        App.renderer.paused();
+                    }
+                break;
+                case 'level-complete':
+                    App.drawMenu();
+                    break;
+                case 'game-complete':
+                    
+                    break;
             }
         },
 

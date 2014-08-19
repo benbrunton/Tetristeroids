@@ -10,7 +10,7 @@ function Game(levels){
 Game.prototype.start = function() {
     this.level++;
     if(typeof this.levels[this.level] === 'undefined'){
-        //game complete
+        this.mode = 'game-complete';
     }else{
         this.mode = 'game';
         var levelStart = this.levels[this.level].setup();
@@ -50,7 +50,7 @@ Game.prototype.getPlayer = function() {
 };
 
 Game.prototype.updatePlayer = function(data){
-    this.player.blocks = data;
+    this.player.blocks = data.blocks;
 };
 
 Game.prototype.getCamera = function() {

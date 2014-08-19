@@ -4,15 +4,34 @@ function Shop(ctx){
     this.handleClick = this.clicks.bind(this);
     this.player = null;
     this.callback = function(){};
+    this.buttons = [];
+
+    this.items = [
+        {name: 'shield', level:0},
+        {name: 'generator', level:0},
+        {name: 'standard-gun', level:0},
+        {name: 'solid', level:0},
+        {name: 'engine', level:0},
+        {name: 'cockpit', level:0},
+        {name: 'none', level:0}
+    ];
 }
 
 Shop.prototype.draw = function(data, player) {
     this.unbind();
     this.canvas.addEventListener('click', this.handleClick, false);
+    this.buttons = [];
     this.player = player;
+    this.blocks = player.blocks.slice(0);
     this.ctx.fillStyle = '#000000';
     this.ctx.fillRect(0, 0, 400, 400);
 
+    this.drawGrid();
+
+    this.drawButtons(data);
+};
+
+Shop.prototype.drawGrid = function() {
     this.ctx.fillStyle = 'grey';
     this.ctx.fillRect(50, 20, 211, 211);
 
@@ -21,15 +40,31 @@ Shop.prototype.draw = function(data, player) {
     this.ctx.translate(51, 21);
 
     var i = 10;
+    var j, x, y;
     while(i--){
-        var j = 10;
+        j = 10;
         while(j--){
-            this.ctx.fillRect(i * 21, j * 21, 20, 20);
+            x = i * 21;
+            y = j * 21;
+            (function(i, j, x, y){
+                this.buttons.push({
+                    x: x + 51,
+                    y: y + 21,
+                    w: 20,
+                    h: 20,
+                    execute: function(){
+                        console.log(i - 5, j - 5);
+                        this.update(i - 5, j - 5);
+                    }.bind(this)
+                });
+            }.bind(this)(i, j, x, y));
+            
+            this.ctx.fillRect(x, y, 20, 20);
         }
     }
     
 
-    player.blocks.forEach(function(block){
+    this.blocks.forEach(function(block){
         var x = (5 * 21) + (block.location[0] * 21);
         var y = (5 * 21) + (block.location[1] * 21);
         this.ctx.save();
@@ -40,8 +75,30 @@ Shop.prototype.draw = function(data, player) {
     }.bind(this));
 
     this.ctx.restore();
+};
 
-    this.drawButtons();
+Shop.prototype.update = function(x, y){
+    if(this.selectedItem === 'none'){
+        this.removeBlock(x, y);
+        
+    }else if (this.selectedItem){
+        this.replaceBlock(x, y, this.selectedItem);
+    }
+    this.drawGrid();
+};
+
+Shop.prototype.removeBlock = function(x, y){
+    this.blocks = this.blocks.filter(function(block){
+        return block.location[0] !== x || block.location[1] !== y;
+    });
+};
+
+Shop.prototype.replaceBlock = function(x, y, selectedItem) {
+    this.removeBlock(x, y);
+    this.blocks.push({
+        location:[x, y],
+        type: selectedItem
+    })
 };
 
 Shop.prototype.wait = function(callback) {
@@ -54,17 +111,49 @@ Shop.prototype.unbind = function() {
 
 Shop.prototype.clicks = function(e){
     if(e.layerX > 300 && e.layerX < 380 && e.layerY > 350 && e.layerY < 380){
+        this.player.blocks = this.blocks;
         this.callback(this.player);
         this.callback = function(){};
     }
+
+    this.buttons.forEach(function(button){
+        if(!(e.layerX > button.x && e.layerX < button.x + button.w)){
+            return;
+        }
+
+        if(!(e.layerY > button.y && e.layerY < button.y + button.h)){
+            return;
+        }
+
+        button.execute();
+    });
 };
 
-Shop.prototype.drawButtons = function(){
+Shop.prototype.drawButtons = function(data){
     this.ctx.fillStyle = 'blue';
     this.ctx.fillRect(300, 350, 80, 30);
     this.ctx.fillStyle = 'white';
     this.ctx.font = '20px Arial';
     this.ctx.fillText('back', 320, 372);
+
+    var xPos = 50;
+    
+    this.items.forEach(function(item){
+        this.ctx.save();
+        this.ctx.translate(xPos, 300);
+        this.ctx.scale(2, 2);
+        this.drawElement(0, 0, item.name);
+        this.buttons.push({
+            x: xPos, y: 300, w: 20, h: 20, execute:function(){
+                this.selectedItem = item.name;
+                console.log(item.name);
+            }.bind(this)
+        });
+        xPos += 22;
+        this.ctx.restore();
+    }.bind(this));
+
+    
 };
 
 Shop.prototype.drawElement = function(x, y, type){
@@ -117,14 +206,12 @@ Shop.prototype.drawElement = function(x, y, type){
             this.ctx.fillStyle = 'silver';
             this.ctx.fillRect(0, 5, 10, 5);
             break;
-        case 'star':
-            this.ctx.fillStyle = 'white';
-            this.drawCircle(0, 0, 1);
-            break;
-        case 'planet':
-            this.ctx.fillStyle = 'pink';
+        case 'none':
+            this.ctx.fillStyle = '#CCC';
             this.ctx.fillRect(0, 0, 10, 10);
-        default:
+            this.ctx.fillStyle = 'red';
+            this.ctx.font = '10px Arial'
+            this.ctx.fillText('x', 3, 8);
             break;
     }
 };
@@ -136,11 +223,11 @@ Shop.prototype.drawTriangle = function(x1, y1, x2, y2, x3, y3){
     this.ctx.lineTo(x3, y3);
     this.ctx.fill();
     this.ctx.closePath();
-}
+};
 
 Shop.prototype.drawCircle = function(x, y, r){
     this.ctx.beginPath();
     this.ctx.arc(x, y, r, 0, Math.PI*2, false);
     this.ctx.fill();
     this.ctx.closePath();
-}
+};

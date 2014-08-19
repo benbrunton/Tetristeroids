@@ -148,6 +148,10 @@ function PlayerMissile(pos, rotation, movement){
 
 }
 
+PlayerMissile.prototype.collision = function(collidedWith) {
+    //
+};
+
 PlayerMissile.prototype.update = function(){
     this.age++;
 

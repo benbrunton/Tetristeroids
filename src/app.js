@@ -6,8 +6,8 @@ function newGame(){
             
             App.setup();
 
-            //window.requestAnimationFrame(App.loop);
-            App.drawShop();
+            window.requestAnimationFrame(App.loop);
+            //App.drawShop();
         },
 
         setup : function(){
@@ -56,7 +56,7 @@ function newGame(){
                     App.drawMenu();
                     break;
                 case 'game-complete':
-                    
+
                     break;
             }
         },

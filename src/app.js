@@ -36,8 +36,9 @@ function newGame(){
 
             App.draw();
             if(!App.paused){
+                var camera = App.game.getCamera();
                 App.game.update();
-                App.scenery.update();
+                App.scenery.update(camera);
                 window.requestAnimationFrame(App.loop);
             }else{
                 App.renderer.paused();

@@ -43,8 +43,8 @@ Player.prototype.update = function(){
     this.location[0] += this.movement[0];
     this.location[1] += this.movement[1];
 
-    this.movement[0] *= 0.95;
-    this.movement[1] *= 0.95;
+    this.movement[0] *= 0.98;
+    this.movement[1] *= 0.98;
 
     return messages;
 };
@@ -61,7 +61,7 @@ Player.prototype.getView = function() {
 Player.prototype.power = function() {
     return this.blocks.filter(function(block){
         return block.type === 'engine';
-    }).length / 2;
+    }).length / 4;
 };
 
 Player.prototype.forward = function() {
@@ -116,7 +116,7 @@ function PlayerMissile(pos, rotation){
     }];
     this.location = [pos[0], pos[1]];
     this.rotation = rotation;
-    this.power = 25;
+    this.power = 28;
 
 }
 

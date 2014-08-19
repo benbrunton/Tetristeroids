@@ -14,6 +14,9 @@ var level1 = {
             }
         ]
     },
+    messages:{
+        
+    },
     setup: function(){
         var elements = [];
 

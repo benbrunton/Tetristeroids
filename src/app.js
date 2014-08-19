@@ -22,6 +22,7 @@ function newGame(){
             App.shop = new Shop(App.ctx);
 
             KeyboardJS.on('p', App.togglePause);
+            KeyboardJS.on('escape', App.togglePause);
             KeyboardJS.on('space', function(e){e.preventDefault();});
             KeyboardJS.on('up', function(e){e.preventDefault();});
             KeyboardJS.on('down', function(e){e.preventDefault();});
@@ -69,7 +70,7 @@ function newGame(){
             App.drawList(App.scenery.getElements());
             App.drawList(gameElements);
 
-            App.renderer.drawHud(gameElements);
+            App.renderer.drawHud(gameElements, App.game.getMessages());
         },
 
         drawMenu: function(){

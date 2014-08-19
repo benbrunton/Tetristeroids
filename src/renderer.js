@@ -1,6 +1,7 @@
 function Renderer(ctx){
     this.ctx = ctx;
     this.camera = [];
+    this.messages = [];
 }
 
 Renderer.prototype.setCamera = function(location) {
@@ -21,7 +22,7 @@ Renderer.prototype.drawElement = function(element){
     this.ctx.restore();
 };
 
-Renderer.prototype.drawHud = function(elements) {
+Renderer.prototype.drawHud = function(elements, message) {
     var cash = 0;
     elements.filter(function(element){
         return element.type === 'objective';
@@ -36,6 +37,32 @@ Renderer.prototype.drawHud = function(elements) {
     this.ctx.fillStyle = 'white';
     this.ctx.font = '14px Arial';
     this.ctx.fillText('cash : £' + cash, 320, 20);
+
+    if(message !== null){
+        this.messages.push({time: 0, message: message});    
+    }
+
+    this.messages = this.messages.filter(function(m){
+        return m.time < 300;
+    });
+
+    this.messages.forEach(function(m){
+        this.ctx.save();
+        if(m.time < 100){
+            this.ctx.globalAlpha = m.time / 100;
+        }
+
+        if(m.time > 200){
+            this.ctx.globalAlpha = (300 - m.time) / 100;
+        }
+
+        this.ctx.fillStyle = 'white';
+        this.ctx.font = (m.message.font + 'px Arial');
+        this.ctx.fillText(m.message.message, m.message.position[0], m.message.position[1]);
+        this.ctx.restore();
+        m.time++;
+    }.bind(this));
+
 };
 
 Renderer.prototype.drawBlock = function(block){

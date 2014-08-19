@@ -1,6 +1,7 @@
 function Game(levels){
     this.player = new Player();
     this.level = -1;
+    this.levelTime = 0;
     this.mode = 'game';
 
     this.levels = levels;
@@ -9,6 +10,7 @@ function Game(levels){
 
 Game.prototype.start = function() {
     this.level++;
+    this.levelTime = 0;
     if(typeof this.levels[this.level] === 'undefined'){
         this.mode = 'game-complete';
     }else{
@@ -38,7 +40,16 @@ Game.prototype.update = function() {
         return element.isAlive;
     });
 
+    this.levelTime++;
 
+};
+
+Game.prototype.getMessages = function() {
+    if(this.levels[this.level].messages[this.levelTime]){
+        return this.levels[this.level].messages[this.levelTime];
+    }
+
+    return null;
 };
 
 Game.prototype.getMode = function(){

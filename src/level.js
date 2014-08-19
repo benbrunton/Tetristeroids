@@ -1,5 +1,6 @@
 function Level(instructions){
     this.instructions = instructions;
+    this.messages = this.instructions.messages;
 }
 
 Level.prototype.setup = function(){

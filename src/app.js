@@ -17,6 +17,7 @@ function newGame(){
             App.game = new Game(levels);
             App.scenery = new Scenery();
             App.renderer = new Renderer(App.ctx);
+            App.menuRenderer = new MenuRenderer(App.ctx);
 
             KeyboardJS.on('p', App.togglePause);
             KeyboardJS.on('space', function(e){e.preventDefault();});
@@ -66,18 +67,20 @@ function newGame(){
         drawMenu: function(){
             App.ctx.fillStyle = '#000000';
             App.ctx.fillRect(0, 0, 400, 400);
-            KeyboardJS.clear('space');
-            KeyboardJS.on('space', function(e){
-                App.game.start();
-                KeyboardJS.clear('space');
-                KeyboardJS.on('space', function(e){
-                    e.preventDefault();
-                });
-                App.loop();
+            var menu = App.game.getMenu();
+            App.menuRenderer.draw(menu);
+            App.menuRenderer.wait(function(mode, data){
+                if(mode === 'game'){
+                    App.game.start();
+                    App.loop();
+                    
+                }else if(mode === 'shop'){
+                    //App.drawShop(data);
+                }
+
+                App.menuRenderer.unbind();
+                
             });
-            App.ctx.fillStyle = 'white';
-            App.ctx.font = '20px Arial';
-            App.ctx.fillText('press Space to continue', 90, 195);
 
         },
 

@@ -6,8 +6,23 @@ Level.prototype.setup = function(){
     return this.instructions.setup();
 };
 
+Level.prototype.getMenu = function(){
+    return this.instructions.menu;
+};
+
 
 var level0 = {
+    menu : {
+        msg: 'level 1 complete',
+        options: [
+            {
+                type:'shop', level:1
+            },
+            {
+                type:'next mission'
+            }
+        ]
+    },
     setup: function(){
         console.log('level 0 setup');
         var x = {

@@ -1,6 +1,6 @@
 function Game(levels){
     this.player = new Player();
-    this.level = 0;
+    this.level = -1;
     this.mode = 'game';
 
     this.levels = levels;
@@ -8,6 +8,7 @@ function Game(levels){
 }
 
 Game.prototype.start = function() {
+    this.level++;
     if(typeof this.levels[this.level] === 'undefined'){
         //game complete
     }else{
@@ -60,6 +61,11 @@ Game.prototype.getElements = function(){
     return elements.concat(otherElements);;
 };
 
+
+Game.prototype.getMenu = function() {
+    return this.levels[this.level].getMenu();
+};
+
 Game.prototype.processAllMessages = function(messages){
     var i = messages.length;
     messages.forEach(this.processMessage.bind(this));
@@ -72,7 +78,6 @@ Game.prototype.processMessage = function(message){
             break;
         case 'level-complete':
             this.mode = 'level-complete';
-            this.level++;
             break;
     }
 };

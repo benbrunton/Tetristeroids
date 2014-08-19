@@ -21,6 +21,12 @@ Renderer.prototype.drawElement = function(element){
     this.ctx.restore();
 };
 
+Renderer.prototype.drawHud = function(elements) {
+    elements.filter(function(element){
+        return element.type === 'objective';
+    }).forEach(this.pointAtElement.bind(this))
+};
+
 Renderer.prototype.drawBlock = function(block){
     this.ctx.save();
     this.ctx.translate(block.location[0] * 10 - 5, block.location[1] * 10 - 5);
@@ -64,8 +70,12 @@ Renderer.prototype.drawBlock = function(block){
             this.ctx.fillRect(4, 2, 2, 4);
             break;
         case 'shield':
-            this.ctx.fillStyle = 'limegreen';
+            this.ctx.fillStyle = 'gold';
+            this.ctx.globalAlpha=0.4;
             this.drawCircle(5, 5, 5);
+            this.ctx.globalAlpha=1.0;
+            this.ctx.fillStyle = 'limegreen';
+            this.drawCircle(5, 5, 2);
             this.ctx.fillStyle = 'silver';
             this.ctx.fillRect(0, 5, 10, 5);
             break;
@@ -73,9 +83,45 @@ Renderer.prototype.drawBlock = function(block){
             this.ctx.fillStyle = 'white';
             this.drawCircle(0, 0, 1);
             break;
+        case 'planet':
+            this.ctx.fillStyle = 'pink';
+            this.ctx.fillRect(0, 0, 10, 10);
         default:
             break;
     }
+    this.ctx.restore();
+};
+
+Renderer.prototype.pointAtElement = function(element){
+    var dx = this.camera[0] - element.location[0];
+    var dy = this.camera[1] - element.location[1];
+    var r = Math.atan2(dy, dx) - Math.PI/2;
+
+    var playerDistance = (dx * dx + dy * dy);
+
+    dx = Math.sin(r);
+    dy = Math.cos(r);
+
+    var distance = 170;
+
+    while(distance * distance > playerDistance - 300 && distance > 50){
+        distance -= 20;
+    }
+
+    var x = dx * (distance);
+    var y = dy * (distance);
+
+    this.ctx.save();
+
+    this.ctx.translate(200, 200);
+    this.ctx.translate(x, -y);
+    this.ctx.rotate(r);
+    
+    
+    
+    this.ctx.fillStyle = 'yellow';
+    this.drawTriangle(-15, 20, 0, 15, 0, 0);
+    this.drawTriangle(15, 20, 0, 15, 0, 0);
     this.ctx.restore();
 };
 

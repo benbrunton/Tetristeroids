@@ -10,9 +10,11 @@ function newGame(){
         },
 
         setup : function(){
+            var levels = App.getLevels();
+            App.mode = 'game';
             App.paused = false;
             App.ctx = document.querySelector('canvas').getContext('2d');
-            App.game = new Game();
+            App.game = new Game(levels);
             App.scenery = new Scenery();
             App.renderer = new Renderer(App.ctx);
 
@@ -30,18 +32,23 @@ function newGame(){
         },
 
         loop : function(){
-            var keys = KeyboardJS.activeKeys();
+            
+            App.mode = App.game.getMode();
 
-            App.handleKeys(keys);
-
-            App.draw();
-            if(!App.paused){
-                var camera = App.game.getCamera();
-                App.game.update();
-                App.scenery.update(camera);
-                window.requestAnimationFrame(App.loop);
+            if(App.mode === 'game'){
+                var keys = KeyboardJS.activeKeys();
+                App.handleKeys(keys);
+                App.draw();
+                if(!App.paused){
+                    var camera = App.game.getCamera();
+                    App.game.update();
+                    App.scenery.update(camera);
+                    window.requestAnimationFrame(App.loop);
+                }else{
+                    App.renderer.paused();
+                }
             }else{
-                App.renderer.paused();
+                App.drawMenu();
             }
         },
 
@@ -49,8 +56,29 @@ function newGame(){
             App.ctx.fillStyle = '#000000';
             App.ctx.fillRect(0, 0, 400, 400);
             App.renderer.setCamera(App.game.getCamera());
+            var gameElements = App.game.getElements();
             App.drawList(App.scenery.getElements());
-            App.drawList(App.game.getElements());
+            App.drawList(gameElements);
+
+            App.renderer.drawHud(gameElements);
+        },
+
+        drawMenu: function(){
+            App.ctx.fillStyle = '#000000';
+            App.ctx.fillRect(0, 0, 400, 400);
+            KeyboardJS.clear('space');
+            KeyboardJS.on('space', function(e){
+                App.game.start();
+                KeyboardJS.clear('space');
+                KeyboardJS.on('space', function(e){
+                    e.preventDefault();
+                });
+                App.loop();
+            });
+            App.ctx.fillStyle = 'white';
+            App.ctx.font = '20px Arial';
+            App.ctx.fillText('press Space to continue', 90, 195);
+
         },
 
         drawList: function(list){
@@ -84,13 +112,14 @@ function newGame(){
             }
         },
 
-        log : function (msg){
-            console.log(msg);
-            var p = document.createElement('p');
-            p.innerText = msg;
-            document.querySelector("#output").appendChild(p);
+        getLevels: function(){
+            var levels = [];
+
+            levels.push(new Level(level0));
+            levels.push(new Level(level0));
+            return levels;
         }
     };
 
     return App;
-}
+}   

@@ -4,40 +4,42 @@ function Player(){
 
     this.lastFired = 0;
 
-    this.type = 'ship';
+    this.type = 'player';
     this.movement = [0, 0];
-    this.location = [170, 340];
+    this.location = [0, 0];
     this.rotation = 0;
-    this.rotateRatio = 15;
 
     this.blocks = [
         {
-            location: [0, 0], 
-            type: 'generator'
+            location: [0, -1], 
+            type: 'shield'
         },
         {
-            location: [0, 1], 
+            location: [0, 0], 
             type: 'cockpit'
         },
         {
-            location: [-1, 1],
+            location: [0, 1],
             type: 'engine'
-        },
-        {
-            location: [1, 1],
-            type: 'engine'
-        },
-        {
-            location: [0, -1], 
-            type: 'standard-gun'  
         },
         {
             location: [1, -1], 
-            type: 'standard-gun'  
+            type: 'shield'  
+        },
+        {
+            location: [-1, -1], 
+            type: 'shield'  
         }
     ];
 
 }
+
+
+Player.prototype.reset = function() {
+    this.movement = [0, 0];
+    this.location = [0, 0];
+    this.rotation = 0;
+};
 
 Player.prototype.update = function(){
     var messages = [];
@@ -62,10 +64,18 @@ Player.prototype.getView = function() {
     };
 };
 
+Player.prototype.collision = function(collidedWith) {
+    
+};
+
 Player.prototype.power = function() {
     return this.blocks.filter(function(block){
         return block.type === 'engine';
     }).length / 4;
+};
+
+Player.prototype.rotateAmount = function(){
+    return this.power() / this.blocks.length;
 };
 
 Player.prototype.forward = function() {
@@ -84,12 +94,12 @@ Player.prototype.backward = function() {
 
 Player.prototype.left = function() {
     //this.location[0] -= this.power();
-    this.rotation -= this.power() / this.rotateRatio;
+    this.rotation -= this.rotateAmount();
 };
 
 Player.prototype.right = function() {
     //this.location[0] += this.power();
-    this.rotation += this.power() / this.rotateRatio;
+    this.rotation += this.rotateAmount();
 };
 
 Player.prototype.fire = function(){

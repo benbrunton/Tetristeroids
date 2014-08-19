@@ -30,6 +30,10 @@ function Player(){
         {
             location: [0, -1], 
             type: 'standard-gun'  
+        },
+        {
+            location: [1, -1], 
+            type: 'standard-gun'  
         }
     ];
 
@@ -96,15 +100,22 @@ Player.prototype.fire = function(){
             return block.type === 'standard-gun';
         })
         .forEach(function(block){
-            this.messageQueue.push({msg:'standard-player-fire', pos:this.mergeLocation(block.location), rotation:this.rotation, movement:this.movement});
+            this.messageQueue.push({msg:'standard-player-fire', pos:this.getMissileLocation(block.location), rotation:this.rotation, movement:this.movement});
         }.bind(this));
 
     this.lastFired = Date.now();
 };
 
-Player.prototype.mergeLocation = function(loc){
-    return [this.location[0] + this.movement[0] + Math.sin(this.rotation) * (loc[0]) * 10, 
-        this.location[1] + this.movement[1] - Math.cos(this.rotation) * (-loc[1] - 1) * 10];
+Player.prototype.getMissileLocation = function(loc){
+    var s = Math.sin(this.rotation);
+    var c = Math.cos(this.rotation);
+    var l1 = loc[0] * 10;
+    var l2 = loc[1] * 10;
+    var x1 = this.location[0] + this.movement[0];
+    var y1 = this.location[1] + this.movement[1];
+    var x2 = c * l1 - s * l2;
+    var y2 = s * l1 + c * l2;
+    return [x1 + x2, y1 + y2];
 }
 
 

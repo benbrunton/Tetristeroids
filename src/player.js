@@ -43,8 +43,8 @@ Player.prototype.update = function(){
     this.location[0] += this.movement[0];
     this.location[1] += this.movement[1];
 
-    this.movement[0] *= 0.98;
-    this.movement[1] *= 0.98;
+    this.movement[0] *= 0.99;
+    this.movement[1] *= 0.99;
 
     return messages;
 };
@@ -96,33 +96,47 @@ Player.prototype.fire = function(){
             return block.type === 'standard-gun';
         })
         .forEach(function(block){
-            this.messageQueue.push({msg:'standard-player-fire', pos:this.mergeLocation(block.location), rotation:this.rotation});
+            this.messageQueue.push({msg:'standard-player-fire', pos:this.mergeLocation(block.location), rotation:this.rotation, movement:this.movement});
         }.bind(this));
 
     this.lastFired = Date.now();
 };
 
 Player.prototype.mergeLocation = function(loc){
-    return [this.location[0] + Math.sin(this.rotation) * (loc[0] + 1.5) * 10, 
-        this.location[1] + Math.cos(this.rotation) * (loc[1] - 2) * 10];
+    return [this.location[0] + this.movement[0] + Math.sin(this.rotation) * (loc[0]) * 10, 
+        this.location[1] + this.movement[1] - Math.cos(this.rotation) * (-loc[1] - 1) * 10];
 }
 
 
-function PlayerMissile(pos, rotation){
+function PlayerMissile(pos, rotation, movement){
     this.type = 'missile';
     this.blocks = [{
         location: [0, 0],
         type: 'missile'
     }];
-    this.location = [pos[0], pos[1]];
+    this.location = pos;
     this.rotation = rotation;
-    this.power = 28;
+    this.power = 15;
+    this.age = 0;
+    this.maxAge = 80;
+    this.isAlive = true;
+    this.movement = [
+        movement[0] + this.power * Math.sin(this.rotation),
+        movement[1] - this.power * Math.cos(this.rotation)
+    ];
 
 }
 
 PlayerMissile.prototype.update = function(){
-    this.location[0] += this.power * Math.sin(this.rotation);
-    this.location[1] -= this.power * Math.cos(this.rotation);
+    this.age++;
+
+    if(this.age > this.maxAge){
+        this.isAlive = false;
+        return [];
+    }
+
+    this.location[0] += this.movement[0];
+    this.location[1] += this.movement[1];
     return [];
 }
 

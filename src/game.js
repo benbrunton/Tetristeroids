@@ -13,6 +13,10 @@ Game.prototype.update = function() {
     });
 
     this.processAllMessages(messages);
+
+    this.otherElements = this.otherElements.filter(function(element){
+        return element.isAlive;
+    });
 };
 
 Game.prototype.getCamera = function() {
@@ -39,7 +43,7 @@ Game.prototype.processAllMessages = function(messages){
 Game.prototype.processMessage = function(message){
     switch(message.msg){
         case 'standard-player-fire':
-            this.otherElements.push(new PlayerMissile(message.pos, message.rotation));
+            this.otherElements.push(new PlayerMissile(message.pos, message.rotation, message.movement.slice(0)));
             break;
     }
 };

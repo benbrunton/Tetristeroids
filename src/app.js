@@ -138,8 +138,8 @@ function newGame(){
         getLevels: function(){
             var levels = [];
 
-            levels.push(new Level(level0));
-            levels.push(new Level(level1));
+            levels.push(new Level(0, level0));
+            levels.push(new Level(1, level1));
             return levels;
         }
     };

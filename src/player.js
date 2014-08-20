@@ -76,13 +76,16 @@ Player.prototype.collision = function(collidedWith) {
 };
 
 Player.prototype.power = function() {
-    return this.blocks.filter(function(block){
+    var power = this.blocks.filter(function(block){
         return block.type === 'engine';
-    }).length / 4;
+    }).length / 2;
+    return power / this.blocks.length;
 };
 
 Player.prototype.rotateAmount = function(){
-    return this.power() / this.blocks.length;
+    return this.power() / this.blocks.filter(function(block){
+        return block.type !== 'engine';
+    }).length;
 };
 
 Player.prototype.forward = function() {

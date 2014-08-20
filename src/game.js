@@ -5,6 +5,7 @@ function Game(levels){
     this.mode = 'game';
 
     this.levels = levels;
+    this.messages = [];
     this.start();
 }
 
@@ -30,9 +31,14 @@ Game.prototype.update = function() {
 
     this.processCollisions();
 
+
     this.otherElements.forEach(function(element){
         messages = messages.concat(element.update());
     });
+
+    if(this.levels[this.level].events[this.levelTime]){
+        messages = messages.concat(this.levels[this.level].events[this.levelTime].execute(this.getPlayer()));
+    }
 
     this.processAllMessages(messages);
 
@@ -42,14 +48,18 @@ Game.prototype.update = function() {
 
     this.levelTime++;
 
+
+
 };
 
 Game.prototype.getMessages = function() {
+    var messages = this.messages;
+    this.messages = [];
     if(this.levels[this.level].messages[this.levelTime]){
-        return this.levels[this.level].messages[this.levelTime];
+        messages.push(this.levels[this.level].messages[this.levelTime]);
     }
 
-    return null;
+    return messages;
 };
 
 Game.prototype.getMode = function(){
@@ -97,7 +107,11 @@ Game.prototype.processMessage = function(message){
             this.otherElements.push(new PlayerMissile(message.pos, message.rotation, message.movement.slice(0)));
             break;
         case 'level-complete':
-            this.mode = 'level-complete';
+            this.mode = 'level-complete'; // todo - pass this messages to the level
+                                          // to allow it to wrap up
+            break;
+        case 'add-elements':
+            this.otherElements = this.otherElements.concat(message.elements);
             break;
     }
 };

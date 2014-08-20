@@ -11,21 +11,70 @@ var level0 = {
         ]
     },
     messages:{
-        100: {
-            message: 'Space Rebel',
-            position:[120, 150],
-            font: 35
+        20: {
+            message: 'hold ↑',
+            position:[180, 250],
+            font: 15
         },
-        250: {
-            message: 'an html5 game by Ben Brunton',
-            position:[60, 190],
-            font: 20
+        300: {
+            message: '← and → steer ship',
+            position:[140, 250],
+            font: 15
+        },
+        650 : {
+            message: 'based on a game by Ben Brunton',
+            position:[80, 150],
+            font: 15
+        },
+        950 : {
+            message: 'programming and graphics - Ben Brunton',
+            position:[80, 150],
+            font: 15
+        },
+        1250: {
+            message: 'level design - Ben Brunton',
+            position:[100, 150],
+            font: 15
+        },
+        1550: {
+            message: 'sound and music - Ben Brunton',
+            position:[80, 150],
+            font: 15
+        },
+        1800: {
+            message: 'Ben Brunton presents',
+            position:[110, 250],
+            font: 15
+        },
+        2200 : {
+            message: 'WORKING PROGRESS GAME TITLE',
+            position:[10, 120],
+            font: 22  
         }
     },
-    setup: function(){
-        console.log('level 0 setup');
+    events: {
+        // post title reveal
+        2600 : {
 
-        var targetLocation = [100, 100];// [8000, -36000];
+            execute:function(playerView){
+                var elements = smallElementFactory.getCoins(10, 100, playerView.location);
+                return [{
+                    msg: 'add-elements',
+                    elements: elements
+                }];
+            }
+        }
+    },
+
+    proximityMessages:{
+
+    },
+
+    proximityEvents: {
+
+    },
+    setup: function(){
+        var targetLocation = [20000, -45000];
         var x = smallElementFactory.getSimpleObjective(targetLocation);
 
         var elements = [x];

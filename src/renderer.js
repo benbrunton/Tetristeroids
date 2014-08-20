@@ -22,7 +22,7 @@ Renderer.prototype.drawElement = function(element){
     this.ctx.restore();
 };
 
-Renderer.prototype.drawHud = function(elements, message) {
+Renderer.prototype.drawHud = function(elements, messages) {
     var cash = 0;
     elements.filter(function(element){
         return element.type === 'objective';
@@ -38,9 +38,9 @@ Renderer.prototype.drawHud = function(elements, message) {
     this.ctx.font = '14px Arial';
     this.ctx.fillText('cash : £' + cash, 320, 20);
 
-    if(message !== null){
-        this.messages.push({time: 0, message: message});    
-    }
+    messages.forEach(function(message){
+        this.messages.push({time: 0, message: message});
+    }.bind(this));
 
     this.messages = this.messages.filter(function(m){
         return m.time < 300;
@@ -172,7 +172,7 @@ Renderer.prototype.pointAtElement = function(element){
 Renderer.prototype.paused = function() {
     this.ctx.fillStyle = 'white';
     this.ctx.font = '30px Arial';
-    this.ctx.fillText('paused', 150, 195);
+    this.ctx.fillText('paused', 150, 155);
 
     this.ctx.fillRect(0, 0, 10, 10);
 };

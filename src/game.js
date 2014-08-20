@@ -33,7 +33,6 @@ define(['player', 'playerMissile'], function(Player, PlayerMissile){
 
         this.processCollisions();
 
-
         this.otherElements.forEach(function(element){
             messages = messages.concat(element.update());
         });
@@ -114,6 +113,9 @@ define(['player', 'playerMissile'], function(Player, PlayerMissile){
                 break;
             case 'add-elements':
                 this.otherElements = this.otherElements.concat(message.elements);
+                break;
+            case 'explosion':
+                // - message.location // message.size
                 break;
         }
     };

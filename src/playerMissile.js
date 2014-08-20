@@ -23,9 +23,14 @@ define(['shipBase'], function(ShipBase){
     PlayerMissile.prototype.constructor = PlayerMissile;
 
     PlayerMissile.prototype.collision = function(collidedWith) {
-        if(collidedWith.type === 'player' || collidedWith.type === 'cash'){
+        if(collidedWith.type === 'player' || collidedWith.type === 'cash' || collidedWith.type === 'missile'){
             return;
         }
+        this.messageQueue.push({
+            msg:'explosion',
+            location:this.location,
+            size: 1
+        })
         this.isAlive = false;
     };
 

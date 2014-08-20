@@ -60,14 +60,34 @@ define(['shipBase'], function(ShipBase){
     Player.prototype.power = function() {
         var power = this.blocks.filter(function(block){
             return block.type === 'engine';
-        }).length / 2;
+        }).length / 4;
         return power / this.blocks.length;
     };
 
     Player.prototype.rotateAmount = function(){
-        return this.power() / this.blocks.filter(function(block){
-            return block.type !== 'engine';
+        var engineBlocks = this.blocks.filter(function(block){
+            return block.type === 'engine';
         }).length;
+        var left = 0;
+        var right = 0;
+        var top = 0;
+        var bottom = 0;
+        this.blocks.forEach(function(block){
+            if(block.location[0] > right){
+                right = block.location[0];
+            }
+            if(block.location[0] < left){
+                left = block.location[0];
+            }
+            if(block.location[1] > bottom){
+                bottom = block.location[1];
+            }
+            if(block.location[1] < top){
+                top = block.location[1];
+            }
+        });
+        var longestLength = Math.max(bottom - top, right - left);
+        return engineBlocks / longestLength / 6;
     };
 
     Player.prototype.forward = function() {

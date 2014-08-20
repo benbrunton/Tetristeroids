@@ -4,8 +4,8 @@ define(function(){
 
     ShipBase.prototype.getView = function() {
         return {
-            location: this.location,
-            blocks: this.blocks,
+            location: this.location.slice(),
+            blocks: this.blocks.slice(),
             type: this.type,
             rotation:this.rotation,
             cash: this.cash

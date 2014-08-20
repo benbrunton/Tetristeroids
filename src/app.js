@@ -22,9 +22,9 @@ define(
                     
                     App.setup();
 
-                    //window.requestAnimationFrame(App.loop);
-                    App.game.player.cash = 20000;
-                    App.drawShop();
+                    window.requestAnimationFrame(App.loop);
+                    // App.game.player.cash = 20000;
+                    // App.drawShop();
                 },
 
                 setup : function(){

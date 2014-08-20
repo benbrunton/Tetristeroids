@@ -1,4 +1,4 @@
-define(function(){
+define(['enemies/simpleShip'], function(SimpleShip){
 
     var smallElementFactory = {
         getCoins: function(num, range, focus){
@@ -54,7 +54,69 @@ define(function(){
                     };
                 }
             };
-        }
+        },
+
+        getSimpleRebelShip: function(location, rotation, movement, maxAge){
+            var blocks = [
+                {
+                    location: [0, 0],
+                    type: 'cockpit'
+                },
+                {
+                    location: [0, -2],
+                    type: 'shield'
+                },
+                {
+                    location: [0, -1],
+                    type: 'rebel-motif'
+                },
+                {
+                    location: [0, 1],
+                    type: 'engine'
+                },
+                {
+                    location: [-1, 0],
+                    type: 'solid'
+                },
+                {
+                    location: [1, 0],
+                    type: 'solid'
+                }
+            ];
+
+            return new SimpleShip(blocks, location, rotation, movement, maxAge);
+        },
+
+        getSimpleFedShip: function(location, rotation, movement, maxAge){
+            var blocks = [
+                {
+                    location: [0, 0],
+                    type: 'cockpit'
+                },
+                {
+                    location: [0, -2],
+                    type: 'standard-gun'
+                },
+                {
+                    location: [0, -1],
+                    type: 'fed-motif'
+                },
+                {
+                    location: [0, 1],
+                    type: 'engine'
+                },
+                {
+                    location: [-1, 0],
+                    type: 'aero'
+                },
+                {
+                    location: [1, 0],
+                    type: 'aero'
+                }
+            ];
+
+            return new SimpleShip(blocks, location, rotation, movement, maxAge);
+        },
     };
 
     function Coin(value, location){

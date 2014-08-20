@@ -1,6 +1,6 @@
 Space Rebel game
 
-use requirejs
+abstract block renderer
 levels should have time based events
 levels should have proximity based events
 levels should have proximity based messages

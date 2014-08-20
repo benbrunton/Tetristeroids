@@ -53,16 +53,74 @@ define(['smallElementFactory'], function(smallElementFactory) {
             }
         },
         events: {
-            // post title reveal
-            2600: {
+            // post title reveal - 2600 / 2650
+            2500: {
 
                 execute: function(playerView) {
-                    var elements = smallElementFactory.getCoins(10, 100, playerView.location);
+                    var location = playerView.location;
+                    location[1] -= 200;
+                    var rebelShip = smallElementFactory.getSimpleRebelShip(location, Math.PI, [-0.5, 4.4], 1000);
+                    return [{
+                        msg: 'add-elements',
+                        elements: rebelShip
+                    }];
+                }
+            },
+
+            2550: {
+               execute: function(playerView) {
+                    var location = playerView.location;
+                    location[1] -= 220;
+                    location[0] -= 30;
+                    var elements = [];
+                    // add gunfire
+                    var federationShip = smallElementFactory.getSimpleFedShip(location, Math.PI, [-0.5, 6.4], 1000);
+                    federationShip.type = 'missile';
+                    elements.push(federationShip);
+                    return [
+                        {
+                            msg: 'add-elements',
+                            elements: elements
+                        },
+                        {
+                            msg: 'standard-player-fire',
+                            pos: [location[0], location[1] - 20], 
+                            rotation: Math.PI,
+                            movement: [-0.1, 0]
+                        },
+                        {
+                            msg: 'standard-player-fire',
+                            pos: location.slice(),
+                            rotation: Math.PI,
+                            movement: [-0.1, 1]
+                        },
+                        {
+                            msg: 'standard-player-fire',
+                            pos: location.slice(),
+                            rotation: Math.PI,
+                            movement: [-0.1, 4]
+                        }
+                    ];
+                } 
+            },
+
+            preview: {
+               execute: function(playerView) {
+                    var location = playerView.location;
+                    location[1] -= 200;
+                    location[0] -= 30;
+                    var elements = [];
+                    // add gunfire
+                    var federationShip = smallElementFactory.getSimpleFedShip(location, Math.PI, [0, 0], 1000);
+                    location = [location[0] + 50, location[1]];
+                    var rebelShip = smallElementFactory.getSimpleRebelShip(location, Math.PI, [0, 0], 1000);
+                    elements.push(federationShip);
+                    elements.push(rebelShip);
                     return [{
                         msg: 'add-elements',
                         elements: elements
                     }];
-                }
+                } 
             }
         },
 
@@ -74,7 +132,7 @@ define(['smallElementFactory'], function(smallElementFactory) {
 
         },
         setup: function() {
-            var targetLocation = [20000, -45000];
+            var targetLocation = [10000, -15000];
             var x = smallElementFactory.getSimpleObjective(targetLocation);
 
             var elements = [x];

@@ -14,6 +14,7 @@ define(function(){
         var loc = element.location;
         var i = 0;
         var l = element.blocks.length;
+
         this.ctx.save();
         this.ctx.translate(-(this.camera[0] - 200), -(this.camera[1] - 200));
         this.ctx.translate(loc[0], loc[1]);
@@ -77,6 +78,14 @@ define(function(){
                 this.ctx.fillStyle = 'steelblue';
                 this.ctx.fillRect(2, 0, 6, 10);
                 break;
+            case 'aero':
+                this.ctx.fillStyle = 'silver';
+                this.ctx.fillRect(0, 0, 2, 10);
+                this.ctx.fillStyle = 'silver';
+                this.ctx.fillRect(8, 0, 2, 10);
+                this.ctx.fillStyle = 'steelblue';
+                this.ctx.fillRect(0, 2, 10, 6);
+                break;
             case 'cockpit':
                 this.ctx.fillStyle = 'silver';
                 this.ctx.fillRect(0, 0, 10, 10);
@@ -132,6 +141,23 @@ define(function(){
             case 'planet':
                 this.ctx.fillStyle = 'pink';
                 this.ctx.fillRect(0, 0, 10, 10);
+                break;
+            case 'rebel-motif':
+                this.ctx.fillStyle = 'silver';
+                this.ctx.fillRect(0, 0, 10, 10);
+                this.ctx.fillStyle = 'red';
+                this.drawCircle(3, 3, 2);
+                this.ctx.fillStyle = 'black';
+                this.ctx.fillRect(2, 0, 2, 10);
+                break;
+            case 'fed-motif':
+                this.ctx.fillStyle = 'silver';
+                this.ctx.fillRect(0, 0, 10, 10);
+                this.ctx.fillStyle = 'black';
+                this.drawCircle(5, 5, 4);
+                this.ctx.fillStyle = 'silver';
+                this.drawCircle(5, 5, 3);
+                break;
             default:
                 break;
         }

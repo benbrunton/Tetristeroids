@@ -29,23 +29,8 @@
 
         <script src="keyboard.js"></script>
         <script src="raf.js"></script>
-        <script src="renderer.js"></script>
-        <script src="menuRenderer.js"></script>
-        <script src="game.js"></script>
-        <script src="app.js"></script>
-        <script src="player.js"></script>
-        <script src="scenery.js"></script>
-        <script src="level.js"></script>
-        <script src="level0.js"></script>
-        <script src="level1.js"></script>
-        <script src="shop.js"></script>
-        <script src="smallElementFactory.js"></script>
 
-        <script>
-            var app = newGame();
-            document.querySelector('#game_viewport').style.display = 'block';
-            document.querySelector('#loader').style.display = 'none';
-            app.start();
-        </script>
+        <script src="require.js" data-main="main"></script>
+        
     </body>
 </html>

@@ -1,5 +1,6 @@
 Space Rebel game
 
+use requirejs
 levels should have time based events
 levels should have proximity based events
 levels should have proximity based messages
@@ -17,6 +18,7 @@ messages so we can have opening credits in first level
 more levels
 improve collisions
 refine relationship between blocks and performance of ship
+glider (CGOL) enemies
 
 levels
 - level 0 - intro

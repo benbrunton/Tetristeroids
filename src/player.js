@@ -1,4 +1,4 @@
-define(function(){
+define(['shipBase'], function(ShipBase){
 
     function Player(){
         
@@ -38,6 +38,9 @@ define(function(){
 
     }
 
+    Player.prototype = new ShipBase();
+    Player.prototype.constructor = Player;
+
 
     Player.prototype.reset = function() {
         this.movement = [0, 0];
@@ -45,29 +48,6 @@ define(function(){
         this.rotation = 0;
     };
 
-    Player.prototype.update = function(){
-        var messages = [];
-        messages = messages.concat(this.messageQueue);
-        this.messageQueue = [];
-
-        this.location[0] += this.movement[0];
-        this.location[1] += this.movement[1];
-
-        this.movement[0] *= 0.99;
-        this.movement[1] *= 0.99;
-
-        return messages;
-    };
-
-    Player.prototype.getView = function() {
-        return {
-            location: this.location,
-            blocks: this.blocks,
-            type: this.type,
-            rotation:this.rotation,
-            cash: this.cash
-        };
-    };
 
     Player.prototype.collision = function(collidedWith) {
         switch(collidedWith.type){

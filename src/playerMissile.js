@@ -1,4 +1,4 @@
-define(function(){
+define(['shipBase'], function(ShipBase){
     function PlayerMissile(pos, rotation, movement){
         this.type = 'missile';
         this.blocks = [{
@@ -15,11 +15,18 @@ define(function(){
             movement[0] + this.power * Math.sin(this.rotation),
             movement[1] - this.power * Math.cos(this.rotation)
         ];
+        this.messageQueue = [];
 
     }
 
+    PlayerMissile.prototype = new ShipBase();
+    PlayerMissile.prototype.constructor = PlayerMissile;
+
     PlayerMissile.prototype.collision = function(collidedWith) {
-        //
+        if(collidedWith.type === 'player' || collidedWith.type === 'cash'){
+            return;
+        }
+        this.isAlive = false;
     };
 
     PlayerMissile.prototype.update = function(){
@@ -30,18 +37,7 @@ define(function(){
             return [];
         }
 
-        this.location[0] += this.movement[0];
-        this.location[1] += this.movement[1];
-        return [];
-    }
-
-    PlayerMissile.prototype.getView = function() {
-        return {
-            location: this.location,
-            type: this.type,
-            rotation: this.rotation,
-            blocks: this.blocks
-        }
+        return ShipBase.prototype.update.call(this);
     };
 
     return PlayerMissile;

@@ -48,16 +48,16 @@ Shop.prototype.calculateCost = function() {
 
 Shop.prototype.drawGrid = function() {
     this.ctx.fillStyle = 'grey';
-    this.ctx.fillRect(50, 20, 211, 211);
+    this.ctx.fillRect(50, 20, 190, 190);
 
     this.ctx.save();
     this.ctx.fillStyle = '#222222';
     this.ctx.translate(51, 21);
 
-    var i = 10;
+    var i = 9;
     var j, x, y;
     while(i--){
-        j = 10;
+        j = 9;
         while(j--){
             x = i * 21;
             y = j * 21;
@@ -68,7 +68,7 @@ Shop.prototype.drawGrid = function() {
                     w: 20,
                     h: 20,
                     execute: function(){
-                        this.update(i - 5, j - 5);
+                        this.update(i - 4, j - 4);
                     }.bind(this)
                 });
             }.bind(this)(i, j, x, y));
@@ -79,8 +79,8 @@ Shop.prototype.drawGrid = function() {
     
 
     this.blocks.forEach(function(block){
-        var x = (5 * 21) + (block.location[0] * 21);
-        var y = (5 * 21) + (block.location[1] * 21);
+        var x = (4 * 21) + (block.location[0] * 21);
+        var y = (4 * 21) + (block.location[1] * 21);
         this.ctx.save();
         this.ctx.translate(x, y);
         this.ctx.scale(2, 2);

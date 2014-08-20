@@ -5,13 +5,27 @@
         <meta charset="utf-8"/>
         <title>SpaceBlocks</title>
         <style>
-
+            body {margin: 0;}
+            #game_viewport{
+                display:none;
+            }
+            #loader{
+                width:400px;
+                height:400px;
+                background-color:#000;
+            }
+            #loader img{
+                margin:185px;
+            }
         </style>
     </head>
 
     <body>
 
-        <canvas width="400" height="400"></canvas>
+        <div id="loader">
+            <img width="30" height="30" src="spiffygif_30x30.gif"/>
+        </div>
+        <canvas id="game_viewport" width="400" height="400"></canvas>
 
         <script src="keyboard.js"></script>
         <script src="raf.js"></script>
@@ -29,6 +43,8 @@
 
         <script>
             var app = newGame();
+            document.querySelector('#game_viewport').style.display = 'block';
+            document.querySelector('#loader').style.display = 'none';
             app.start();
         </script>
     </body>

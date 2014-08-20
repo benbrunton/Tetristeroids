@@ -17,6 +17,16 @@ var level1 = {
     messages:{
         
     },
+    events:{
+
+    },
+    proximityMessages:{
+
+    },
+
+    proximityEvents: {
+
+    },
     setup: function(){
         var elements = [];
 

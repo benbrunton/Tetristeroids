@@ -1,9 +1,9 @@
 Space Rebel game
 
 abstract block renderer
-levels should have time based events
 levels should have proximity based events
 levels should have proximity based messages
+levels should be able to calculate own end (instead of relying on proximity)
 big explosions
 limit ship upgrades
 prevent unfeasible ships
@@ -19,6 +19,14 @@ more levels
 improve collisions
 refine relationship between blocks and performance of ship
 glider (CGOL) enemies
+
+story
+year is 3014
+2 main powers
+    - earth - good
+    - alliance? - bad
+underground resistance against rebels
+player is a displaced refugee
 
 levels
 - level 0 - intro

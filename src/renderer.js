@@ -59,7 +59,7 @@ define(function(){
                 this.ctx.globalAlpha = (300 - m.time) / 100;
             }
 
-            this.ctx.fillStyle = 'white';
+            this.ctx.fillStyle = m.message.color;
             this.ctx.font = (m.message.font + 'px Arial');
             this.ctx.fillText(m.message.message, m.message.position[0], m.message.position[1]);
             this.ctx.restore();

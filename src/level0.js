@@ -2,7 +2,7 @@ define(['smallElementFactory'], function(smallElementFactory) {
 
     return {
         menu: {
-            msg: 'you\'ve reached the start of the game...',
+            msg: 'Space-port',
             options: [{
                 type: 'shop',
                 level: 1
@@ -13,41 +13,49 @@ define(['smallElementFactory'], function(smallElementFactory) {
         messages: {
             20: {
                 message: 'hold ↑',
+                color: 'white',
                 position: [180, 250],
                 font: 15
             },
             300: {
                 message: '← and → steer ship',
+                color: 'white',
                 position: [140, 250],
                 font: 15
             },
             650: {
                 message: 'based on a game by Ben Brunton',
+                color: 'white',
                 position: [80, 150],
                 font: 15
             },
             950: {
                 message: 'programming and graphics - Ben Brunton',
+                color: 'white',
                 position: [80, 150],
                 font: 15
             },
             1250: {
                 message: 'level design - Ben Brunton',
+                color: 'white',
                 position: [100, 150],
                 font: 15
             },
             1550: {
                 message: 'sound and music - Ben Brunton',
+                color: 'white',
                 position: [80, 150],
                 font: 15
             },
             1800: {
                 message: 'Ben Brunton presents',
+                color: 'white',
                 position: [110, 250],
                 font: 15
             },
             2200: {
                 message: 'WORKING PROGRESS GAME TITLE',
+                color: 'white',
                 position: [10, 120],
                 font: 22
             }

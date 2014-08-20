@@ -11,7 +11,14 @@ define(['smallElementFactory'], function(smallElementFactory) {
                 type: 'next mission'
             }]
         },
-        messages: {},
+        messages: {
+            20: {
+                message: 'contact the resistance',
+                color: 'yellow',
+                position: [110, 30],
+                font: 18
+            },
+        },
         events: {},
         proximityMessages: {},
         proximityEvents: {},

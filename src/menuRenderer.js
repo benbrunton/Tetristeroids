@@ -14,7 +14,7 @@ define(function(){
         this.ctx.fillText(menu.msg, 15, 15);
         this.action = function(){};
 
-        var topPos = 50;
+        var topPos = 200;
         menu.options.forEach(function(option){
             switch(option.type){
                 case 'shop':
@@ -24,7 +24,7 @@ define(function(){
                     this.drawNextMission(topPos);
                     break;
             }
-            topPos += 100;
+            topPos += 70;
         }.bind(this));
     };
 
@@ -56,7 +56,7 @@ define(function(){
         this.ctx.fillRect(80, topPos, 200, 40);
         this.ctx.fillStyle = 'white';
         this.ctx.font = '20px Arial';
-        this.ctx.fillText('begin next mission', 85, topPos + 20);
+        this.ctx.fillText('continue', 85, topPos + 20);
         this.buttons.push({x: 80, y: topPos, w: 200, h: 40, action:'game'});
     };
 

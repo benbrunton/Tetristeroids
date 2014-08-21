@@ -13,7 +13,7 @@ define(function(){
         return {
             location: this.location.slice(),
             blocks: [this._getBlock()],
-            type: 'explosion',
+            type: 'ignore',
             rotation:0,
             cash:0
         };

@@ -138,6 +138,7 @@ define(['enemies/simpleShip', 'enemies/asteroid'], function(SimpleShip, Asteroid
         this.isAlive = true;
         this.location = location;
         this.value = value;
+        this.rotation = 0;
         this.blocks = [{
             type:'coin',
             location:[0, 0]
@@ -160,7 +161,8 @@ define(['enemies/simpleShip', 'enemies/asteroid'], function(SimpleShip, Asteroid
             type: 'cash',
             location:this.location,
             blocks: this.blocks,
-            value: this.value
+            value: this.value,
+            rotation: this.rotation
         };
     };
 

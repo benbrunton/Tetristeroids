@@ -1,6 +1,7 @@
 Space Rebel game
 
 abstract block renderer
+when (e.g. asteroids) things break up only the central part should persist
 levels should have proximity based events
 levels should have proximity based messages
 levels should be able to calculate own end (instead of relying on proximity)
@@ -23,6 +24,8 @@ more levels
 improve collisions
 refine relationship between blocks and performance of ship
 glider (CGOL) enemies
+
+precision parking with reasonably good collision detection
 
 story
 year is 3014

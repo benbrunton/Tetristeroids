@@ -23,6 +23,10 @@ define(function(){
         this.movement[0] *= 0.99;
         this.movement[1] *= 0.99;
 
+        if(this.blocks.length < 1){
+            this.isAlive = false;
+        }
+
         return messages;
     };
 

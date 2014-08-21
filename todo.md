@@ -7,6 +7,10 @@ levels should be able to calculate own end (instead of relying on proximity)
 big explosions
 limit ship upgrades
 prevent unfeasible ships
+save player state and current level to localStorage
+multibrowser support
+kongregate api
+achievements
 enemies
 more instruction
 grappling hook
@@ -34,6 +38,7 @@ levels
 -- some kind of dramatic opening sequence
 -- a dogfight takes place just after the opening credits
 - level 1 - make contact with the local resistance
+-- navigate an asteroid field to get to the resistance base
 - level 2 - simple mission
 - level 3 - protect the leader - convoy - join forces with another resistance org
 - level 4 - big fight - lead a squad

@@ -67,6 +67,10 @@ define(['player', 'playerMissile'], function(Player, PlayerMissile){
         return this.mode;
     };
 
+    Game.prototype.getHud = function(){
+        return this.levels[this.level].hud;
+    };
+
     Game.prototype.getPlayer = function() {
         return this.player.getView();
     };

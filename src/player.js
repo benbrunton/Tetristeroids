@@ -4,7 +4,7 @@ define(['shipBase'], function(ShipBase){
         
         this.messageQueue = [];
 
-        this.cash = 0;
+        this.cash = 500;
 
         this.lastFired = 0;
 

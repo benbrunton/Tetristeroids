@@ -87,7 +87,7 @@ define(
                     App.drawList(App.scenery.getElements());
                     App.drawList(gameElements);
 
-                    App.renderer.drawHud(gameElements, App.game.getMessages());
+                    App.renderer.drawHud(App.game.getHud(), gameElements, App.game.getMessages());
                 },
 
                 drawMenu: function(){

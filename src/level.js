@@ -6,6 +6,7 @@ define(function(){
         this.events = this.instructions.events;
         this.proximityMessages = this.instructions.proximityMessages;
         this.proximityEvents = this.instructions.proximityEvents;
+        this.hud = instructions.hud;
     }
 
     Level.prototype.setup = function(){

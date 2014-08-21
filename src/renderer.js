@@ -25,11 +25,14 @@ define(function(){
         this.ctx.restore();
     };
 
-    Renderer.prototype.drawHud = function(elements, messages) {
+    Renderer.prototype.drawHud = function(instructions, elements, messages) {
         var cash = 0;
-        elements.filter(function(element){
-            return element.type === 'objective';
-        }).forEach(this.pointAtElement.bind(this));
+
+        if(instructions.objectives){
+            elements.filter(function(element){
+                return element.type === 'objective';
+            }).forEach(this.pointAtElement.bind(this));
+        }
 
         elements.forEach(function(element){
             if(element.type === 'player'){
@@ -37,9 +40,11 @@ define(function(){
             }
         });
 
-        this.ctx.fillStyle = 'white';
-        this.ctx.font = '14px Arial';
-        this.ctx.fillText('cash : £' + cash, 320, 20);
+        if(instructions.cash){
+            this.ctx.fillStyle = 'white';
+            this.ctx.font = '14px Arial';
+            this.ctx.fillText('cash : £' + cash, 320, 20);
+        }
 
         messages.forEach(function(message){
             this.messages.push({time: 0, message: message});
@@ -189,7 +194,7 @@ define(function(){
         this.ctx.translate(x, -y);
         this.ctx.rotate(r);
         
-        
+        this.ctx.globalAlpha = 0.7;
         
         this.ctx.fillStyle = 'yellow';
         this.drawTriangle(-15, 20, 0, 15, 0, 0);

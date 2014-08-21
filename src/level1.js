@@ -1,5 +1,9 @@
 define(['smallElementFactory'], function(smallElementFactory) {
     return {
+        hud:{
+            cash: true,
+            objectives:true
+        },
         // todo - link up intros
         intro: {},
         menu: {

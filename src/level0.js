@@ -1,6 +1,13 @@
 define(['smallElementFactory'], function(smallElementFactory) {
 
-    return {
+    // position of objective
+    var targetLocation = [8000, -12000];
+
+    var level0 = {
+        hud:{
+            cash: false,
+            objectives: false
+        },
         menu: {
             msg: 'Space-port',
             options: [{
@@ -47,17 +54,23 @@ define(['smallElementFactory'], function(smallElementFactory) {
                 position: [80, 150],
                 font: 15
             },
-            1800: {
+            1900: {
                 message: 'Ben Brunton presents',
                 color: 'white',
                 position: [110, 250],
                 font: 15
             },
             2200: {
-                message: 'WORKING PROGRESS GAME TITLE',
+                message: 'GENERIC SPACE GAME',
                 color: 'white',
                 position: [10, 120],
                 font: 22
+            },
+            3200: {
+                message: 'follow the yellow arrow',
+                color: 'yellow',
+                position: [120, 250],
+                font: 15
             }
         },
         events: {
@@ -66,6 +79,7 @@ define(['smallElementFactory'], function(smallElementFactory) {
 
                 execute: function(playerView) {
                     var location = playerView.location;
+                    location[1] -= 50;
                     location[1] -= 200;
                     var rebelShip = smallElementFactory.getSimpleRebelShip(location, Math.PI, [-0.5, 4.4], 1000);
                     return [{
@@ -81,8 +95,7 @@ define(['smallElementFactory'], function(smallElementFactory) {
                     location[1] -= 220;
                     location[0] -= 30;
                     var elements = [];
-                    // add gunfire
-                    var federationShip = smallElementFactory.getSimpleFedShip(location, Math.PI, [-0.5, 6.4], 1000);
+                    var federationShip = smallElementFactory.getSimpleFedShip(location, 1.1 * Math.PI, [-0.9, 6.4], 1000);
                     federationShip.type = 'missile';
                     elements.push(federationShip);
                     return [
@@ -93,23 +106,54 @@ define(['smallElementFactory'], function(smallElementFactory) {
                         {
                             msg: 'standard-player-fire',
                             pos: [location[0], location[1] - 20], 
-                            rotation: Math.PI,
+                            rotation: 1.1 * Math.PI,
                             movement: [-0.1, 0]
                         },
                         {
                             msg: 'standard-player-fire',
                             pos: location.slice(),
-                            rotation: Math.PI,
+                            rotation: 1.1 * Math.PI,
                             movement: [-0.1, 1]
                         },
                         {
                             msg: 'standard-player-fire',
                             pos: location.slice(),
-                            rotation: Math.PI,
+                            rotation: 1.1 * Math.PI,
                             movement: [-0.1, 4]
                         }
                     ];
-                } 
+                }
+            },
+
+            2850: {
+               execute: function(playerView) {
+                    var location1 = playerView.location.slice();
+                    var location2 = playerView.location.slice();
+                    location1[0] -= 210;
+                    location1[1] -= 60;
+                    
+                    location2[0] -= 210;
+                    location2[1] += 60;
+                    
+                    var elements = [];
+                    var federationShip1 = smallElementFactory.getSimpleFedShip(location1, 0.5 * Math.PI, [7, 0], 1000);
+                    var federationShip2 = smallElementFactory.getSimpleFedShip(location2, 0.5 * Math.PI, [7, 0.1], 1000);
+                    elements.push(federationShip1);
+                    elements.push(federationShip2);
+                    return [
+                        {
+                            msg: 'add-elements',
+                            elements: elements
+                        }
+                    ];
+                }
+            },
+
+            3200: {
+                execute: function(playerView){
+                    level0.hud.objectives = true;
+                    return [];
+                }
             },
 
             preview: {
@@ -140,13 +184,10 @@ define(['smallElementFactory'], function(smallElementFactory) {
 
         },
         setup: function() {
-            var targetLocation = [10000, -15000];
             var x = smallElementFactory.getSimpleObjective(targetLocation);
-
             var elements = [x];
 
-            elements = elements.concat(smallElementFactory.getCoins(20, 500, targetLocation));
-
+            level0.hud.objectives = false;
 
             return {
                 elements: elements,
@@ -155,5 +196,7 @@ define(['smallElementFactory'], function(smallElementFactory) {
         }
 
     };
+
+    return level0;
 
 });

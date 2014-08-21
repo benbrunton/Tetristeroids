@@ -5,7 +5,7 @@ define(function(){
     function Explosion(pos, size){
         this.age = 0;
         this.isAlive = true;
-        this.size = size;
+        this.size = size * 2;
         this.location = pos.slice();
     }
 

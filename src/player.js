@@ -49,10 +49,10 @@ define(['shipBase'], function(ShipBase){
     };
 
 
-    Player.prototype.collision = function(collidedWith) {
-        switch(collidedWith.type){
+    Player.prototype.collision = function(report) {
+        switch(report.collided.type){
             case 'cash':
-                this.cash += collidedWith.value;
+                this.cash += report.collided.value;
                 break;
         }
     };

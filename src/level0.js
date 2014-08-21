@@ -96,7 +96,7 @@ define(['smallElementFactory'], function(smallElementFactory) {
                     location[0] -= 30;
                     var elements = [];
                     var federationShip = smallElementFactory.getSimpleFedShip(location, 1.1 * Math.PI, [-0.9, 6.4], 1000);
-                    federationShip.type = 'missile';
+                    federationShip.type = 'ignore';
                     elements.push(federationShip);
                     return [
                         {
@@ -187,7 +187,7 @@ define(['smallElementFactory'], function(smallElementFactory) {
             var x = smallElementFactory.getSimpleObjective(targetLocation);
             var elements = [x];
 
-            elements = elements.concat(smallElementFactory.getAsteroidField(50, 1000, [0,0]));//targetLocation));
+            elements = elements.concat(smallElementFactory.getAsteroidField(50, 600, targetLocation));
 
             level0.hud.objectives = false;
 

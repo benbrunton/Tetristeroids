@@ -42,13 +42,22 @@ define(['shipBase'], function(ShipBase){
     Asteroid.prototype = new ShipBase();
     Asteroid.prototype.constructor = Asteroid;
 
-    Asteroid.prototype.collision = function(){
-        this.isAlive = false;
+    Asteroid.prototype.collision = function(report){
+        this.blocks = this.blocks.filter(function(block){
+            return !report.blocks.some(function(b){
+                return b.location[0] === block.location[0] && b.location[1] === block.location[1];
+            });
+        });
+
         this.messageQueue.push({
             msg: 'explosion',
             location: this.location,
             size: this.blocks.length
         });
+
+        if(this.blocks.length < 1){
+            this.isAlive = false;
+        }
     }
 
     Asteroid.prototype._generateBlocks = function(){

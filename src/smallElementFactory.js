@@ -40,8 +40,8 @@ define(['enemies/simpleShip', 'enemies/asteroid'], function(SimpleShip, Asteroid
                     this.messageQueue = [];
                     return messages;
                 },
-                collision: function(collidedWith){
-                    if(collidedWith.type === 'player'){
+                collision: function(report){
+                    if(report.collided.type === 'player'){
                         this.messageQueue.push({msg:'level-complete'});
                     }
                 },
@@ -148,8 +148,8 @@ define(['enemies/simpleShip', 'enemies/asteroid'], function(SimpleShip, Asteroid
         return [];
     };
 
-    Coin.prototype.collision = function(collidedWith){
-        if(collidedWith.type === 'player'){
+    Coin.prototype.collision = function(report){
+        if(report.collided.type === 'player'){
             this.isAlive = false;
         }
     };

@@ -1,7 +1,8 @@
-define(['player', 'playerMissile', 'explosion'], function(Player, PlayerMissile, Explosion){
+define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, PlayerMissile, Explosion, Collisions){
 
     function Game(levels){
         this.player = new Player();
+        this.collisions = new Collisions();
         this.level = -1;
         this.levelTime = 0;
         this.mode = 'game';
@@ -48,8 +49,6 @@ define(['player', 'playerMissile', 'explosion'], function(Player, PlayerMissile,
         });
 
         this.levelTime++;
-
-
 
     };
 
@@ -136,17 +135,14 @@ define(['player', 'playerMissile', 'explosion'], function(Player, PlayerMissile,
                 var el2 = element2.getView();
 
 
-                // TODO - good collision detection
-                if(Math.abs(el1.location[0] - el2.location[0]) > 50){
+                var report = this.collisions.check(el1, el2);
+
+                if(!report){
                     return;
                 }
 
-                if(Math.abs(el1.location[1] - el2.location[1]) > 50){
-                    return;
-                }
-
-                element.collision(el2);
-            });
+                element.collision(report);
+            }.bind(this));
 
         }.bind(this));
     };

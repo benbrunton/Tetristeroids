@@ -1,4 +1,4 @@
-define(['enemies/simpleShip'], function(SimpleShip){
+define(['enemies/simpleShip', 'enemies/asteroid'], function(SimpleShip, Asteroid){
 
     var smallElementFactory = {
         getCoins: function(num, range, focus){
@@ -117,6 +117,21 @@ define(['enemies/simpleShip'], function(SimpleShip){
 
             return new SimpleShip(blocks, location, rotation, movement, maxAge);
         },
+        getAsteroidField: function(num, range, focus){
+            var elements = [];
+            var maxAsteroids = num;
+            var distanceFromTarget = range;
+            var i = 0;
+            var x, y;
+            while(i++ < maxAsteroids){
+                x = Math.floor(Math.random() * distanceFromTarget - Math.random() * distanceFromTarget) + focus[0];
+                y = Math.floor(Math.random() * distanceFromTarget - Math.random() * distanceFromTarget) + focus[1];
+
+                elements.push(new Asteroid([x, y]));
+            }
+
+            return elements;
+        }
     };
 
     function Coin(value, location){

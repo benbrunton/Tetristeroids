@@ -163,6 +163,17 @@ define(function(){
                 this.ctx.fillStyle = 'silver';
                 this.drawCircle(5, 5, 3);
                 break;
+            case 'asteroid':
+                this.ctx.fillStyle = '#9e6546';
+                this.ctx.fillRect(0, 0, 10, 10);
+                break;
+            case 'explosion':
+                this.ctx.globalAlpha = 1.0;
+                this.ctx.fillStyle = 'white';
+                this.drawCircle(0, 0, 2);
+                this.ctx.globalAlpha = 0.7;
+                this.ctx.fillStyle = this._getExplosionColor(block);
+                this.drawCircle(0, 0, this._getExplosionSize(block));
             default:
                 break;
         }
@@ -224,6 +235,52 @@ define(function(){
         this.ctx.arc(x, y, r, 0, Math.PI*2, false);
         this.ctx.fill();
         this.ctx.closePath();
+    };
+
+    Renderer.prototype._getExplosionSize = function(block) {
+        if(block.age < 5){
+            return 3;
+        }
+        if(block.age < 10){
+            return block.size /2;
+        }
+
+        if(block.age < 15){
+            return block.size;
+        }
+
+        if(block.age < 20){
+            return block.size * 1.5;
+        }
+
+        if(block.age < 25){
+            return block.size;
+        }
+
+        if(block.age < 30){
+            return block.size /2;
+        }
+
+        return 1;
+    };
+
+    Renderer.prototype._getExplosionColor = function(block) {
+        if(block.age < 5){
+            return 'white';
+        }
+        if(block.age < 10){
+            return 'red';
+        }
+
+        if(block.age < 15){
+            return 'white';
+        }
+
+        if(block.age < 20){
+            return 'yellow';
+        }
+
+        return 'white';
     };
 
     return Renderer;

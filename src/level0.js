@@ -187,6 +187,8 @@ define(['smallElementFactory'], function(smallElementFactory) {
             var x = smallElementFactory.getSimpleObjective(targetLocation);
             var elements = [x];
 
+            elements = elements.concat(smallElementFactory.getAsteroidField(50, 1000, [0,0]));//targetLocation));
+
             level0.hud.objectives = false;
 
             return {

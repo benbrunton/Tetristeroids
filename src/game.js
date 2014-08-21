@@ -1,4 +1,4 @@
-define(['player', 'playerMissile'], function(Player, PlayerMissile){
+define(['player', 'playerMissile', 'explosion'], function(Player, PlayerMissile, Explosion){
 
     function Game(levels){
         this.player = new Player();
@@ -119,7 +119,7 @@ define(['player', 'playerMissile'], function(Player, PlayerMissile){
                 this.otherElements = this.otherElements.concat(message.elements);
                 break;
             case 'explosion':
-                // - message.location // message.size
+                this.otherElements.push(new Explosion(message.location, message.size));
                 break;
         }
     };

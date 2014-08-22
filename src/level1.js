@@ -1,4 +1,5 @@
 define(['smallElementFactory'], function(smallElementFactory) {
+    var targetLocation = [-6000, -10000];
     return {
         hud:{
             cash: true,
@@ -28,7 +29,12 @@ define(['smallElementFactory'], function(smallElementFactory) {
         proximityEvents: {},
         setup: function() {
             var elements = [];
+            var x = smallElementFactory.getSimpleObjective(targetLocation);
+
             elements = elements.concat(smallElementFactory.getCoins(100, 6000, [0, 0]));
+            elements = elements.concat(smallElementFactory.getAsteroidField(40, 8000, targetLocation));
+            elements.push(x);
+
             return {
                 elements: elements,
                 playerLocation: [0, 0]

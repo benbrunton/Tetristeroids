@@ -154,8 +154,7 @@ define(
 
                 getLevels: function(){
                     var levels = [];
-
-                    levels.push(new Level(0, levelList[0]));
+                    //levels.push(new Level(0, levelList[0]));
                     levels.push(new Level(1, levelList[1]));
                     
                     return levels;

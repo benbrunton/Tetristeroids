@@ -1,12 +1,13 @@
 Space Rebel game
 
+Todo:
+
+game class should poll level to allow dynamic loading of npc elements
 abstract block renderer
 when (e.g. asteroids) things break up only the central part should persist
 levels should have proximity based events
 levels should have proximity based messages
 levels should be able to calculate own end (instead of relying on proximity)
-big explosions
-limit ship upgrades
 prevent unfeasible ships
 save player state and current level to localStorage
 multibrowser support
@@ -17,14 +18,13 @@ more instruction
 grappling hook
 collectables
 better hud
+level intros
 crew
 animate engines during thrust
 messages so we can have opening credits in first level
-more levels
-improve collisions
-refine relationship between blocks and performance of ship
-glider (CGOL) enemies
+glider (Conways Game Of Life) enemies
 
+Level ideas
 precision parking with reasonably good collision detection
 
 story
@@ -40,6 +40,7 @@ levels
 -- opening credits
 -- some kind of dramatic opening sequence
 -- a dogfight takes place just after the opening credits
+
 - level 1 - make contact with the local resistance
 -- navigate an asteroid field to get to the resistance base
 - level 2 - simple mission

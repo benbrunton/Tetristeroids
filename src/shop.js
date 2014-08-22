@@ -18,6 +18,15 @@ define(function(){
             {name: 'cockpit', level:0, price: 300},
             {name: 'none', level:0, price:0}
         ];
+
+        this.damage = {
+            'shield' : 100,
+            'generator' : 4,
+            'standard-gun' : 2,
+            'solid': 4,
+            'engine': 2,
+            'cockpit' :2
+        };
     }
 
     Shop.prototype.draw = function(data, player) {
@@ -123,7 +132,8 @@ define(function(){
         this.removeBlock(x, y);
         this.blocks.push({
             location:[x, y],
-            type: selectedItem
+            type: selectedItem,
+            damage: this.damage[selectedItem] || 1
         })
     };
 

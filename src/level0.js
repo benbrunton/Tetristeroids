@@ -1,9 +1,11 @@
 define(['smallElementFactory'], function(smallElementFactory) {
 
     // position of objective
-    var targetLocation = [8000, -12000];
+    var targetLocation = [8500, -10000];
+    var startLocation = [0, 0];
 
     var level0 = {
+        started: false,
         hud:{
             cash: false,
             objectives: false
@@ -188,11 +190,19 @@ define(['smallElementFactory'], function(smallElementFactory) {
             var elements = [x];
 
             elements = elements.concat(smallElementFactory.getAsteroidField(50, 600, targetLocation));
-            level0.hud.objectives = false;
+            if(!level0.started){
+                level0.hud.objectives = false;
+            }else{
+                level0.messages = {};
+                level0.events = {};
+                startLocation = [7500, -8000];
+            }
+
+            level0.started = true;
 
             return {
                 elements: elements,
-                playerLocation: [0, 0]
+                playerLocation: startLocation
             };
         }
 

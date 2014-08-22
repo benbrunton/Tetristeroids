@@ -17,7 +17,7 @@ define(['shipBase'], function(ShipBase){
             {
                 location: [0, -1], 
                 type: 'shield',
-                damage: 1
+                damage: 100
             },
             {
                 location: [0, 0], 
@@ -33,12 +33,12 @@ define(['shipBase'], function(ShipBase){
             {
                 location: [1, -1], 
                 type: 'shield',
-                damage: 1
+                damage: 100
             },
             {
                 location: [-1, -1], 
                 type: 'shield',
-                damage: 1
+                damage: 100
             }
         ];
 
@@ -49,7 +49,7 @@ define(['shipBase'], function(ShipBase){
 
     Player.prototype.update = function(){
 
-        if(!this.blocks.some(function(block){
+        if(this.blocks.length < 1 || !this.blocks.some(function(block){
             return block.type === 'cockpit';
         })){
             // game over
@@ -89,7 +89,7 @@ define(['shipBase'], function(ShipBase){
         var power = this.blocks.filter(function(block){
             return block.type === 'engine';
         }).length / 4;
-        return (power / this.blocks.length) + 0.02;
+        return (power / this.blocks.length) + 0.005;
     };
 
     Player.prototype.rotateAmount = function(){
@@ -115,7 +115,7 @@ define(['shipBase'], function(ShipBase){
             }
         });
         var longestLength = Math.max(bottom - top, right - left);
-        return (engineBlocks / longestLength / 6) + 0.003;
+        return (engineBlocks / longestLength / 6) + 0.005;
     };
 
     Player.prototype.forward = function() {
@@ -150,13 +150,13 @@ define(['shipBase'], function(ShipBase){
                 return block.type === 'standard-gun';
             })
             .forEach(function(block){
-                this.messageQueue.push({msg:'standard-player-fire', pos:this.getMissileLocation(block.location), rotation:this.rotation, movement:this.movement});
+                this.messageQueue.push({msg:'standard-player-fire', pos:this.getBlockLocation(block.location), rotation:this.rotation, movement:this.movement});
             }.bind(this));
 
         this.lastFired = Date.now();
     };
 
-    Player.prototype.getMissileLocation = function(loc){
+    Player.prototype.getBlockLocation = function(loc){
         var s = Math.sin(this.rotation);
         var c = Math.cos(this.rotation);
         var l1 = loc[0] * 10;
@@ -169,14 +169,10 @@ define(['shipBase'], function(ShipBase){
     };
 
     Player.prototype._damageBlock = function(block){
-        if(block.type === 'shield'){
-            return;
-        }
-
         block.damage--;
         this.messageQueue.push({
             msg: 'explosion',
-            location: this.location,
+            location: this.getBlockLocation(block.location),
             size: Math.random() * 3
         });
         this.blocks = this.blocks.filter(function(block){

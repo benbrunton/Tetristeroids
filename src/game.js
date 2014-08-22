@@ -43,8 +43,8 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
             messages = messages.concat(element.update());
         });
 
-        if(this.levels[this.level].events[this.levelTime]){
-            messages = messages.concat(this.levels[this.level].events[this.levelTime].execute(this.getPlayer()));
+        if(this.levels[this.level].getEvents()[this.levelTime]){
+            messages = messages.concat(this.levels[this.level].getEvents()[this.levelTime].execute(this.getPlayer()));
         }
 
         this.processAllMessages(messages);
@@ -60,8 +60,8 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
     Game.prototype.getMessages = function() {
         var messages = this.messages;
         this.messages = [];
-        if(this.levels[this.level].messages[this.levelTime]){
-            messages.push(this.levels[this.level].messages[this.levelTime]);
+        if(this.levels[this.level].getMessages()[this.levelTime]){
+            messages.push(this.levels[this.level].getMessages()[this.levelTime]);
         }
 
         return messages;
@@ -72,7 +72,7 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
     };
 
     Game.prototype.getHud = function(){
-        return this.levels[this.level].hud;
+        return this.levels[this.level].getHud();
     };
 
     Game.prototype.getPlayer = function() {

@@ -1,6 +1,6 @@
 define(function(){
 
-    var MIN_CHECK = 70;
+    var MIN_CHECK = 100;
 
     function Collisions(){
 

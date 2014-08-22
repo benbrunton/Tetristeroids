@@ -18,5 +18,25 @@ define(function(){
         return this.instructions.menu;
     };
 
+    Level.prototype.getMessages = function(){
+        return this.instructions.messages;
+    };
+
+    Level.prototype.getEvents = function() {
+        return this.instructions.events;
+    };
+
+    Level.prototype.getProximityMessages = function() {
+        return this.instructions.proximityMessages;
+    };
+
+    Level.prototype.getProximityEvents = function() {
+        return this.instructions.proximityEvents;
+    };
+
+    Level.prototype.getHud = function() {
+        return this.instructions.hud;
+    };
+
     return Level;
 });

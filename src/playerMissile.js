@@ -1,6 +1,6 @@
 define(['shipBase'], function(ShipBase){
     function PlayerMissile(pos, rotation, movement){
-        this.type = 'missile';
+        this.type = 'player-missile';
         this.blocks = [{
             location: [0, 0],
             type: 'missile'

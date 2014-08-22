@@ -1,6 +1,6 @@
 define(function(){
 
-    var MIN_CHECK = 60;
+    var MIN_CHECK = 70;
 
     function Collisions(){
 
@@ -16,18 +16,28 @@ define(function(){
 
     Collisions.prototype.check = function(element1, element2){
         
-        var comparisonDistance = element1.blocks.length + element2.blocks.length > 10 ? 30 : MIN_CHECK;
         var h = Math.abs(element1.location[0] - element2.location[0]);
         var v = Math.abs(element1.location[1] - element2.location[1]);
-        if(h > comparisonDistance){
+        if(h > MIN_CHECK){
             return false;
         }
 
-        if(v > comparisonDistance){
+        if(v > MIN_CHECK){
             return false;
         }
 
         if(element1.type === 'ignore' || element2.type === 'ignore'){
+            return false;
+        }
+
+        var max1 = this._getLongestRadius(element1);
+        var max2 = this._getLongestRadius(element2);
+
+        if(h > max1 + max2){
+            return false;
+        }
+
+        if(v > max1 + max2){
             return false;
         }
 
@@ -45,6 +55,7 @@ define(function(){
 
     Collisions.prototype._getCollidingBlocks = function(element1, element2){
         var ctx = this.ctx;
+        this._setWidths(element2);
         
         ctx.save();
         ctx.translate(-(element2.location[0] - this.width/2), -(element2.location[1] - this.height/2));
@@ -164,6 +175,39 @@ define(function(){
             }
         }
         return false;
+    };
+
+    Collisions.prototype._getLongestRadius = function(element) {
+        return Math.max.apply(null, element.blocks.map(function(block){
+            return Math.max(block.location[0], block.location[1]);
+        })) * 9 + 10;
+    };
+
+    Collisions.prototype._setWidths = function(element){
+        var minLeft = 0;
+        var maxRight = 0;
+        var minBottom = 0;
+        var maxTop = 0;
+
+        element.blocks.forEach(function(block) {
+          if (block.location[0] > maxRight) {
+            maxRight = block.location[0];
+          }
+          if (block.location[0] < maxRight) {
+            minLeft = block.location[0];
+          }
+          if (block.location[0] > maxTop) {
+            maxTop = block.location[0];
+          }
+          if (block.location[0] > minBottom) {
+            minBottom = block.location[0];
+          }
+        });
+        
+        this.width =  (1 + maxRight - minLeft) * 10;
+        this.height = (1 + maxTop - minBottom) * 10;
+        this.canvas.height = this.height;
+        this.canvas.width = this.width;
     };
 
     return Collisions;

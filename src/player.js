@@ -16,23 +16,29 @@ define(['shipBase'], function(ShipBase){
         this.blocks = [
             {
                 location: [0, -1], 
-                type: 'shield'
+                type: 'shield',
+                damage: 1
             },
             {
                 location: [0, 0], 
-                type: 'cockpit'
+                type: 'cockpit',
+                damage: 2
             },
             {
                 location: [0, 1],
-                type: 'engine'
+                type: 'engine',
+                damage: 2
+
             },
             {
                 location: [1, -1], 
-                type: 'shield'  
+                type: 'shield',
+                damage: 1
             },
             {
                 location: [-1, -1], 
-                type: 'shield'  
+                type: 'shield',
+                damage: 1
             }
         ];
 
@@ -41,11 +47,24 @@ define(['shipBase'], function(ShipBase){
     Player.prototype = new ShipBase();
     Player.prototype.constructor = Player;
 
+    Player.prototype.update = function(){
+
+        if(!this.blocks.some(function(block){
+            return block.type === 'cockpit';
+        })){
+            // game over
+            this.messageQueue.push({msg:'game-over'});
+        }
+
+        return ShipBase.prototype.update.call(this);
+    };
+
 
     Player.prototype.reset = function() {
         this.movement = [0, 0];
         this.location = [0, 0];
         this.rotation = 0;
+        this.blocks = JSON.parse(this.cachedBlocks);
     };
 
 
@@ -54,14 +73,23 @@ define(['shipBase'], function(ShipBase){
             case 'cash':
                 this.cash += report.collided.value;
                 break;
+            case 'player-missile':
+                break;
+            default:
+                report.blocks.forEach(this._damageBlock.bind(this));
+                break;
         }
+    };
+
+    Player.prototype.cacheBlocks = function(){
+        this.cachedBlocks = JSON.stringify(this.blocks);
     };
 
     Player.prototype.power = function() {
         var power = this.blocks.filter(function(block){
             return block.type === 'engine';
         }).length / 4;
-        return power / this.blocks.length;
+        return (power / this.blocks.length) + 0.02;
     };
 
     Player.prototype.rotateAmount = function(){
@@ -87,7 +115,7 @@ define(['shipBase'], function(ShipBase){
             }
         });
         var longestLength = Math.max(bottom - top, right - left);
-        return engineBlocks / longestLength / 6;
+        return (engineBlocks / longestLength / 6) + 0.003;
     };
 
     Player.prototype.forward = function() {
@@ -138,6 +166,22 @@ define(['shipBase'], function(ShipBase){
         var x2 = c * l1 - s * l2;
         var y2 = s * l1 + c * l2;
         return [x1 + x2, y1 + y2];
+    };
+
+    Player.prototype._damageBlock = function(block){
+        if(block.type === 'shield'){
+            return;
+        }
+
+        block.damage--;
+        this.messageQueue.push({
+            msg: 'explosion',
+            location: this.location,
+            size: Math.random() * 3
+        });
+        this.blocks = this.blocks.filter(function(block){
+            return block.damage > 0;
+        });
     };
 
     return Player;

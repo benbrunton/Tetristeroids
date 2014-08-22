@@ -14,17 +14,22 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
 
     Game.prototype.start = function() {
         this.level++;
-        this.levelTime = 0;
+        this.player.cacheBlocks();
         if(typeof this.levels[this.level] === 'undefined'){
             this.mode = 'game-complete';
         }else{
-            this.mode = 'game';
-            var levelStart = this.levels[this.level].setup();
-            this.otherElements = levelStart.elements;
-            this.player.reset();
-            this.player.location = levelStart.playerLocation;
+            this.beginLevel();
         }
         
+    };
+
+    Game.prototype.beginLevel = function(){
+        this.mode = 'game';
+        this.levelTime = 0;
+        var levelStart = this.levels[this.level].setup();
+        this.otherElements = levelStart.elements;
+        this.player.reset();
+        this.player.location = levelStart.playerLocation;
     };
 
     Game.prototype.update = function() {
@@ -113,6 +118,9 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
             case 'level-complete':
                 this.mode = 'level-complete'; // todo - pass this messages to the level
                                               // to allow it to wrap up
+                break;
+            case 'game-over':
+                this.beginLevel();
                 break;
             case 'add-elements':
                 this.otherElements = this.otherElements.concat(message.elements);

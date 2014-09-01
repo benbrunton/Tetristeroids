@@ -14,7 +14,6 @@ save player state and current level to localStorage
 multibrowser support
 kongregate api
 achievements
-enemies
 more instruction
 grappling hook
 collectables
@@ -22,7 +21,6 @@ better hud
 level intros
 crew
 animate engines during thrust
-messages so we can have opening credits in first level
 glider (Conways Game Of Life) enemies
 
 Level ideas
@@ -44,8 +42,15 @@ levels
 -- make end of level more like a cool looking spaceport
 
 - level 1 - make contact with the local resistance
+-- start kind of near the spaceport
 -- navigate an asteroid field to get to the resistance base
+-- mines that will explode if shot causing dangerous explosions
+-- moving asteroids
+-- some asteroids have cash
+
 - level 2 - simple mission
+-- collect and deliver style mission
+
 - level 3 - protect the leader - convoy - join forces with another resistance org
 - level 4 - big fight - lead a squad
 - level 5 - protect the base from assault

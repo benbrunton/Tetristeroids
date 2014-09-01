@@ -154,7 +154,9 @@ define(
 
                 getLevels: function(){
                     var levels = [];
-                    //levels.push(new Level(0, levelList[0]));
+                    // intro
+                    levels.push(new Level(0, levelList[0]));
+                    // avoid the asteroids
                     levels.push(new Level(1, levelList[1]));
                     
                     return levels;

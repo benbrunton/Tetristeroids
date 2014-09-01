@@ -1,8 +1,8 @@
 define(['smallElementFactory'], function(smallElementFactory) {
     var targetLocation = [-6000, -10000];
 
-    var MAX_ELEMENTS = 35;
-    var MAX_DISTANCE = 600;
+    var MAX_ELEMENTS = 40;
+    var MAX_DISTANCE = 500;
     var MIN_DISTANCE = 300 * 300;
 
     var level1 = {
@@ -87,7 +87,7 @@ define(['smallElementFactory'], function(smallElementFactory) {
         proximityEvents: {},
         setup: function() {
             var elements = [];
-            // var x = smallElementFactory.getSimpleObjective(targetLocation);
+            elements.push(smallElementFactory.getSimpleObjective(targetLocation));
 
             // elements = elements.concat(smallElementFactory.getCoins(100, 6000, [0, 0]));
             // elements = elements.concat(smallElementFactory.getAsteroidField(40, 8000, targetLocation));

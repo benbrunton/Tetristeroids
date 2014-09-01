@@ -47,6 +47,8 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
             messages = messages.concat(this.levels[this.level].getEvents()[this.levelTime].execute(this.getPlayer()));
         }
 
+        messages = messages.concat(this.levels[this.level].update(this.levelTime, this.getCamera()));
+
         this.processAllMessages(messages);
 
         this.otherElements = this.otherElements.filter(function(element){

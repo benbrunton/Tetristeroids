@@ -14,6 +14,14 @@ define(function(){
         return this.instructions.setup();
     };
 
+    Level.prototype.update = function(time, cameraPos) {
+        var messages = [];
+        if(this.instructions.update){
+            messages = this.instructions.update(time, cameraPos);
+        }
+        return messages;
+    };
+
     Level.prototype.getMenu = function(){
         return this.instructions.menu;
     };

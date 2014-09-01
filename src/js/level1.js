@@ -1,12 +1,18 @@
 define(['smallElementFactory'], function(smallElementFactory) {
     var targetLocation = [-6000, -10000];
-    return {
+
+    var MAX_ELEMENTS = 35;
+    var MAX_DISTANCE = 600;
+    var MIN_DISTANCE = 300 * 300;
+
+    var level1 = {
         hud:{
             cash: true,
             objectives:true
         },
-        // todo - link up intros
+        // todo - link up intros ??
         intro: {},
+        elements: [],
         menu: {
             msg: 'mission complete...',
             options: [{
@@ -24,21 +30,75 @@ define(['smallElementFactory'], function(smallElementFactory) {
                 font: 18
             },
         },
+        update:function(time, playerPos){
+
+            // kill elements that are too far away
+            level1.elements.forEach(function(element){
+                var v = element.getView().location;
+                var dx = v[0] - playerPos[0];
+                var dy = v[1] - playerPos[1];
+                if(dx * dx + dy * dy > MAX_DISTANCE * MAX_DISTANCE){
+                    element.isAlive = false;
+                }
+            });
+            
+            // remove dead elements            
+            level1.elements = level1.elements.filter(function(element){
+                return element.isAlive;
+            });
+            
+            // create new elements
+            var newElements = MAX_ELEMENTS - level1.elements.length;
+            var asteroids = [];
+            while(asteroids.length < newElements){
+                var x = playerPos[0] + Math.round(Math.random() * MAX_DISTANCE) * (Math.random() > 0.5 ? -1 : 1);
+                var y = playerPos[1] + Math.round(Math.random() * MAX_DISTANCE) * (Math.random() > 0.5 ? -1 : 1);
+
+                var dx = x - playerPos[0];
+                var dy = y - playerPos[1];
+
+                var distance = dx * dx + dy * dy;
+                if(distance < MIN_DISTANCE){
+                    continue;
+                }
+
+                var location = [x, y];
+
+                asteroids = asteroids.concat(smallElementFactory.getAsteroidField(1, 1, location));
+
+            }
+            
+
+            // add to messages and elements array
+            level1.elements = level1.elements.concat(asteroids);
+            var returnArray = [];
+            if(asteroids.length > 0){
+                returnArray.push({
+                    msg: 'add-elements',
+                    elements: asteroids
+                });
+            }
+
+            return returnArray;
+            
+        },
         events: {},
         proximityMessages: {},
         proximityEvents: {},
         setup: function() {
             var elements = [];
-            var x = smallElementFactory.getSimpleObjective(targetLocation);
+            // var x = smallElementFactory.getSimpleObjective(targetLocation);
 
-            elements = elements.concat(smallElementFactory.getCoins(100, 6000, [0, 0]));
-            elements = elements.concat(smallElementFactory.getAsteroidField(40, 8000, targetLocation));
-            elements.push(x);
+            // elements = elements.concat(smallElementFactory.getCoins(100, 6000, [0, 0]));
+            // elements = elements.concat(smallElementFactory.getAsteroidField(40, 8000, targetLocation));
+            // elements.push(x);
 
             return {
                 elements: elements,
                 playerLocation: [0, 0]
             };
         }
-    }
+    };
+
+    return level1;
 });

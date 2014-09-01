@@ -3,6 +3,7 @@ Space Rebel game
 Todo:
 
 game class should poll level to allow dynamic loading of npc elements
+end of levels should have a star wars style vertical scroll
 abstract block renderer
 when (e.g. asteroids) things break up only the central part should persist
 levels should have proximity based events
@@ -40,6 +41,7 @@ levels
 -- opening credits
 -- some kind of dramatic opening sequence
 -- a dogfight takes place just after the opening credits
+-- make end of level more like a cool looking spaceport
 
 - level 1 - make contact with the local resistance
 -- navigate an asteroid field to get to the resistance base

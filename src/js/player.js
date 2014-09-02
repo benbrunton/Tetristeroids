@@ -88,14 +88,19 @@ define(['shipBase'], function(ShipBase){
     Player.prototype.power = function() {
         var power = this.blocks.filter(function(block){
             return block.type === 'engine';
-        }).length / 4;
-        return (power / this.blocks.length) + 0.005;
+        }).length / 8;
+        return (power / this.blocks.length) + 0.002;
+    };
+
+    Player.prototype.max_power = function(){
+        var engines = this.blocks.filter(function(block){
+            return block.type === 'engine';
+        }).length;
+
+        return (engines * 3 * engines * 3) || 10;
     };
 
     Player.prototype.rotateAmount = function(){
-        var engineBlocks = this.blocks.filter(function(block){
-            return block.type === 'engine';
-        }).length;
         var left = 0;
         var right = 0;
         var top = 0;
@@ -115,21 +120,31 @@ define(['shipBase'], function(ShipBase){
             }
         });
         var longestLength = Math.max(bottom - top, right - left);
-        return (engineBlocks / longestLength / 6) + 0.005;
+        return (longestLength / 15) + 0.005;
     };
 
     Player.prototype.forward = function() {
         var r = this.rotation;// * Math.PI / 180;
         var p = this.power();
-        this.movement[0] += p * Math.sin(r);//(r* PI) / 180.0;
-        this.movement[1] -= p * Math.cos(r);
+        var newMovementX = this.movement[0] + p * Math.sin(r);
+        var newMovementY = this.movement[1] - p * Math.cos(r);
+        while(newMovementX * newMovementX + newMovementY * newMovementY > this.max_power()){
+            newMovementX *= 0.99;
+            newMovementY *= 0.99;
+        }
+        this.movement[0] = newMovementX;
+        this.movement[1] = newMovementY;
     };
 
     Player.prototype.backward = function() {
         var r = this.rotation;
         var p = this.power() / 2;
-        this.movement[0] -= p * Math.sin(r);
-        this.movement[1] += p * Math.cos(r);
+        var newMovementX = this.movement[0] - p * Math.sin(r);
+        var newMovementY = this.movement[1] + p * Math.cos(r);
+        if(newMovementX * newMovementX + newMovementY * newMovementY < this.max_power()){
+            this.movement[0] = newMovementX;
+            this.movement[1] = newMovementY;
+        }
     };
 
     Player.prototype.left = function() {

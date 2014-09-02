@@ -2,7 +2,7 @@ define(function(){
 
     function Scenery(){
         this.maxStars = 250;
-        this.maxDistance = 2000 * 2000;
+        this.maxDistance = 1000 * 1000;
         this.minDistance = 300 * 300;
         this.stars = [];
         this.generateStars([0, 0]);

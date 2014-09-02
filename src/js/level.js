@@ -46,5 +46,9 @@ define(function(){
         return this.instructions.hud;
     };
 
+    Level.prototype.on = function(event, callback){
+        this.instructions.on(event, callback);
+    };
+
     return Level;
 });

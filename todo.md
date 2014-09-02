@@ -2,7 +2,6 @@ Space Rebel game
 
 Todo:
 
-game class should poll level to allow dynamic loading of npc elements
 end of levels should have a star wars style vertical scroll
 abstract block renderer
 when (e.g. asteroids) things break up only the central part should persist

@@ -1,6 +1,7 @@
 define(['shipBase'], function(ShipBase){
 
     var MAX_SIZE = 5 * 5;
+    var MAX_MOVEMENT = 3;
     var POSITIONS = [
         [0, 0],
         [0, 1],
@@ -36,7 +37,7 @@ define(['shipBase'], function(ShipBase){
         this.cash = 0;
         this.messageQueue = [];
         this.isAlive = true;
-        this.movement = [0, 0];
+        this.movement = [Math.random() * MAX_MOVEMENT, Math.random() * MAX_MOVEMENT];
     }
 
     Asteroid.prototype = new ShipBase();
@@ -54,6 +55,10 @@ define(['shipBase'], function(ShipBase){
             location: this.location,
             size: this.blocks.length
         });
+
+        // crap physics
+        this.movement[0] = report.collided.movement[0] * Math.max(report.collided.blocks.length - this.blocks.length, 0) / 10;
+        this.movement[1] = report.collided.movement[1] * Math.max(report.collided.blocks.length - this.blocks.length, 0) / 10;
 
         if(this.blocks.length < 1){
             this.isAlive = false;

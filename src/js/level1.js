@@ -1,8 +1,11 @@
-define(['smallElementFactory'], function(smallElementFactory) {
+define(['smallElementFactory', 'events'], function(smallElementFactory, Events) {
+
+    var events = new Events();
+
     var targetLocation = [-6000, -10000];
 
-    var MAX_ELEMENTS = 40;
-    var MAX_DISTANCE = 500;
+    var MAX_ELEMENTS = 20;
+    var MAX_DISTANCE = 450;
     var MIN_DISTANCE = 300 * 300;
 
     var level1 = {
@@ -87,7 +90,12 @@ define(['smallElementFactory'], function(smallElementFactory) {
         proximityEvents: {},
         setup: function() {
             var elements = [];
-            elements.push(smallElementFactory.getSimpleObjective(targetLocation));
+            var x = smallElementFactory.getSimpleObjective(targetLocation);
+            elements.push(x);
+
+            x.on('complete', function(){
+                events.emit('complete');
+            });
 
             // elements = elements.concat(smallElementFactory.getCoins(100, 6000, [0, 0]));
             // elements = elements.concat(smallElementFactory.getAsteroidField(40, 8000, targetLocation));
@@ -97,6 +105,9 @@ define(['smallElementFactory'], function(smallElementFactory) {
                 elements: elements,
                 playerLocation: [0, 0]
             };
+        },
+        on: function(event, callback){
+            events.on(event, callback);
         }
     };
 

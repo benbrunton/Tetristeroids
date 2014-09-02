@@ -1,7 +1,10 @@
-define(['smallElementFactory'], function(smallElementFactory) {
+define(['smallElementFactory', 'events'], function(smallElementFactory, Events) {
+
+    var events = new Events();
 
     // position of objective
-    var targetLocation = [8500, -10000];
+    // var targetLocation = [8500, -10000];
+    var targetLocation = [100, 100];
     var startLocation = [0, 0];
 
     var level0 = {
@@ -84,6 +87,7 @@ define(['smallElementFactory'], function(smallElementFactory) {
                     location[1] -= 50;
                     location[1] -= 200;
                     var rebelShip = smallElementFactory.getSimpleRebelShip(location, Math.PI, [-0.5, 4.4], 1000);
+                    rebelShip.type = 'ignore';
                     return [{
                         msg: 'add-elements',
                         elements: rebelShip
@@ -189,7 +193,14 @@ define(['smallElementFactory'], function(smallElementFactory) {
             var x = smallElementFactory.getSimpleObjective(targetLocation);
             var elements = [x];
 
-            elements = elements.concat(smallElementFactory.getAsteroidField(50, 600, targetLocation));
+
+            x.on('complete', function(){
+                setTimeout(function(){
+                    events.emit('complete');
+                }, 3000);
+            });
+
+            //elements = elements.concat(smallElementFactory.getAsteroidField(50, 600, targetLocation));
             if(!level0.started){
                 level0.hud.objectives = false;
             }else{
@@ -204,6 +215,9 @@ define(['smallElementFactory'], function(smallElementFactory) {
                 elements: elements,
                 playerLocation: startLocation
             };
+        },
+        on: function(event, callback){
+            events.on(event, callback);
         }
 
     };

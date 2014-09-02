@@ -1,4 +1,4 @@
-define(['enemies/simpleShip', 'enemies/asteroid'], function(SimpleShip, Asteroid){
+define(['enemies/simpleShip', 'enemies/asteroid', 'events'], function(SimpleShip, Asteroid, Events){
 
     var smallElementFactory = {
         getCoins: function(num, range, focus){
@@ -18,6 +18,7 @@ define(['enemies/simpleShip', 'enemies/asteroid'], function(SimpleShip, Asteroid
             return elements;
         },
         getSimpleObjective: function(pos){
+            var events = new Events();
             var blocks = [];
             var i = 4;
             var j;
@@ -42,7 +43,8 @@ define(['enemies/simpleShip', 'enemies/asteroid'], function(SimpleShip, Asteroid
                 },
                 collision: function(report){
                     if(report.collided.type === 'player'){
-                        this.messageQueue.push({msg:'level-complete'});
+                        events.emit('complete');
+                        // this.messageQueue.push({msg:'level-complete'});
                     }
                 },
                 getView: function(){
@@ -50,8 +52,13 @@ define(['enemies/simpleShip', 'enemies/asteroid'], function(SimpleShip, Asteroid
                         type: 'objective',
                         location:pos,
                         message: 'get to outpost',
-                        blocks: this.blocks
+                        blocks: this.blocks,
+                        movement:[0, 0],
+                        noDamage:true
                     };
+                },
+                on: function(event, callback){
+                    events.on(event, callback);
                 }
             };
         },

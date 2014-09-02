@@ -8,7 +8,8 @@ define(function(){
             blocks: this.blocks.slice(),
             type: this.type,
             rotation:this.rotation,
-            cash: this.cash
+            cash: this.cash,
+            movement:this.movement
         };
     };
 
@@ -20,8 +21,8 @@ define(function(){
         this.location[0] += this.movement[0];
         this.location[1] += this.movement[1];
 
-        this.movement[0] *= 0.99;
-        this.movement[1] *= 0.99;
+        // this.movement[0] *= 0.994;
+        // this.movement[1] *= 0.994;
 
         if(this.blocks.length < 1){
             this.isAlive = false;

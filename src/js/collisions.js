@@ -30,6 +30,10 @@ define(function(){
             return false;
         }
 
+        if(element2.noDamage){
+            return false;
+        }
+
         var max1 = this._getLongestRadius(element1);
         var max2 = this._getLongestRadius(element2);
 

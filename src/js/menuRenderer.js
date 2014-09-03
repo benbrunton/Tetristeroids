@@ -21,6 +21,9 @@ define(function(){
                     this.drawShop(topPos);
                     break;
                 case 'next mission':
+                    this.drawStartMission(topPos);
+                    break;
+                case 'continue':
                     this.drawNextMission(topPos);
                     break;
             }
@@ -57,6 +60,15 @@ define(function(){
         this.ctx.fillStyle = 'white';
         this.ctx.font = '20px Arial';
         this.ctx.fillText('continue', 85, topPos + 20);
+        this.buttons.push({x: 80, y: topPos, w: 200, h: 40, action:'next-level'});
+    };
+
+    MenuRenderer.prototype.drawStartMission = function(topPos) {
+        this.ctx.fillStyle = 'blue';
+        this.ctx.fillRect(80, topPos, 200, 40);
+        this.ctx.fillStyle = 'white';
+        this.ctx.font = '20px Arial';
+        this.ctx.fillText('begin mission', 85, topPos + 20);
         this.buttons.push({x: 80, y: topPos, w: 200, h: 40, action:'game'});
     };
 

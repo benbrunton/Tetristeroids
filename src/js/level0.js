@@ -15,11 +15,13 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
         },
         menu: {
             msg: 'Space-port',
-            options: [{
-                type: 'shop',
-                level: 1
-            }, {
-                type: 'next mission'
+            options: [
+            // {
+            //     type: 'shop',
+            //     level: 1
+            // }, 
+            {
+                type: 'continue'
             }]
         },
         messages: {

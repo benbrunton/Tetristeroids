@@ -2,6 +2,7 @@ Space Rebel game
 
 Todo:
 
+setup intros for levels
 end of levels should have a star wars style vertical scroll
 abstract block renderer
 when (e.g. asteroids) things break up only the central part should persist

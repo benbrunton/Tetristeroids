@@ -18,9 +18,19 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
         if(typeof this.levels[this.level] === 'undefined'){
             this.mode = 'game-complete';
         }else{
-            this.beginLevel();
+            this.showIntro();
         }
         
+    };
+
+    Game.prototype.showIntro = function() {
+        if(this.levels[this.level].getIntro()){
+            this.levelStatus = 'intro';
+            this.mode = 'intro';
+        }else{
+            this.beginLevel();
+            this.levelStatus = 'playing';
+        }
     };
 
     Game.prototype.beginLevel = function(){
@@ -32,6 +42,7 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
         this.player.location = levelStart.playerLocation;
         this.levels[this.level].on('complete', function(){
             this.mode = 'level-complete';
+            this.levelStatus = 'complete';
         }.bind(this));
     };
 
@@ -107,7 +118,8 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
 
 
     Game.prototype.getMenu = function() {
-        return this.levels[this.level].getMenu();
+        return this.levelStatus === 'complete' ? this.levels[this.level].getMenu() :
+            this.levels[this.level].getIntro();
     };
 
     Game.prototype.processAllMessages = function(messages){

@@ -14,7 +14,15 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
             objectives:true
         },
         // todo - link up intros ??
-        intro: {},
+        intro: {
+            msg: 'begin mission',
+            options: [{
+                type: 'shop',
+                level: 1
+            }, {
+                type: 'next mission'
+            }]
+        },
         elements: [],
         menu: {
             msg: 'mission complete...',
@@ -22,7 +30,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 type: 'shop',
                 level: 1
             }, {
-                type: 'next mission'
+                type: 'continue'
             }]
         },
         messages: {

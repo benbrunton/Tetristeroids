@@ -22,6 +22,10 @@ define(function(){
         return messages;
     };
 
+    Level.prototype.getIntro = function(){
+        return this.instructions.intro || null;
+    };
+
     Level.prototype.getMenu = function(){
         return this.instructions.menu;
     };

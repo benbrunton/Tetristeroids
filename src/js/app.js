@@ -69,8 +69,11 @@ define(
                             }else{
                                 App.renderer.paused();
                             }
-                        break;
+                            break;
                         case 'level-complete':
+                            App.drawMenu();
+                            break;
+                        case 'intro':
                             App.drawMenu();
                             break;
                         case 'game-complete':
@@ -96,15 +99,18 @@ define(
                     var menu = App.game.getMenu();
                     App.menuRenderer.draw(menu);
                     App.menuRenderer.wait(function(mode, data){
-                        if(mode === 'game'){
+                        App.menuRenderer.unbind();
+                        
+                        if(mode === 'next-level'){
                             App.game.start();
                             App.loop();
                             
                         }else if(mode === 'shop'){
                             App.drawShop(data);
+                        }else if(mode === 'game'){
+                            App.game.beginLevel();
+                            App.loop();
                         }
-
-                        App.menuRenderer.unbind();
                         
                     });
 

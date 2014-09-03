@@ -65,6 +65,7 @@ define(['shipBase'], function(ShipBase){
         this.location = [0, 0];
         this.rotation = 0;
         this.blocks = JSON.parse(this.cachedBlocks);
+        this.cash = this.cachedCash;
     };
 
 
@@ -81,8 +82,9 @@ define(['shipBase'], function(ShipBase){
         }
     };
 
-    Player.prototype.cacheBlocks = function(){
+    Player.prototype.save = function(){
         this.cachedBlocks = JSON.stringify(this.blocks);
+        this.cachedCash = this.cash;
     };
 
     Player.prototype.power = function() {

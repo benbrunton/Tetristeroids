@@ -14,7 +14,7 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
 
     Game.prototype.start = function() {
         this.level++;
-        this.player.cacheBlocks();
+        this.player.save();
         if(typeof this.levels[this.level] === 'undefined'){
             this.mode = 'game-complete';
         }else{
@@ -24,6 +24,7 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
     };
 
     Game.prototype.showIntro = function() {
+        this.player.reset();
         if(this.levels[this.level].getIntro()){
             this.levelStatus = 'intro';
             this.mode = 'intro';
@@ -34,16 +35,21 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
     };
 
     Game.prototype.beginLevel = function(){
+        this.player.save();
+        this.levels[this.level].on('complete', function(){
+            this.mode = 'level-complete';
+            this.levelStatus = 'complete';
+        }.bind(this));
+        this.playLevel();
+    };
+
+    Game.prototype.playLevel = function(){
         this.mode = 'game';
         this.levelTime = 0;
         var levelStart = this.levels[this.level].setup();
         this.otherElements = levelStart.elements;
         this.player.reset();
         this.player.location = levelStart.playerLocation;
-        this.levels[this.level].on('complete', function(){
-            this.mode = 'level-complete';
-            this.levelStatus = 'complete';
-        }.bind(this));
     };
 
     Game.prototype.update = function() {
@@ -137,7 +143,7 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
             //                                   // to allow it to wrap up
             //     break;
             case 'game-over':
-                this.beginLevel();
+                this.showIntro();
                 break;
             case 'add-elements':
                 this.otherElements = this.otherElements.concat(message.elements);

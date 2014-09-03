@@ -7,33 +7,72 @@ define(['events', 'smallElementFactory'], function(Events, smallElementFactory){
     var startLocation = [0, 0];
 
     var location1 = [2000, 1350];
-    var location2 = [0, 0];
+    var location2 = [1000, -2350];
+    var location3 = [-2300, -1350];
+    var location4 = [3200, 3350];
+
+
+    var dropoffPoint = [0, -100];
 
     var level2 = {
         hud:{
             cash: true,
             objectives: true
         },
+        intro: {
+            msg: 'begin mission',
+            options: [{
+                type: 'shop',
+                level: 1
+            }, {
+                type: 'next mission'
+            }]
+        },
+        menu: {
+            msg: 'mission complete...',
+            options: [{
+                type: 'continue'
+            }]
+        },
         messageQueue: [],
         messages:{},
         setup: function(){
             var elements = [];
-            var firstCollectable = smallElementFactory.getSimpleObjective(location1);
-            var dropoff = smallElementFactory.getSimpleObjective(location2);
+            
+            var collectables = [
+                smallElementFactory.getSimpleObjective(location1),
+                smallElementFactory.getSimpleObjective(location2),
+                smallElementFactory.getSimpleObjective(location3),
+                smallElementFactory.getSimpleObjective(location4)
+            ];
+            var currentCollectable = 0;
+            var dropoff = smallElementFactory.getSimpleObjective(dropoffPoint);
 
             level2.messageQueue = [];
 
-            firstCollectable.on('complete', function(){
-                firstCollectable.isAlive = false;
-                dropoff.type = 'objective';
+            collectables.forEach(function(collectable){
+                collectable.on('complete', function(){
+                    collectable.isAlive = false;
+                    dropoff.type = 'objective';
+                });
             });
+            
 
             dropoff.type = 'ignore';
             dropoff.on('complete', function(){
                 dropoff.type = 'ignore';
+                currentCollectable++;
+                if(collectables[currentCollectable]){
+                    level2.messageQueue.push({
+                        msg: 'add-elements',
+                        elements: collectables[currentCollectable]
+                    });
+                }else{
+                    events.emit('complete');
+                }
             });
 
-            elements.push(firstCollectable);
+            elements.push(collectables[0]);
             elements.push(dropoff);
 
             return {

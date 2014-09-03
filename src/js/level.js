@@ -27,7 +27,7 @@ define(function(){
     };
 
     Level.prototype.getMenu = function(){
-        return this.instructions.menu;
+        return this.instructions.menu || {};
     };
 
     Level.prototype.getMessages = function(){

@@ -37,7 +37,7 @@ define(['shipBase'], function(ShipBase){
         this.cash = 0;
         this.messageQueue = [];
         this.isAlive = true;
-        this.movement = [Math.random() * MAX_MOVEMENT, Math.random() * MAX_MOVEMENT];
+        this.movement = [this._doubleRandom(MAX_MOVEMENT), this._doubleRandom(MAX_MOVEMENT)];
     }
 
     Asteroid.prototype = new ShipBase();
@@ -79,6 +79,11 @@ define(['shipBase'], function(ShipBase){
         }
 
         return blocks;
+    };
+
+    Asteroid.prototype._doubleRandom = function(n) {
+        var sign = Math.random() > 0.5 ? 1 : -1;
+        return Math.random() * n * sign;
     };
 
     return Asteroid;

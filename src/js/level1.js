@@ -2,7 +2,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
 
     var events = new Events();
 
-    var targetLocation = [-6000, -10000];
+    var targetLocation = [-4500, -7000];
 
     var MAX_ELEMENTS = 20;
     var MAX_DISTANCE = 450;

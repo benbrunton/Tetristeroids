@@ -71,9 +71,7 @@ define(
                             }
                             break;
                         case 'level-complete':
-                            App.drawMenu();
-                            break;
-                        case 'intro':
+                        case 'intro': // fallthrough
                             App.drawMenu();
                             break;
                         case 'game-complete':
@@ -94,13 +92,14 @@ define(
                 },
 
                 drawMenu: function(){
+                    App.renderer.clear();
                     App.ctx.fillStyle = '#000000';
                     App.ctx.fillRect(0, 0, 400, 400);
                     var menu = App.game.getMenu();
                     App.menuRenderer.draw(menu);
                     App.menuRenderer.wait(function(mode, data){
                         App.menuRenderer.unbind();
-                        
+
                         if(mode === 'next-level'){
                             App.game.start();
                             App.loop();

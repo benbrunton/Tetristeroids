@@ -6,6 +6,10 @@ define(function(){
         this.messages = [];
     }
 
+    Renderer.prototype.clear = function() {
+        this.messages = [];
+    };
+
     Renderer.prototype.setCamera = function(location) {
         this.camera = location;
     };

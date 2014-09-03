@@ -21,8 +21,8 @@ define(function(){
         this.location[0] += this.movement[0];
         this.location[1] += this.movement[1];
 
-        // this.movement[0] *= 0.994;
-        // this.movement[1] *= 0.994;
+        this.movement[0] *= 0.9996;
+        this.movement[1] *= 0.9996;
 
         if(this.blocks.length < 1){
             this.isAlive = false;

@@ -1,6 +1,6 @@
 define(
     ['level', 
-    'levelList', 
+    'levels/levelList', 
     'game', 
     'renderer', 
     'menuRenderer',
@@ -158,13 +158,9 @@ define(
                 },
 
                 getLevels: function(){
-                    var levels = [];
-                    // intro
-                    levels.push(new Level(0, levelList[0]));
-                    // avoid the asteroids
-                    levels.push(new Level(1, levelList[1]));
-                    
-                    return levels;
+                    return levelList.map(function(level, i){
+                        return new Level(i, level);
+                    });
                 }
             };
 

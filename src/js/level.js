@@ -31,23 +31,27 @@ define(function(){
     };
 
     Level.prototype.getMessages = function(){
-        return this.instructions.messages;
+        return this.instructions.messages || {};
     };
 
     Level.prototype.getEvents = function() {
-        return this.instructions.events;
+        return this.instructions.events || {};
     };
 
+    // todo - hook me up
     Level.prototype.getProximityMessages = function() {
-        return this.instructions.proximityMessages;
+        return this.instructions.proximityMessages || {};
     };
 
     Level.prototype.getProximityEvents = function() {
-        return this.instructions.proximityEvents;
+        return this.instructions.proximityEvents || {};
     };
 
     Level.prototype.getHud = function() {
-        return this.instructions.hud;
+        return this.instructions.hud || {
+            cash: true,
+            objectives: true
+        };
     };
 
     Level.prototype.on = function(event, callback){

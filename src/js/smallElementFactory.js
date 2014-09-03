@@ -36,6 +36,7 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events'], function(SimpleShip
                 messageQueue:[],
                 isAlive:true,
                 blocks:blocks,
+                type: 'objective',
                 update: function(){
                     var messages = this.messageQueue;
                     this.messageQueue = [];
@@ -43,13 +44,12 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events'], function(SimpleShip
                 },
                 collision: function(report){
                     if(report.collided.type === 'player'){
-                        events.emit('complete');
-                        // this.messageQueue.push({msg:'level-complete'});
+                        events.emit('complete');                      
                     }
                 },
                 getView: function(){
                     return {
-                        type: 'objective',
+                        type:this.type,
                         location:pos,
                         message: 'get to outpost',
                         blocks: this.blocks,

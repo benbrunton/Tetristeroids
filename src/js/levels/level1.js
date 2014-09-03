@@ -105,10 +105,6 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 events.emit('complete');
             });
 
-            // elements = elements.concat(smallElementFactory.getCoins(100, 6000, [0, 0]));
-            // elements = elements.concat(smallElementFactory.getAsteroidField(40, 8000, targetLocation));
-            // elements.push(x);
-
             return {
                 elements: elements,
                 playerLocation: [0, 0]

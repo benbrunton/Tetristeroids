@@ -5,7 +5,7 @@ define(function(){
         this.maxDistance = 1000 * 1000;
         this.minDistance = 300 * 300;
         this.stars = [];
-        this.generateStars([0, 0]);
+        this.generateStars([0, 0], true);
     }
 
     Scenery.prototype.update = function(camera){
@@ -17,7 +17,7 @@ define(function(){
         return this.stars;
     };
 
-    Scenery.prototype.generateStars = function(camera){
+    Scenery.prototype.generateStars = function(camera, keepStars) /* <- hack */ {
         while (this.stars.length < this.maxStars){
             var x = camera[0] + Math.round(Math.random() * 1000) * (Math.random() > 0.5 ? -1 : 1);
             var y = camera[1] + Math.round(Math.random() * 1000) * (Math.random() > 0.5 ? -1 : 1);
@@ -26,7 +26,7 @@ define(function(){
             var dy = y - camera[1];
 
             var distance = dx * dx + dy * dy;
-            if(distance < this.minDistance){
+            if(!keepStars && distance < this.minDistance){
                 continue;
             }
 

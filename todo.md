@@ -2,6 +2,8 @@ Space Rebel game
 
 Todo:
 
+enemy spaceships
+blocks need to hold data about how they affect ship etc
 end of levels should have a star wars style vertical scroll
 abstract block renderer
 when (e.g. asteroids) things break up only the central part should persist
@@ -49,6 +51,9 @@ levels
 
 - level 2 - simple mission
 -- collect and deliver style mission
+-- some asteroids
+-- some enemies
+-- maze around a couple of pickups
 
 - level 3 - protect the leader - convoy - join forces with another resistance org
 - level 4 - big fight - lead a squad

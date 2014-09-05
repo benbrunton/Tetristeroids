@@ -3,8 +3,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
     var events = new Events();
 
     // position of objective
-    // var targetLocation = [8500, -10000];
-    var targetLocation = [100, 100];
+    var targetLocation = [8500, -10000];
     var startLocation = [0, 0];
 
     var level0 = {

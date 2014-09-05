@@ -2,7 +2,7 @@
 // collect and deliver
 // add some bad guy ships
 
-define(['events', 'smallElementFactory'], function(Events, smallElementFactory){
+define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events, smallElementFactory, BadFighter){
     var events = new Events();
     var startLocation = [0, 0];
 
@@ -72,7 +72,11 @@ define(['events', 'smallElementFactory'], function(Events, smallElementFactory){
                 }
             });
 
+            var fighter1 = new BadFighter([location1[0], location1[1] - 100], 0);
+
+
             elements.push(collectables[0]);
+            elements.push(fighter1);
             elements.push(dropoff);
 
             return {

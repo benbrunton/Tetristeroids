@@ -57,8 +57,11 @@ define(['shipBase'], function(ShipBase){
         });
 
         // crap physics
-        this.movement[0] = report.collided.movement[0] * Math.max(report.collided.blocks.length - this.blocks.length, 0) / 10;
-        this.movement[1] = report.collided.movement[1] * Math.max(report.collided.blocks.length - this.blocks.length, 0) / 10;
+        var cBlocks = report.collided.blocks.length;
+        if(cBlocks > this.blocks.length){
+            this.movement[0] = report.collided.movement[0] * Math.max(report.collided.blocks.length - this.blocks.length, 0) / 10;
+            this.movement[1] = report.collided.movement[1] * Math.max(report.collided.blocks.length - this.blocks.length, 0) / 10;
+        }
 
         if(this.blocks.length < 1){
             this.isAlive = false;

@@ -1,4 +1,4 @@
-define(['shipBase', 'enemies/simpleShip'], function(ShipBase, SimpleShip){
+define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase, ConnectedBlocks, SimpleShip){
 
     function Player(){
         
@@ -45,7 +45,7 @@ define(['shipBase', 'enemies/simpleShip'], function(ShipBase, SimpleShip){
             }
         ];
 
-        this.blockMap = {};
+        this.connectedBlocks = new ConnectedBlocks();
 
     }
 
@@ -98,7 +98,7 @@ define(['shipBase', 'enemies/simpleShip'], function(ShipBase, SimpleShip){
                 });
 
                 if(this.blocks.length < numBlocks){
-                    this._recalculateCraft();
+                    this.blocks = this._recalculateCraft();
                 }
                 break;
         }
@@ -233,12 +233,9 @@ define(['shipBase', 'enemies/simpleShip'], function(ShipBase, SimpleShip){
     };
 
     Player.prototype._recalculateCraft = function() {
-        this._generateBlockMap();
-        var unconnected = this.blocks.filter(this._unconnected.bind(this));
-        this.blocks = this.blocks.filter(this._connectsToOrigin.bind(this));
+        var blocks = this.connectedBlocks.check(this.blocks);
 
-        var elements = unconnected.map(function(block){
-            // SimpleShip(blocks, location, rotation, movement, maxAge)
+        var elements = blocks.unconnected.map(function(block){
             var location = this.getBlockLocation(block.location);
             block.location = [0, 0];
             return new SimpleShip([block], location, this.rotation, this.movement, 1000);
@@ -248,51 +245,11 @@ define(['shipBase', 'enemies/simpleShip'], function(ShipBase, SimpleShip){
             msg: 'add-elements',
             elements: elements
         });
-    };
 
-    Player.prototype._unconnected = function(block) {
-        return !this.blockMap[block.location[0] + ':' + block.location[1]];
-    };
-
-    Player.prototype._connectsToOrigin = function(block) {
-        return this.blockMap[block.location[0] + ':' + block.location[1]];
-    };
-
-    Player.prototype._generateBlockMap = function() {
-        var exists = {};
-        var map = {};
-        this.blocks.forEach(function(block){
-            exists[block.location[0] + ':' + block.location[1]] = true;
-        });
-
-        map['0:0'] = true; // huge assumption
+        return blocks.connected;
         
-        this._checkNode([0, 0], exists, map);
-        this.blockMap = map;
     };
 
-    Player.prototype._checkNode = function(pos, list, map) {
-        var positions = [
-            [pos[0] - 1, pos[1]],
-            [pos[0] - 1, pos[1] -1],
-            [pos[0], pos[1] - 1],
-            [pos[0] + 1, pos[1] - 1],
-            [pos[0] + 1, pos[1]],
-            [pos[0] + 1, pos[1] + 1],
-            [pos[0], pos[1] + 1],
-            [pos[0] - 1, pos[1] +1]
-        ];
-
-        var i = positions.length;
-        while(i--){
-            var p2 = positions[i];
-            var check = p2[0] + ':' + p2[1];
-            if(!map[check] && list[check]){
-                map[check] = true;
-                this._checkNode(p2, list, map);
-            }
-        }
-    };
 
     return Player;
 

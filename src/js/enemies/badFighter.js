@@ -43,5 +43,9 @@ define(['shipBase'], function(ShipBase){
     BadFighter.prototype = new ShipBase();
     BadFighter.prototype.constructor = BadFighter;
 
+    BadFighter.prototype.collision = function(report){
+
+    };
+
     return BadFighter;
 });

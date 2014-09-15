@@ -27,9 +27,6 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
         menu: {
             msg: 'mission complete...',
             options: [{
-                type: 'shop',
-                level: 1
-            }, {
                 type: 'continue'
             }]
         },

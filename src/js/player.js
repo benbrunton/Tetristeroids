@@ -60,9 +60,9 @@ define(['shipBase'], function(ShipBase){
     };
 
 
-    Player.prototype.reset = function() {
+    Player.prototype.reset = function(location) {
         this.movement = [0, 0];
-        this.location = [0, 0];
+        this.location = location ? location.slice() : [0, 0];
         this.rotation = 0;
         this.blocks = JSON.parse(this.cachedBlocks);
         this.cash = this.cachedCash;

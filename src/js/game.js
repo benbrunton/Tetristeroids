@@ -48,8 +48,7 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
         this.levelTime = 0;
         var levelStart = this.levels[this.level].setup();
         this.otherElements = levelStart.elements;
-        this.player.reset();
-        this.player.location = levelStart.playerLocation;
+        this.player.reset(levelStart.playerLocation);
     };
 
     Game.prototype.update = function() {

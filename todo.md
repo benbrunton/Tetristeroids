@@ -19,7 +19,6 @@ more instruction
 grappling hook
 collectables
 better hud
-level intros
 crew
 animate engines during thrust
 glider (Conways Game Of Life) enemies

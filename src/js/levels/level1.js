@@ -91,8 +91,6 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
             
         },
         events: {},
-        proximityMessages: {},
-        proximityEvents: {},
         setup: function() {
             var elements = [];
             var x = smallElementFactory.getSimpleObjective(targetLocation);

@@ -44,15 +44,6 @@ define(function(){
         return this.instructions.events || {};
     };
 
-    // todo - hook me up
-    Level.prototype.getProximityMessages = function() {
-        return this.instructions.proximityMessages || {};
-    };
-
-    Level.prototype.getProximityEvents = function() {
-        return this.instructions.proximityEvents || {};
-    };
-
     Level.prototype.getHud = function() {
         return this.instructions.hud || {
             cash: true,

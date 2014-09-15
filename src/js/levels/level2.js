@@ -34,7 +34,8 @@ define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events,
                 type: 'continue'
             }]
         },
-        messageQueue: [],
+        eventQueue: [],
+        messageQueue:[],
         messages:{},
         setup: function(){
             var elements = [];
@@ -48,7 +49,7 @@ define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events,
             var currentCollectable = 0;
             var dropoff = smallElementFactory.getSimpleObjective(dropoffPoint);
 
-            level2.messageQueue = [];
+            level2.eventQueue = [];
 
             collectables.forEach(function(collectable){
                 collectable.on('complete', function(){
@@ -63,7 +64,7 @@ define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events,
                 dropoff.type = 'ignore';
                 currentCollectable++;
                 if(collectables[currentCollectable]){
-                    level2.messageQueue.push({
+                    level2.eventQueue.push({
                         msg: 'add-elements',
                         elements: collectables[currentCollectable]
                     });
@@ -87,8 +88,8 @@ define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events,
 
         update:function(time, playerPos){
 
-            var messages = level2.messageQueue.slice();
-            level2.messageQueue = [];
+            var messages = level2.eventQueue.slice();
+            level2.eventQueue = [];
             return messages;
         },
         on: function(event, callback){

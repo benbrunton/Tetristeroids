@@ -50,6 +50,21 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
         smallElementFactory.getSatellite(targetLocation, 140, r3, satelliteBlocks)
     ];
 
+    var proximityEvents = [
+        {
+            done:false,
+            check:function(pos){
+                var minR = 300;
+                return !this.done && (Math.abs(pos[0] - targetLocation[0]) < minR && Math.abs(pos[1] - targetLocation[1]) < minR);
+            },
+            execute:function(){
+                alert('in range');
+                this.done = true;
+                return [];
+            }
+        }
+    ];
+
     var level0 = {
         started: false,
         hud:{
@@ -59,10 +74,6 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
         menu: {
             msg: 'Space-port',
             options: [
-            // {
-            //     type: 'shop',
-            //     level: 1
-            // }, 
             {
                 type: 'continue'
             }]
@@ -82,25 +93,25 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 font: 15
             },
             650: {
-                message: 'based on a game by Ben Brunton',
+                message: 'Based on a game by Ben Brunton',
                 color: 'white',
                 position: [80, 150],
                 font: 15
             },
             950: {
-                message: 'programming and graphics - Ben Brunton',
+                message: 'Programming and Graphics - Ben Brunton',
                 color: 'white',
                 position: [80, 150],
                 font: 15
             },
             1250: {
-                message: 'level design - Ben Brunton',
+                message: 'Level Design - Ben Brunton',
                 color: 'white',
                 position: [100, 150],
                 font: 15
             },
             1550: {
-                message: 'sound and music - Ben Brunton',
+                message: 'Sound and Music - Ben Brunton',
                 color: 'white',
                 position: [80, 150],
                 font: 15
@@ -118,7 +129,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 font: 22
             },
             3200: {
-                message: 'follow the yellow arrow',
+                message: 'Follow the yellow arrow',
                 color: 'yellow',
                 position: [120, 250],
                 font: 15
@@ -214,7 +225,6 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                     location[1] -= 200;
                     location[0] -= 30;
                     var elements = [];
-                    // add gunfire
                     var federationShip = smallElementFactory.getSimpleFedShip(location, Math.PI, [0, 0], 1000);
                     location = [location[0] + 50, location[1]];
                     var rebelShip = smallElementFactory.getSimpleRebelShip(location, Math.PI, [0, 0], 1000);
@@ -228,13 +238,6 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
             }
         },
 
-        proximityMessages: {
-
-        },
-
-        proximityEvents: {
-
-        },
         setup: function() {
             var x = smallElementFactory.getSimpleObjective(targetLocation);
             var elements = [x];
@@ -247,7 +250,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                     return;
                 }
 
-                this.messageQueue.push({
+                level0.messageQueue.push({
                     message: 'mission complete',
                     color: 'white',
                     position: [105, 175],
@@ -261,11 +264,10 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 }, 3000);
                 complete = true;
 
-            }.bind(this));
+            });
 
             elements = elements.concat(structures);
 
-            //elements = elements.concat(smallElementFactory.getAsteroidField(50, 600, targetLocation));
             if(!level0.started){
                 level0.hud.objectives = false;
             }else{
@@ -282,6 +284,19 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 playerLocation: startLocation
             };
         },
+
+        update:function(time, playerPos){
+
+            var events = [];
+
+            proximityEvents.forEach(function(evt){
+                if(evt.check(playerPos)){
+                    events = events.concat(evt.execute());
+                }
+            });
+            return events;
+        },
+
         on: function(event, callback){
             events.on(event, callback);
         }

@@ -4,19 +4,20 @@ define(function(){
         this.ctx = ctx;
         this.canvas = ctx.canvas;
         this.handleClick = this.clicks.bind(this);
+        this.handleRollover = this.rollovers.bind(this);
         this.player = null;
         this.callback = function(){};
         this.buttons = [];
         this.updates = {};
 
         this.items = [
-            {name: 'shield', level:0, price: 200},
-            {name: 'generator', level:0, price: 200},
-            {name: 'standard-gun', level:0, price: 500},
-            {name: 'solid', level:0, price: 150},
-            {name: 'engine', level:0, price: 450},
-            {name: 'cockpit', level:0, price: 300},
-            {name: 'none', level:0, price:0}
+            {name: 'shield', level:0, price: 200, instruction:'shield'},
+            {name: 'generator', level:0, price: 200, instruction: 'generator'},
+            {name: 'standard-gun', level:0, price: 500, instruction: 'gun'},
+            {name: 'solid', level:0, price: 150, instruction: 'fuselage'},
+            {name: 'engine', level:0, price: 450, instruction: 'engine'},
+            {name: 'cockpit', level:0, price: 300, instruction: 'cockpit'},
+            {name: 'none', level:0, price:0, instruction: 'destroy'}
         ];
 
         this.damage = {
@@ -24,14 +25,15 @@ define(function(){
             'generator' : 4,
             'standard-gun' : 2,
             'solid': 4,
-            'engine': 2,
-            'cockpit' :2
+            'engine': 10,
+            'cockpit' :10
         };
     }
 
     Shop.prototype.draw = function(data, player) {
         this.unbind();
         this.canvas.addEventListener('click', this.handleClick, false);
+        this.canvas.addEventListener('mousemove', this.handleRollover, false);
         this.buttons = [];
         this.player = player;
         this.data = data;
@@ -143,9 +145,12 @@ define(function(){
 
     Shop.prototype.unbind = function() {
         this.canvas.removeEventListener('click', this.handleClick, false);
+        this.canvas.removeEventListener('mousemove', this.handleRollover, false);
     };
 
     Shop.prototype.clicks = function(e){
+
+        //done button hack
         if(e.layerX > 300 && e.layerX < 380 && e.layerY > 350 && e.layerY < 380){
 
             
@@ -175,6 +180,34 @@ define(function(){
         });
     };
 
+    Shop.prototype.rollovers = function(e){
+        this.ctx.save();
+        this.ctx.fillStyle = 'black';
+        this.ctx.fillRect(0, 350, 200, 100);
+
+        this.buttons.forEach(function(button){
+            if(!(e.layerX > button.x && e.layerX < button.x + button.w)){
+                return;
+            }
+
+            if(!(e.layerY > button.y && e.layerY < button.y + button.h)){
+                return;
+            }
+
+
+            this.ctx.fillStyle = 'black';
+            this.ctx.fillRect(0, 350, 200, 100);
+            this.ctx.font = '14px Arial';
+            this.ctx.fillStyle = 'white';
+            try{
+                this.ctx.fillText(button.rollover(), 50, 365);
+            }catch(e){}
+        }.bind(this));
+
+
+        this.ctx.restore();
+    };
+
     Shop.prototype.drawButtons = function(data){
         this.ctx.fillStyle = 'blue';
         this.ctx.fillRect(300, 350, 80, 30);
@@ -192,7 +225,10 @@ define(function(){
             this.buttons.push({
                 x: xPos, y: 300, w: 20, h: 20, execute:function(){
                     this.selectedItem = item.name;
-                }.bind(this)
+                }.bind(this),
+                rollover:function(){
+                    return item.instruction + ' : £' + item.price;
+                }
             });
             xPos += 22;
             this.ctx.restore();

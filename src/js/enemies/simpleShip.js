@@ -8,8 +8,8 @@ define(['shipBase'], function(ShipBase){
         this.cash = 0;
         this.messageQueue = [];
         this.isAlive = true;
-        this.movement = movement;
-        this.cachedMovement = movement;
+        this.movement = movement.slice();
+        this.cachedMovement = movement.slice();
         this.age = 0;
         this.maxAge = maxAge;
     }

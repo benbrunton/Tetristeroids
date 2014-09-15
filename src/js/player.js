@@ -4,7 +4,7 @@ define(['shipBase'], function(ShipBase){
         
         this.messageQueue = [];
 
-        this.cash = 500;
+        this.cash = 25000;
 
         this.lastFired = 0;
 
@@ -122,7 +122,7 @@ define(['shipBase'], function(ShipBase){
             }
         });
         var longestLength = Math.max(bottom - top, right - left);
-        return (longestLength / 15) + 0.005;
+        return (0.3 / longestLength) + 0.005;
     };
 
     Player.prototype.forward = function() {

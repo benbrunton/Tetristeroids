@@ -40,6 +40,11 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
             this.mode = 'level-complete';
             this.levelStatus = 'complete';
         }.bind(this));
+
+        this.levels[this.level].on('player-stop', function(){
+            
+        }.bind(this));
+        
         this.playLevel();
     };
 
@@ -84,6 +89,8 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
         if(this.levels[this.level].getMessages()[this.levelTime]){
             messages.push(this.levels[this.level].getMessages()[this.levelTime]);
         }
+
+        messages = messages.concat(this.levels[this.level].getMessageQueue());
 
         return messages;
     };

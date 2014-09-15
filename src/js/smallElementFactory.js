@@ -18,7 +18,6 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events'], function(SimpleShip
             return elements;
         },
         getSimpleObjective: function(pos){
-            var events = new Events();
             var blocks = [];
             var i = 4;
             var j;
@@ -32,33 +31,88 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events'], function(SimpleShip
                 }
             }
 
+            var objective = this.getSimpleElement('objective', pos, 0, blocks, true);
+
+            objective.collision = function(report){
+                if(report.collided.type === 'player'){
+                    this.emit('complete');   
+                }
+            };
+
+            return objective;
+        },
+
+        getSimpleStructure: function(pos, rotation, blocks){
+            return this.getSimpleElement('structure', pos, rotation, blocks, false);
+        },
+
+        getSatellite: function(target, radius, offset, blocks){
+            var satellite = this.getSimpleElement('satellite', [0, 0], 0, blocks, false);
+            satellite.cachedUpdate = satellite.update;
+            satellite.angle = offset;
+
+            satellite.update = function(){
+                this.rotation -= 0.05;
+                this.angle += 0.015;
+
+                var s = Math.sin(this.angle);
+                var c = Math.cos(this.angle);
+                var x2 = c * radius - s * radius;
+                var y2 = s * radius + c * radius;
+                this.location = [target[0] + x2, target[1] + y2];
+
+                return this.cachedUpdate();
+
+            };
+
+            satellite.update();
+
+            return satellite;
+        },
+
+        getSimpleElement: function(type, pos, rotation, blocks, noDamage){
+            var events = new Events();
+
             return {
                 messageQueue:[],
+                location: pos,
                 isAlive:true,
                 blocks:blocks,
-                type: 'objective',
+                type: type,
+                rotation:rotation,
                 update: function(){
                     var messages = this.messageQueue;
                     this.messageQueue = [];
                     return messages;
                 },
                 collision: function(report){
-                    if(report.collided.type === 'player'){
-                        events.emit('complete');                      
-                    }
+                    this.blocks = this.blocks.filter(function(block){
+                        return !report.blocks.some(function(b){
+                            return b.location[0] === block.location[0] && b.location[1] === block.location[1];
+                        });
+                    });
+
+                    this.messageQueue.push({
+                        msg: 'explosion',
+                        location: this.location,
+                        size: this.blocks.length
+                    });
                 },
                 getView: function(){
                     return {
                         type:this.type,
-                        location:pos,
-                        message: 'get to outpost',
+                        location:this.location,
                         blocks: this.blocks,
                         movement:[0, 0],
-                        noDamage:true
+                        rotation:this.rotation,
+                        noDamage:noDamage
                     };
                 },
                 on: function(event, callback){
                     events.on(event, callback);
+                },
+                emit: function(type, data){
+                    events.emit(type, data);
                 }
             };
         },

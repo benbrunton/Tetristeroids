@@ -7,6 +7,7 @@ define(['shipBase'], function(ShipBase){
         this.cash = 25000;
 
         this.lastFired = 0;
+        this.stopPlayer = false;
 
         this.type = 'player';
         this.movement = [0, 0];
@@ -22,12 +23,12 @@ define(['shipBase'], function(ShipBase){
             {
                 location: [0, 0], 
                 type: 'cockpit',
-                damage: 2
+                damage: 10
             },
             {
                 location: [0, 1],
                 type: 'engine',
-                damage: 2
+                damage: 10
 
             },
             {
@@ -56,6 +57,11 @@ define(['shipBase'], function(ShipBase){
             this.messageQueue.push({msg:'game-over'});
         }
 
+        if(this.stopPlayer){
+            this.movement[0] *= 0.8;
+            this.movement[1] *= 0.8;
+        }
+
         return ShipBase.prototype.update.call(this);
     };
 
@@ -66,6 +72,7 @@ define(['shipBase'], function(ShipBase){
         this.rotation = 0;
         this.blocks = JSON.parse(this.cachedBlocks);
         this.cash = this.cachedCash;
+        this.stopPlayer = false;
     };
 
 
@@ -126,6 +133,11 @@ define(['shipBase'], function(ShipBase){
     };
 
     Player.prototype.forward = function() {
+
+        if(this.stopPlayer){
+            return;
+        }
+
         var r = this.rotation;// * Math.PI / 180;
         var p = this.power();
         var newMovementX = this.movement[0] + p * Math.sin(r);
@@ -139,6 +151,11 @@ define(['shipBase'], function(ShipBase){
     };
 
     Player.prototype.backward = function() {
+
+        if(this.stopPlayer){
+            return;
+        }
+        
         var r = this.rotation;
         var p = this.power() / 2;
         var newMovementX = this.movement[0] - p * Math.sin(r);
@@ -147,6 +164,10 @@ define(['shipBase'], function(ShipBase){
             this.movement[0] = newMovementX;
             this.movement[1] = newMovementY;
         }
+    };
+
+    Player.prototype.stop = function() {
+        this.stopPlayer = true;
     };
 
     Player.prototype.left = function() {

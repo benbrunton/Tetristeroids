@@ -34,6 +34,12 @@ define(function(){
         return this.instructions.messages || {};
     };
 
+    Level.prototype.getMessageQueue = function(){
+        var queue = this.instructions.messageQueue || [];
+        this.instructions.messageQueue = [];
+        return queue;
+    };
+
     Level.prototype.getEvents = function() {
         return this.instructions.events || {};
     };

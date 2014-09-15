@@ -171,6 +171,10 @@ define(function(){
                 this.ctx.fillStyle = '#9e6546';
                 this.ctx.fillRect(0, 0, 10, 10);
                 break;
+            case 'structure':
+                this.ctx.fillStyle = '#516c71';
+                this.ctx.fillRect(0, 0, 10, 10);
+                break;
             case 'explosion':
                 this.ctx.globalAlpha = 1.0;
                 this.ctx.fillStyle = 'white';

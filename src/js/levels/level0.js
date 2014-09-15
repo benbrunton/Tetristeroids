@@ -6,6 +6,50 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
     var targetLocation = [8500, -10000];
     var startLocation = [0, 0];
 
+    var r2 = Math.PI/2;
+    var r3 = Math.PI;
+    var r4 = Math.PI * 1.5;
+
+    var cornerBlocks = [
+        {location: [0, 0], type:'structure'},
+        {location: [1, 0], type:'structure'},
+        {location: [0, 1], type:'structure'},
+        {location: [2, 0], type:'structure'},
+        {location: [0, 2], type:'structure'}
+    ];
+
+    var wallBlocks = [
+        {location: [0, 0], type:'structure'},
+        {location: [1, 0], type:'structure'},
+        {location: [2, 0], type:'structure'},
+        {location: [3, 0], type:'structure'},
+        {location: [4, 0], type:'structure'},
+        {location: [5, 0], type:'structure'},
+        {location: [6, 0], type:'structure'}
+    ];
+
+    var satelliteBlocks = [
+        {location: [0,0], type:'generator'},
+        {location: [-1,0], type:'aero'},
+        {location: [1,0], type:'aero'}
+    ];
+
+    var structures = [
+        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]-100], 0, cornerBlocks.slice()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]-100], r2, cornerBlocks.slice()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]+100], r3, cornerBlocks.slice()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]+100], r4, cornerBlocks.slice()),
+
+        smallElementFactory.getSimpleStructure([targetLocation[0]-35, targetLocation[1]-100], 0, wallBlocks.slice()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]-35], r2, wallBlocks.slice()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]-35, targetLocation[1]+100], 0, wallBlocks.slice()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]-35], r2, wallBlocks.slice()),
+
+
+        smallElementFactory.getSatellite(targetLocation, 140, 0, satelliteBlocks),
+        smallElementFactory.getSatellite(targetLocation, 140, r3, satelliteBlocks)
+    ];
+
     var level0 = {
         started: false,
         hud:{
@@ -23,6 +67,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 type: 'continue'
             }]
         },
+        messageQueue: [],
         messages: {
             20: {
                 message: 'hold ↑',
@@ -194,12 +239,31 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
             var x = smallElementFactory.getSimpleObjective(targetLocation);
             var elements = [x];
 
+            var complete = false;
+
 
             x.on('complete', function(){
-                setTimeout(function(){
+                if(complete){
+                    return;
+                }
+
+                this.messageQueue.push({
+                    message: 'mission complete',
+                    color: 'white',
+                    position: [105, 175],
+                    font: 25
+                });
+
+                events.emit('player-stop');
+
+                setTimeout(function(){    
                     events.emit('complete');
                 }, 3000);
-            });
+                complete = true;
+
+            }.bind(this));
+
+            elements = elements.concat(structures);
 
             //elements = elements.concat(smallElementFactory.getAsteroidField(50, 600, targetLocation));
             if(!level0.started){

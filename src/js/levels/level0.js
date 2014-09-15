@@ -208,6 +208,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 level0.messages = {};
                 level0.events = {};
                 startLocation = [7500, -8000];
+                level0.hud.objectives = true;
             }
 
             level0.started = true;

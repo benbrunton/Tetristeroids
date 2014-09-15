@@ -162,26 +162,26 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
 
     Game.prototype.processCollisions = function() {
         var allElements = this.otherElements.concat(this.player);
-        allElements.forEach(function(element){
-
-            allElements.forEach(function(element2){
+        var i = allElements.length;
+        var j = i;
+        var j, element, element2;
+        while(i--){
+            j = i;
+            element = allElements[i];
+            while(j--){
+                element2 = allElements[j];
                 if(element === element2){
-                    return;
+                    continue;
                 }
                 var el1 = element.getView();
                 var el2 = element2.getView();
+                var report1 = this.collisions.check(el1, el2);
+                var report2 = this.collisions.check(el2, el1);
+                report1 && element.collision(report1);
+                report2 && element2.collision(report2);
 
-
-                var report = this.collisions.check(el1, el2);
-
-                if(!report){
-                    return;
-                }
-
-                element.collision(report);
-            }.bind(this));
-
-        }.bind(this));
+            }
+        }
     };
 
 

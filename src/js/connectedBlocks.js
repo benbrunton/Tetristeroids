@@ -1,4 +1,14 @@
 define(function(){
+    var positions = [
+        [-1, 0],
+        [-1, -1],
+        [0, - 1],
+        [1, - 1],
+        [1, 0],
+        [1, 1],
+        [0, 1],
+        [-1, 1]
+    ];
     function ConnectedBlocks(){
 
     }
@@ -36,20 +46,12 @@ define(function(){
     };
 
     ConnectedBlocks.prototype._checkNode = function(pos, list, map) {
-        var positions = [
-            [pos[0] - 1, pos[1]],
-            [pos[0] - 1, pos[1] -1],
-            [pos[0], pos[1] - 1],
-            [pos[0] + 1, pos[1] - 1],
-            [pos[0] + 1, pos[1]],
-            [pos[0] + 1, pos[1] + 1],
-            [pos[0], pos[1] + 1],
-            [pos[0] - 1, pos[1] +1]
-        ];
+
 
         var i = positions.length;
         while(i--){
-            var p2 = positions[i];
+            var trans = positions[i]
+            var p2 = [pos[0] + trans[0], pos[1] + trans[1]];
             var check = p2[0] + ':' + p2[1];
             if(!map[check] && list[check]){
                 map[check] = true;

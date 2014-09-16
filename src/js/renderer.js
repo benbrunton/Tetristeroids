@@ -98,8 +98,12 @@ define(function(){
             case 'cockpit':
                 this.ctx.fillStyle = 'silver';
                 this.ctx.fillRect(0, 0, 10, 10);
-                this.ctx.fillStyle = 'blue';
+                this.ctx.fillStyle = '#181b54';
                 this.ctx.fillRect(1, 1, 8, 6);
+                this.ctx.globalAlpha = 0.25;
+                this.ctx.fillStyle = 'white';
+                this.drawTriangle(1, 2, 4, 3, 1, 5);
+                this.drawTriangle(9, 2, 6, 3, 9, 5);
                 break;
             case 'generator':
                 this.ctx.fillStyle = 'silver';
@@ -108,12 +112,16 @@ define(function(){
                 this.drawCircle(5, 5, 3);
                 break;
             case 'engine':
-                this.ctx.fillStyle = 'red';
+                this.ctx.fillStyle = '#8e0e11';
                 this.ctx.fillRect(0, 0, 10, 5);
-                this.ctx.fillStyle = 'yellow';
-                this.drawTriangle(2, 5, 8, 5, 5, 10);
                 this.ctx.fillStyle = 'silver';
                 this.ctx.fillRect(0, 0, 10, 4);
+                this.ctx.globalAlpha = 0.7;
+                this.ctx.fillStyle = 'yellow';
+                this.drawTriangle(2, 5, 8, 5, 5, 10);
+                this.ctx.globalAlpha = 1.0;
+                this.ctx.fillStyle = 'white';
+                this.drawTriangle(3, 5, 7, 5, 5, 7);
                 break;
             case 'standard-gun':
                 this.ctx.fillStyle = 'silver';
@@ -128,14 +136,15 @@ define(function(){
                 this.ctx.fillRect(4, 2, 2, 4);
                 break;
             case 'shield':
-                this.ctx.fillStyle = 'gold';
+                this.ctx.fillStyle = '#ffff98';
                 this.ctx.globalAlpha=0.4;
                 this.drawCircle(5, 5, 5);
                 this.ctx.globalAlpha=1.0;
-                this.ctx.fillStyle = 'limegreen';
                 this.drawCircle(5, 5, 2);
                 this.ctx.fillStyle = 'silver';
                 this.ctx.fillRect(0, 5, 10, 5);
+                this.ctx.fillStyle = '#1c4226';
+                this.ctx.fillRect(0, 5, 10, 2);
                 break;
             case 'star':
                 this.ctx.fillStyle = 'white';
@@ -183,6 +192,10 @@ define(function(){
             case 'structure':
                 this.ctx.fillStyle = '#516c71';
                 this.ctx.fillRect(0, 0, 10, 10);
+                this.ctx.fillStyle = '#0c3816'
+                this.ctx.fillRect(0, 0, 3, 3);
+                this.ctx.globalAlpha = 0.5;
+                this.ctx.fillRect(7, 7, 3, 3);
                 break;
             case 'explosion':
                 this.ctx.globalAlpha = 1.0;

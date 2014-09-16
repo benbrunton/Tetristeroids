@@ -149,10 +149,6 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
             case 'standard-player-fire':
                 this.otherElements.push(new PlayerMissile(message.pos, message.rotation, message.movement.slice(0)));
                 break;
-            // case 'level-complete':
-            //     this.mode = 'level-complete'; // todo - pass this messages to the level
-            //                                   // to allow it to wrap up
-            //     break;
             case 'game-over':
                 this.showIntro();
                 break;

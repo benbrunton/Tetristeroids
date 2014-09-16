@@ -104,13 +104,32 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 
 
                 // space bus
-                var bus = smallElementFactory.getSpaceBus([targetLocation[0] - 250, targetLocation[1] - 250], r3, [0.5, 4], 1000);
-                var bus2 = smallElementFactory.getSpaceBus([this.pos[0] - 250, this.pos[1] - 20], r2, [6, -2.2], 1000);
+                var bus = smallElementFactory.getSpaceBus([targetLocation[0] - 250, targetLocation[1] - 250], r3 + 0.02, [-1.5, 4], 1000);
+                var bus2 = smallElementFactory.getSimpleFedShip([this.pos[0] - 250, this.pos[1] - 20], r2, [6, -2.2], 1000);
                 this.done = true;
                 return [{
                     msg: 'add-elements',
                     elements: [bus, bus2]
                 }];
+            }
+        },
+        {
+            done:false,
+            pos:[0,0],
+            check:function(pos){
+                var minR = 200;
+                this.pos = pos.slice();
+                return !this.done && (Math.abs(pos[0] - targetLocation[0]) < minR && Math.abs(pos[1] - targetLocation[1]) < minR);
+            },
+            execute:function(){
+                this.done = true;
+                level0.messageQueue.push({
+                    message: 'dock at station',
+                    color: 'white',
+                    position: [105, 175],
+                    font: 15
+                })
+                return [];
             }
         }
     ];
@@ -218,21 +237,21 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                         },
                         {
                             msg: 'standard-player-fire',
-                            pos: [location[0], location[1] - 20], 
+                            pos: [location[0] + 10, location[1] + 10], 
                             rotation: 1.1 * Math.PI,
                             movement: [-0.1, 0]
                         },
                         {
                             msg: 'standard-player-fire',
-                            pos: location.slice(),
+                            pos:  [location[0] + 10, location[1] + 50],
                             rotation: 1.1 * Math.PI,
                             movement: [-0.1, 1]
                         },
                         {
                             msg: 'standard-player-fire',
-                            pos: location.slice(),
+                            pos: [location[0] + 10, location[1] + 120],
                             rotation: 1.1 * Math.PI,
-                            movement: [-0.1, 4]
+                            movement: [-0.1, 2]
                         }
                     ];
                 }
@@ -262,9 +281,16 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 }
             },
 
-            3000: {
-                execute: function(playerView){
+            2990: {
+                execute:function(){
                     level0.hud.objectives = true;
+                    return [];
+                }
+            },
+
+            3100: {
+                execute: function(playerView){
+                    
                     var location1 = playerView.location.slice();
                     var location2 = playerView.location.slice();
                     var location3 = playerView.location.slice();
@@ -292,6 +318,98 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                         {
                             msg: 'add-elements',
                             elements: elements
+                        }
+                    ];
+                }
+            },
+
+            3150: {
+                execute: function(playerView){
+                    var location = playerView.location.slice();
+                    location[0] -= 150;
+                    location[1] -= 150;
+                    return [
+                        {
+                            msg: 'explosion',
+                            location: location,
+                            size: 40
+                        }
+                    ];
+                }
+            },
+
+            3155: {
+                execute: function(playerView){
+                    var location = playerView.location.slice();
+                    
+                    location[0] += 40;
+                    location[1] -= 100;
+                    return [
+                        {
+                            msg: 'explosion',
+                            location: location,
+                            size: 10
+                        }
+                    ];
+                }
+            },
+
+            3170: {
+                execute: function(playerView){
+                    var location = playerView.location.slice();
+                    location[0] -= 40;
+                    location[1] -= 100;
+                    return [
+                        {
+                            msg: 'explosion',
+                            location: location,
+                            size: 15
+                        }
+                    ];
+                }
+            },
+
+            3182: {
+                execute: function(playerView){
+                    var location = playerView.location.slice();
+                    location[0] += 23;
+                    location[1] += 100;
+                    return [
+                        {
+                            msg: 'explosion',
+                            location: location,
+                            size: 25
+                        }
+                    ];
+                }
+            },
+
+
+            3300: {
+                execute: function(playerView){
+                    var location = playerView.location.slice();
+                    location[1] -= 300;
+                    location[0] += 100;
+                    var asteroids = smallElementFactory.getAsteroidField(7, 100, location);
+                    return [
+                        {
+                            msg: 'add-elements',
+                            elements: asteroids
+                        }
+                    ];
+                }
+            },
+
+            3800: {
+                execute: function(playerView){
+                    var location = playerView.location.slice();
+                    location[1] -= 300;
+                    location[0] += 100;
+                    var asteroids = smallElementFactory.getAsteroidField(10, 120, location);
+                    return [
+                        {
+                            msg: 'add-elements',
+                            elements: asteroids
                         }
                     ];
                 }
@@ -326,12 +444,12 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                     return;
                 }
 
-                level0.messageQueue.push({
-                    message: 'mission complete',
-                    color: 'white',
-                    position: [105, 175],
-                    font: 25
-                });
+                // level0.messageQueue.push({
+                //     message: 'mission complete',
+                //     color: 'white',
+                //     position: [105, 175],
+                //     font: 25
+                // });
 
                 events.emit('player-stop');
 

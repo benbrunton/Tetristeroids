@@ -46,11 +46,19 @@ define(['shipBase', 'connectedBlocks'], function(ShipBase, ConnectedBlocks){
 
     Asteroid.prototype.collision = function(report){
         var blockCount = this.blocks.length;
-        this.blocks = this.blocks.filter(function(block){
-            return !report.blocks.some(function(b){
+        this.blocks.forEach(function(block){
+            if(report.blocks.some(function(b){
                 return b.location[0] === block.location[0] && b.location[1] === block.location[1];
-            });
+            })){
+                if(!isNaN(block.damage)){
+                    block.damage--;
+                }
+            }
         });
+
+        this.blocks = this.blocks.filter(function(block){
+            return block.damage > -1;
+        })
 
 
 
@@ -85,7 +93,8 @@ define(['shipBase', 'connectedBlocks'], function(ShipBase, ConnectedBlocks){
         while(i < size){
             blocks.push({
                 location:POSITIONS[i].slice(),
-                type: 'asteroid'
+                type: 'asteroid',
+                damage: 0
             });
             i++;
         }
@@ -115,9 +124,12 @@ define(['shipBase', 'connectedBlocks'], function(ShipBase, ConnectedBlocks){
 
         var elements = blocks.unconnected.map(function(block){
             var location = this._getBlockLocation(block.location);
-            block.location = [0, 0];
+            var newBlock = {
+                location: [0,0],
+                type:'asteroid'
+            };
             var ast = new Asteroid(location);
-            ast.blocks = [block];
+            ast.blocks = [newBlock];
             return ast;
         }.bind(this));
 

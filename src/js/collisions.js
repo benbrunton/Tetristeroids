@@ -67,7 +67,9 @@ define(function(){
         ctx.clearRect(0, 0, this.width, this.height);
         var blocks = [];
 
-        element1.blocks.forEach(function(block){
+        var i = element1.blocks.length;
+        while(i--){
+            var block = element1.blocks[i];
 
             ctx.save();
             ctx.clearRect(0, 0, this.width, this.height);
@@ -86,8 +88,7 @@ define(function(){
                 blocks.push(block);
 
             }
-        }.bind(this));
-
+        }
 
         this.ctx.restore();
         ctx.clearRect(0, 0, this.width, this.height);

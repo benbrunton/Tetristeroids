@@ -41,10 +41,10 @@ define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events,
             var elements = [];
             
             var collectables = [
-                smallElementFactory.getSimpleObjective(location1),
-                smallElementFactory.getSimpleObjective(location2),
-                smallElementFactory.getSimpleObjective(location3),
-                smallElementFactory.getSimpleObjective(location4)
+                smallElementFactory.getCollectable(location1),
+                smallElementFactory.getCollectable(location2),
+                smallElementFactory.getCollectable(location3),
+                smallElementFactory.getCollectable(location4)
             ];
             var currentCollectable = 0;
             var dropoff = smallElementFactory.getSimpleObjective(dropoffPoint);

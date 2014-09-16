@@ -42,7 +42,7 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
         }.bind(this));
 
         this.levels[this.level].on('player-stop', function(){
-            
+            this.player.stop();
         }.bind(this));
         
         this.playLevel();
@@ -119,9 +119,14 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
 
     Game.prototype.getElements = function(){
         var elements = [];
-        elements.push(this.player.getView());
+        var playerView = this.player.getView();
+        elements.push(playerView);
 
-        var otherElements = this.otherElements.map(function(element){
+        var otherElements = this.otherElements.filter(function(element){
+            var v = element.getView();
+            return v.type === 'objective' ||(Math.abs(v.location[0] - playerView.location[0]) < 300 
+                && Math.abs(v.location[1] - playerView.location[1]) < 300);
+        }).map(function(element){
             return element.getView();
         });
 

@@ -1,4 +1,5 @@
-define(['enemies/simpleShip', 'enemies/asteroid', 'events'], function(SimpleShip, Asteroid, Events){
+define(['enemies/simpleShip', 'enemies/asteroid', 'events', 'connectedBlocks'], function(SimpleShip, Asteroid, Events, ConnectedBlocks){
+    var connectedBlocks = new ConnectedBlocks();
 
     var smallElementFactory = {
         getCoins: function(num, range, focus){
@@ -18,15 +19,21 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events'], function(SimpleShip
             return elements;
         },
         getSimpleObjective: function(pos){
+            return this.getObjective(pos, 'objective');
+        },
+        getCollectable: function(pos){
+            return this.getObjective(pos, 'collectable');
+        },
+        getObjective: function(pos, type){
             var blocks = [];
-            var i = 4;
+            var i = 6;
             var j;
             while (i--){
-                j = 4;
+                j = 6;
                 while(j--){
                     blocks.push({
-                        type:'planet',
-                        location:[i - 2, j - 2]
+                        type:type,
+                        location:[i - 3, j - 3]
                     });
                 }
             }
@@ -86,17 +93,44 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events'], function(SimpleShip
                     return messages;
                 },
                 collision: function(report){
+                    var blockCount = this.blocks.length;
                     this.blocks = this.blocks.filter(function(block){
                         return !report.blocks.some(function(b){
                             return b.location[0] === block.location[0] && b.location[1] === block.location[1];
                         });
                     });
 
-                    this.messageQueue.push({
-                        msg: 'explosion',
-                        location: this.location,
-                        size: this.blocks.length
-                    });
+                    report.blocks.forEach(function(block){
+                            this.messageQueue.push({
+                                msg: 'explosion',
+                                location: this._getBlockLocation(block.location),
+                                size: blockCount
+                            });
+                    }.bind(this));
+
+                    if(this.blocks.length < blockCount){
+                        var blocks = connectedBlocks.check(this.blocks);
+                        var elements = blocks.unconnected.map(function(block){
+
+                            var location = this._getBlockLocation(block.location);
+                            var newBlock = {
+                                location: [0,0],
+                                type:block.type,
+                                damage:5
+                            };
+                            var ast = new Asteroid(location);
+                            ast.blocks = [newBlock];
+                            return ast;
+                        }.bind(this));
+                        this.blocks = blocks.connected;
+
+                        this.messageQueue.push({
+                            msg:'add-elements',
+                            elements: elements
+                        })
+                    }
+
+                    
                 },
                 getView: function(){
                     return {
@@ -113,8 +147,71 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events'], function(SimpleShip
                 },
                 emit: function(type, data){
                     events.emit(type, data);
+                },
+                _getBlockLocation : function(loc){
+                    var s = Math.sin(this.rotation);
+                    var c = Math.cos(this.rotation);
+                    var l1 = loc[0] * 10;
+                    var l2 = loc[1] * 10;
+                    var x1 = this.location[0];
+                    var y1 = this.location[1];
+                    var x2 = c * l1 - s * l2;
+                    var y2 = s * l1 + c * l2;
+                    return [x1 + x2, y1 + y2];
                 }
             };
+        },
+
+        getSpaceBus: function(location, rotation, movement, maxAge){
+
+            /*
+                __ __ () __ __
+                __ __ [] __ __
+                __ == || == __
+                __ || __ || __
+                __ \/ __ \/ __
+             */
+
+            var blocks = [
+                {
+                    location: [0, -2],
+                    type: 'shield'
+                },
+                {
+                    location: [0, -1],
+                    type: 'cockpit'
+                },
+                {
+                    location: [0, 0],
+                    type: 'solid'
+                },
+                {
+                    location: [-1, 0],
+                    type: 'aero'
+                },
+                {
+                    location: [1, 0],
+                    type: 'aero'
+                },
+                {
+                    location: [1, 1],
+                    type: 'solid'
+                },
+                {
+                    location: [-1, 1],
+                    type: 'solid'
+                },
+                {
+                    location: [1, 2],
+                    type: 'engine'
+                },
+                {
+                    location: [-1, 2],
+                    type: 'engine'
+                }
+            ];
+
+            return new SimpleShip(blocks, location, rotation, movement, maxAge);
         },
 
         getSimpleRebelShip: function(location, rotation, movement, maxAge){

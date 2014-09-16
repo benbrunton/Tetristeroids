@@ -3,64 +3,114 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
     var events = new Events();
 
     // position of objective
-    var targetLocation = [8500, -10000];
+    var targetLocation = [6500, -10000];
+    // targetLocation = [200, 200];
     var startLocation = [0, 0];
 
     var r2 = Math.PI/2;
     var r3 = Math.PI;
     var r4 = Math.PI * 1.5;
 
-    var cornerBlocks = [
-        {location: [0, 0], type:'structure'},
-        {location: [1, 0], type:'structure'},
-        {location: [0, 1], type:'structure'},
-        {location: [2, 0], type:'structure'},
-        {location: [0, 2], type:'structure'}
-    ];
+    var boxBlocks = function(){
+        return [
+            {location: [0, 0], type:'structure'},
+            {location: [1, 0], type:'structure'},
+            {location: [2, 0], type:'structure'},
+            {location: [3, 0], type:'structure'},
+            {location: [0, 1], type:'structure'},
+            {location: [1, 1], type:'structure'},
+            {location: [2, 1], type:'structure'},
+            {location: [3, 1], type:'structure'},
+            {location: [0, 2], type:'structure'},
+            {location: [1, 2], type:'structure'},
+            {location: [2, 2], type:'structure'},
+            {location: [3, 2], type:'structure'},
+            {location: [0, 3], type:'structure'},
+            {location: [1, 3], type:'structure'},
+            {location: [2, 3], type:'structure'},
+            {location: [3, 3], type:'structure'}
+        ];
+    };
 
-    var wallBlocks = [
-        {location: [0, 0], type:'structure'},
-        {location: [1, 0], type:'structure'},
-        {location: [2, 0], type:'structure'},
-        {location: [3, 0], type:'structure'},
-        {location: [4, 0], type:'structure'},
-        {location: [5, 0], type:'structure'},
-        {location: [6, 0], type:'structure'}
-    ];
+    var cornerBlocks = function(){
+        return [
+            {location: [0, 0], type:'structure'},
+            {location: [1, 0], type:'structure'},
+            {location: [0, 1], type:'structure'},
+            {location: [2, 0], type:'structure'},
+            {location: [0, 2], type:'structure'}
+        ];
+    };
 
-    var satelliteBlocks = [
-        {location: [0,0], type:'generator'},
-        {location: [-1,0], type:'aero'},
-        {location: [1,0], type:'aero'}
-    ];
+    var wallBlocks = function(){
+        return [
+            {location: [0, 0], type:'structure'},
+            {location: [1, 0], type:'structure'},
+            {location: [2, 0], type:'structure'},
+            {location: [3, 0], type:'structure'},
+            {location: [4, 0], type:'structure'},
+            {location: [5, 0], type:'structure'},
+            {location: [6, 0], type:'structure'}
+        ];
+    };
+
+    var satelliteBlocks = function(){
+        return [
+            {location: [0,0], type:'generator'},
+            {location: [-1,0], type:'aero'},
+            {location: [1,0], type:'aero'}
+        ];
+    };
 
     var structures = [
-        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]-100], 0, cornerBlocks.slice()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]-100], r2, cornerBlocks.slice()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]+100], r3, cornerBlocks.slice()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]+100], r4, cornerBlocks.slice()),
 
-        smallElementFactory.getSimpleStructure([targetLocation[0]-35, targetLocation[1]-100], 0, wallBlocks.slice()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]-35], r2, wallBlocks.slice()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]-35, targetLocation[1]+100], 0, wallBlocks.slice()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]-35], r2, wallBlocks.slice()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]-70, targetLocation[1]-20], 0, boxBlocks()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]-70, targetLocation[1]-60], 0, boxBlocks()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]-70, targetLocation[1]+20], 0, boxBlocks()),
+
+        smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]-20], 0, boxBlocks()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]-60], 0, boxBlocks()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]+20], 0, boxBlocks()),
+        
+        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]-100], 0, cornerBlocks()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]-100], r2, cornerBlocks()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]+100], r3, cornerBlocks()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]+100], r4, cornerBlocks()),
+
+        smallElementFactory.getSimpleStructure([targetLocation[0]-65, targetLocation[1]-220], 0, wallBlocks()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]-65, targetLocation[1]+220], 0, wallBlocks()),
+
+        smallElementFactory.getSimpleStructure([targetLocation[0]+5, targetLocation[1]-220], 0, wallBlocks()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]+5, targetLocation[1]+220], 0, wallBlocks()),
+
+        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]-35], r2, wallBlocks()),
+        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]-35], r2, wallBlocks()),
 
 
-        smallElementFactory.getSatellite(targetLocation, 140, 0, satelliteBlocks),
-        smallElementFactory.getSatellite(targetLocation, 140, r3, satelliteBlocks)
+        smallElementFactory.getSatellite(targetLocation, 140, 0, satelliteBlocks()),
+        smallElementFactory.getSatellite(targetLocation, 140, r3, satelliteBlocks())
     ];
 
     var proximityEvents = [
         {
             done:false,
+            pos:[0,0],
             check:function(pos){
-                var minR = 300;
+                var minR = 600;
+                this.pos = pos.slice();
                 return !this.done && (Math.abs(pos[0] - targetLocation[0]) < minR && Math.abs(pos[1] - targetLocation[1]) < minR);
             },
             execute:function(){
-                alert('in range');
+                
+
+                // space bus
+                var bus = smallElementFactory.getSpaceBus([targetLocation[0] - 250, targetLocation[1] - 250], r3, [0.5, 4], 1000);
+                var bus2 = smallElementFactory.getSpaceBus([this.pos[0] - 250, this.pos[1] - 20], r2, [6, -2.2], 1000);
                 this.done = true;
-                return [];
+                return [{
+                    msg: 'add-elements',
+                    elements: [bus, bus2]
+                }];
             }
         }
     ];
@@ -212,10 +262,38 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 }
             },
 
-            3200: {
+            3000: {
                 execute: function(playerView){
                     level0.hud.objectives = true;
-                    return [];
+                    var location1 = playerView.location.slice();
+                    var location2 = playerView.location.slice();
+                    var location3 = playerView.location.slice();
+                    location1[0] -= 210;
+                    location1[1] += 200;
+                    
+                    location2[0] -= 245;
+                    location2[1] += 155;
+
+                    location3[0] -= 190;
+                    location3[1] += 140;
+                    
+                    var elements = [];
+                    var federationShip1 = smallElementFactory.getSimpleFedShip(location1, 0.3 * Math.PI, [4, -6], 1000);
+                    var federationShip2 = smallElementFactory.getSimpleFedShip(location2, 0.3 * Math.PI, [4.2, -6.2], 1000);
+                    var federationShip3 = smallElementFactory.getSimpleFedShip(location3, 0.3 * Math.PI, [3.9, -5.9], 1000);
+                    federationShip1.type = 'ignore';
+                    federationShip2.type = 'ignore';
+                    federationShip3.type = 'ignore';
+
+                    elements.push(federationShip1);
+                    elements.push(federationShip2);
+                    elements.push(federationShip3);
+                    return [
+                        {
+                            msg: 'add-elements',
+                            elements: elements
+                        }
+                    ];
                 }
             },
 
@@ -241,9 +319,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
         setup: function() {
             var x = smallElementFactory.getSimpleObjective(targetLocation);
             var elements = [x];
-
             var complete = false;
-
 
             x.on('complete', function(){
                 if(complete){
@@ -273,7 +349,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
             }else{
                 level0.messages = {};
                 level0.events = {};
-                startLocation = [7500, -8000];
+                startLocation = [7500, -8000]; // move closer to the end
                 level0.hud.objectives = true;
             }
 
@@ -281,7 +357,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
 
             return {
                 elements: elements,
-                playerLocation: startLocation
+                playerLocation: startLocation.slice()
             };
         },
 

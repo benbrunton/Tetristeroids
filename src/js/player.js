@@ -20,28 +20,28 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             {
                 location: [0, -1], 
                 type: 'shield',
-                damage: 100
+                damage: 200
             },
             {
                 location: [0, 0], 
                 type: 'cockpit',
-                damage: 10
+                damage: 30
             },
             {
                 location: [0, 1],
                 type: 'engine',
-                damage: 10
+                damage: 50
 
             },
             {
                 location: [1, -1], 
                 type: 'shield',
-                damage: 100
+                damage: 200
             },
             {
                 location: [-1, -1], 
                 type: 'shield',
-                damage: 100
+                damage: 200
             }
         ];
 
@@ -66,8 +66,8 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             this.movement[1] *= 0.8;
         }
 
-        this.rotation += this.circularMovement;
-        this.circularMovement *= 0.95;
+        // this.rotation += this.circularMovement;
+        // this.circularMovement *= 0.95;
 
         return ShipBase.prototype.update.call(this);
     };
@@ -84,6 +84,10 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
 
 
     Player.prototype.collision = function(report) {
+        if(this.stopPlayer){
+            return;
+        }
+
         switch(report.collided.type){
             case 'cash':
                 this.cash += report.collided.value;
@@ -144,7 +148,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             }
         });
         var longestLength = Math.max(bottom - top, right - left);
-        return (0.02 / longestLength) + 0.00001;
+        return (0.2 / longestLength) + 0.00001;
     };
 
     Player.prototype.forward = function() {
@@ -182,19 +186,31 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
     };
 
     Player.prototype.stop = function() {
-        this.stopPlayer = true;
+        setTimeout(function(){
+            this.stopPlayer = true;
+        }.bind(this), 200);
     };
 
     Player.prototype.left = function() {
-        if(this.circularMovement > -this.max_turn){
-            this.circularMovement -= this.rotateAmount();
+        if(this.stopPlayer){
+            return;
         }
+
+        this.rotation -= this.rotateAmount();
+        // if(this.circularMovement > -this.max_turn){
+        //     this.circularMovement -= this.rotateAmount();
+        // }
     };
 
     Player.prototype.right = function() {
-        if(this.circularMovement < this.max_turn){
-            this.circularMovement += this.rotateAmount();
+        if(this.stopPlayer){
+            return;
         }
+
+        this.rotation += this.rotateAmount();
+        // if(this.circularMovement < this.max_turn){
+        //     this.circularMovement += this.rotateAmount();
+        // }
     };
 
     Player.prototype.fire = function(){
@@ -236,9 +252,12 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         var blocks = this.connectedBlocks.check(this.blocks);
 
         var elements = blocks.unconnected.map(function(block){
+            var newBlock = {
+                type: block.type,
+                location: [0, 0]
+            };
             var location = this.getBlockLocation(block.location);
-            block.location = [0, 0];
-            return new SimpleShip([block], location, this.rotation, this.movement, 1000);
+            return new SimpleShip([newBlock], location, this.rotation, this.movement, 1000);
         }.bind(this));
 
         this.messageQueue.push({

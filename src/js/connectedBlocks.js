@@ -1,4 +1,5 @@
 define(function(){
+
     var positions = [
         [-1, 0],
         [-1, -1],
@@ -9,9 +10,8 @@ define(function(){
         [0, 1],
         [-1, 1]
     ];
-    function ConnectedBlocks(){
 
-    }
+    function ConnectedBlocks(){}
 
     ConnectedBlocks.prototype.check = function(blocks){
         this.blocks = blocks;
@@ -19,7 +19,7 @@ define(function(){
         var unconnected = this.blocks.filter(this._unconnected.bind(this));
         var connected = this.blocks.filter(this._connectsToOrigin.bind(this));
 
-        return {connected:this.blocks, unconnected:unconnected};
+        return {connected:connected, unconnected:unconnected};
     }
 
     ConnectedBlocks.prototype._unconnected = function(block) {
@@ -38,7 +38,7 @@ define(function(){
         });
 
         if(exists['0:0']){
-            map['0:0'] = true; // huge assumption
+            map['0:0'] = true;
             this._checkNode([0, 0], exists, map);
         }
         

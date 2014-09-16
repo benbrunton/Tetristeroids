@@ -151,6 +151,15 @@ define(function(){
                 this.ctx.fillStyle = 'pink';
                 this.ctx.fillRect(0, 0, 10, 10);
                 break;
+            case 'objective':
+                this.ctx.fillStyle = 'silver';
+                this.ctx.fillRect(0, 0, 10, 10);
+                break;
+            case 'collectable':
+                this.ctx.globalAlpha = 0.4;
+                this.ctx.fillStyle = 'yellow';
+                this.ctx.fillRect(0, 0, 10, 10);
+                break;
             case 'rebel-motif':
                 this.ctx.fillStyle = 'silver';
                 this.ctx.fillRect(0, 0, 10, 10);

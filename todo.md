@@ -6,10 +6,6 @@ enemy spaceships
 blocks need to hold data about how they affect ship etc
 end of levels should have a star wars style vertical scroll
 abstract block renderer
-when (e.g. asteroids) things break up only the central part should persist
-levels should have proximity based events
-levels should have proximity based messages
-levels should be able to calculate own end (instead of relying on proximity)
 prevent unfeasible ships
 save player state and current level to localStorage
 multibrowser support

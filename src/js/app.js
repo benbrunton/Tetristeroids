@@ -133,6 +133,9 @@ define(
                 handleKeys: function(keys){
                     var game = App.game;
 
+                    //hack
+                    var playerEngines = false;
+
                     var i = keys.length;
                     while(i--){
                         switch(keys[i]){
@@ -144,6 +147,7 @@ define(
                                 break;
                             case 'up':
                                 game.movePlayerForward();
+                                playerEngines = true;
                                 break;
                             case 'down':
                                 game.movePlayerBackward();
@@ -154,6 +158,10 @@ define(
                             default:
                                 break;
                         }
+                    }
+
+                    if(!playerEngines){
+                        game.player.cutEngine();
                     }
                 },
 

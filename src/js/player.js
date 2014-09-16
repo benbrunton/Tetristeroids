@@ -66,6 +66,20 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             this.movement[1] *= 0.8;
         }
 
+        if(this.engines && Math.random() > 0.7){
+            this.messageQueue = this.messageQueue.concat(
+                this.blocks.filter(function(block){
+                    return block.type === 'engine' && Math.random() > 0.8;
+                }).map(function(block){
+                    return {
+                        msg:'explosion',
+                        size:2,
+                        location: this.getBlockLocation([block.location[0], block.location[1]])
+                    };
+                }.bind(this))
+            );
+        }
+
         // this.rotation += this.circularMovement;
         // this.circularMovement *= 0.95;
 
@@ -157,6 +171,8 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             return;
         }
 
+        this.engines = true;
+
         var r = this.rotation;// * Math.PI / 180;
         var p = this.power();
         var newMovementX = this.movement[0] + p * Math.sin(r);
@@ -167,6 +183,10 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         }
         this.movement[0] = newMovementX;
         this.movement[1] = newMovementY;
+    };
+
+    Player.prototype.cutEngine = function(){
+        this.engines = false;
     };
 
     Player.prototype.backward = function() {

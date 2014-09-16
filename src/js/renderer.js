@@ -126,10 +126,15 @@ define(function(){
             case 'standard-gun':
                 this.ctx.fillStyle = 'silver';
                 this.ctx.fillRect(1, 7, 8, 3);
-                this.ctx.fillStyle = 'darkgrey';
-                this.ctx.fillRect(3, 4, 4, 3);
-                this.ctx.fillStyle = 'green';
-                this.drawTriangle(2, 4, 8, 4, 5, 0);
+                this.ctx.fillStyle = '#e3e6f6';
+
+                this.drawCircle(5, 2, 2);
+                this.ctx.globalAlpha = 1.0;
+
+                this.ctx.fillRect(3, 2, 4, 6);
+                this.ctx.fillStyle = '#0f143c';
+                this.ctx.globalAlpha = 0.6;
+                this.ctx.fillRect(4, 1, 2, 5);
                 break;
             case 'missile':
                 this.ctx.fillStyle = 'yellow';
@@ -200,10 +205,10 @@ define(function(){
             case 'explosion':
                 this.ctx.globalAlpha = 1.0;
                 this.ctx.fillStyle = 'white';
-                this.drawCircle(0, 0, 2);
+                this.drawCircle(5, 5, 2);
                 this.ctx.globalAlpha = 0.7;
                 this.ctx.fillStyle = this._getExplosionColor(block);
-                this.drawCircle(0, 0, this._getExplosionSize(block));
+                this.drawCircle(5, 5, this._getExplosionSize(block));
             default:
                 break;
         }
@@ -299,7 +304,7 @@ define(function(){
             return 'white';
         }
         if(block.age < 10){
-            return 'red';
+            return '#d8960f';
         }
 
         if(block.age < 15){

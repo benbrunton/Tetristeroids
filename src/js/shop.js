@@ -1,4 +1,4 @@
-define(function(){
+define(['blocks', 'context'], function(blocks, context){
 
     function Shop(ctx){
         this.ctx = ctx;
@@ -12,7 +12,7 @@ define(function(){
 
         this.items = [
             {name: 'shield', level:0, price: 200, instruction:'shield'},
-            {name: 'generator', level:0, price: 200, instruction: 'generator'},
+            //{name: 'generator', level:0, price: 200, instruction: 'generator'},
             {name: 'standard-gun', level:0, price: 500, instruction: 'gun'},
             {name: 'solid', level:0, price: 150, instruction: 'fuselage'},
             {name: 'engine', level:0, price: 450, instruction: 'engine'},
@@ -97,7 +97,7 @@ define(function(){
             this.ctx.save();
             this.ctx.translate(x, y);
             this.ctx.scale(2, 2);
-            this.drawElement(x, y, block.type);
+            this.drawElement(block.type);
             this.ctx.restore();
         }.bind(this));
 
@@ -221,7 +221,7 @@ define(function(){
             this.ctx.save();
             this.ctx.translate(xPos, 300);
             this.ctx.scale(2, 2);
-            this.drawElement(0, 0, item.name);
+            this.drawElement(item.name);
             this.buttons.push({
                 x: xPos, y: 300, w: 20, h: 20, execute:function(){
                     this.selectedItem = item.name;
@@ -237,80 +237,13 @@ define(function(){
         
     };
 
-    Shop.prototype.drawElement = function(x, y, type){
-        switch(type){
-            case 'solid':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 10, 10);
-                this.ctx.fillStyle = 'steelblue';
-                this.ctx.fillRect(2, 0, 6, 10);
-                break;
-            case 'cockpit':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 10, 10);
-                this.ctx.fillStyle = 'blue';
-                this.ctx.fillRect(1, 1, 8, 6);
-                break;
-            case 'generator':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 10, 10);
-                this.ctx.fillStyle = 'gold';
-                this.drawCircle(5, 5, 3);
-                break;
-            case 'engine':
-                this.ctx.fillStyle = 'red';
-                this.ctx.fillRect(0, 0, 10, 5);
-                this.ctx.fillStyle = 'yellow';
-                this.drawTriangle(2, 5, 8, 5, 5, 10);
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 10, 4);
-                break;
-            case 'standard-gun':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(1, 7, 8, 3);
-                this.ctx.fillStyle = 'darkgrey';
-                this.ctx.fillRect(3, 4, 4, 3);
-                this.ctx.fillStyle = 'green';
-                this.drawTriangle(2, 4, 8, 4, 5, 0);
-                break;
-            case 'missile':
-                this.ctx.fillStyle = 'yellow';
-                this.ctx.fillRect(4, 2, 2, 4);
-                break;
-            case 'shield':
-                this.ctx.fillStyle = 'gold';
-                this.ctx.globalAlpha=0.4;
-                this.drawCircle(5, 5, 5);
-                this.ctx.globalAlpha=1.0;
-                this.ctx.fillStyle = 'limegreen';
-                this.drawCircle(5, 5, 2);
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 5, 10, 5);
-                break;
-            case 'none':
-                this.ctx.fillStyle = '#CCC';
-                this.ctx.fillRect(0, 0, 10, 10);
-                this.ctx.fillStyle = 'red';
-                this.ctx.font = '10px Arial'
-                this.ctx.fillText('x', 3, 8);
-                break;
-        }
-    };
-
-    Shop.prototype.drawTriangle = function(x1, y1, x2, y2, x3, y3){
-        this.ctx.beginPath();
-        this.ctx.moveTo(x1, y1);
-        this.ctx.lineTo(x2, y2);
-        this.ctx.lineTo(x3, y3);
-        this.ctx.fill();
-        this.ctx.closePath();
-    };
-
-    Shop.prototype.drawCircle = function(x, y, r){
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, r, 0, Math.PI*2, false);
-        this.ctx.fill();
-        this.ctx.closePath();
+    Shop.prototype.drawElement = function(type){
+        var instructions = blocks[type];
+        var ctx = this.ctx;
+        instructions.forEach(function(instruction){
+            context(ctx, instruction, true);
+        });
+        
     };
 
     return Shop;

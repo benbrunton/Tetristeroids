@@ -1,4 +1,4 @@
-define(['blocks'], function(blocks){
+define(['blocks', 'context'], function(blocks, render){
 
     function Renderer(ctx){
         this.ctx = ctx;
@@ -136,34 +136,7 @@ define(['blocks'], function(blocks){
     };
 
     Renderer.prototype._executeInstruction = function(instruction) {
-        switch(instruction.type){
-            case 'rect':
-                this.ctx.fillStyle = instruction.color;
-                this.ctx.fillRect(instruction.pos[0], instruction.pos[1], instruction.width, instruction.height);
-                break;
-            case 'block':
-                this.ctx.fillStyle = instruction.color;
-                this.ctx.fillRect(0, 0, 10, 10);
-                break;
-            case 'circle':
-                this.ctx.fillStyle = instruction.color;
-                this.drawCircle(instruction.pos[0], instruction.pos[1], instruction.radius);
-                break;
-            case 'triangle':
-                this.ctx.fillStyle = instruction.color;
-                this.drawTriangle(instruction.pos[0][0], 
-                                    instruction.pos[0][1], 
-                                    instruction.pos[1][0], 
-                                    instruction.pos[1][1], 
-                                    instruction.pos[2][0],
-                                    instruction.pos[2][1]);
-                break;
-            case 'alpha':
-                this.ctx.globalAlpha = instruction.value;
-                break;
-            default:
-                break;
-        }
+        render(this.ctx, instruction, true);
     };
 
     Renderer.prototype._executeDynamicInstruction = function(instruction, block) {

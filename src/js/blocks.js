@@ -93,6 +93,10 @@ define(function(){
         ],
         'explosion':[
             {type:'dynamic', value:'explosion'}
+        ],
+        'none':[
+            {type:'block', color:'#ccc'},
+            {type:'font', color:'red', font:'10px Arial', pos:[3, 8], text:'x'}
         ]
     };
 });

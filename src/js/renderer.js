@@ -1,4 +1,4 @@
-define(function(){
+define(['blocks'], function(blocks){
 
     function Renderer(ctx){
         this.ctx = ctx;
@@ -81,138 +81,16 @@ define(function(){
     Renderer.prototype.drawBlock = function(block){
         this.ctx.save();
         this.ctx.translate(block.location[0] * 10 - 5, block.location[1] * 10 - 5);
-        switch(block.type){
-            case 'solid':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 10, 10);
-                this.ctx.fillStyle = 'steelblue';
-                this.ctx.fillRect(2, 0, 6, 10);
-                break;
-            case 'aero':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 2, 10);
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(8, 0, 2, 10);
-                this.ctx.fillStyle = 'steelblue';
-                this.ctx.fillRect(0, 2, 10, 6);
-                break;
-            case 'cockpit':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 10, 10);
-                this.ctx.fillStyle = '#181b54';
-                this.ctx.fillRect(1, 1, 8, 6);
-                this.ctx.globalAlpha = 0.25;
-                this.ctx.fillStyle = 'white';
-                this.drawTriangle(1, 2, 4, 3, 1, 5);
-                this.drawTriangle(9, 2, 6, 3, 9, 5);
-                break;
-            case 'generator':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 10, 10);
-                this.ctx.fillStyle = 'gold';
-                this.drawCircle(5, 5, 3);
-                break;
-            case 'engine':
-                this.ctx.fillStyle = '#8e0e11';
-                this.ctx.fillRect(0, 0, 10, 5);
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 10, 4);
-                this.ctx.globalAlpha = 0.7;
-                this.ctx.fillStyle = 'yellow';
-                this.drawTriangle(2, 5, 8, 5, 5, 10);
-                this.ctx.globalAlpha = 1.0;
-                this.ctx.fillStyle = 'white';
-                this.drawTriangle(3, 5, 7, 5, 5, 7);
-                break;
-            case 'standard-gun':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(1, 7, 8, 3);
-                this.ctx.fillStyle = '#e3e6f6';
-
-                this.drawCircle(5, 2, 2);
-                this.ctx.globalAlpha = 1.0;
-
-                this.ctx.fillRect(3, 2, 4, 6);
-                this.ctx.fillStyle = '#0f143c';
-                this.ctx.globalAlpha = 0.6;
-                this.ctx.fillRect(4, 1, 2, 5);
-                break;
-            case 'missile':
-                this.ctx.fillStyle = 'yellow';
-                this.ctx.fillRect(4, 2, 2, 4);
-                break;
-            case 'shield':
-                this.ctx.fillStyle = '#ffff98';
-                this.ctx.globalAlpha=0.4;
-                this.drawCircle(5, 5, 5);
-                this.ctx.globalAlpha=1.0;
-                this.drawCircle(5, 5, 2);
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 5, 10, 5);
-                this.ctx.fillStyle = '#1c4226';
-                this.ctx.fillRect(0, 5, 10, 2);
-                break;
-            case 'star':
-                this.ctx.fillStyle = 'white';
-                this.drawCircle(0, 0, 1);
-                break;
-            case 'coin':
-                this.ctx.fillStyle = 'gold';
-                this.drawCircle(0, 0, 5);
-                this.ctx.fillStyle = 'yellow';
-                this.drawCircle(0, 0, 2);
-                break;
-            case 'planet':
-                this.ctx.fillStyle = 'pink';
-                this.ctx.fillRect(0, 0, 10, 10);
-                break;
-            case 'objective':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 10, 10);
-                break;
-            case 'collectable':
-                this.ctx.globalAlpha = 0.4;
-                this.ctx.fillStyle = 'yellow';
-                this.ctx.fillRect(0, 0, 10, 10);
-                break;
-            case 'rebel-motif':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 10, 10);
-                this.ctx.fillStyle = 'red';
-                this.drawCircle(3, 3, 2);
-                this.ctx.fillStyle = 'black';
-                this.ctx.fillRect(2, 0, 2, 10);
-                break;
-            case 'fed-motif':
-                this.ctx.fillStyle = 'silver';
-                this.ctx.fillRect(0, 0, 10, 10);
-                this.ctx.fillStyle = 'black';
-                this.drawCircle(5, 5, 4);
-                this.ctx.fillStyle = 'silver';
-                this.drawCircle(5, 5, 3);
-                break;
-            case 'asteroid':
-                this.ctx.fillStyle = '#9e6546';
-                this.ctx.fillRect(0, 0, 10, 10);
-                break;
-            case 'structure':
-                this.ctx.fillStyle = '#516c71';
-                this.ctx.fillRect(0, 0, 10, 10);
-                this.ctx.fillStyle = '#0c3816'
-                this.ctx.fillRect(0, 0, 3, 3);
-                this.ctx.globalAlpha = 0.5;
-                this.ctx.fillRect(7, 7, 3, 3);
-                break;
-            case 'explosion':
-                this.ctx.globalAlpha = 1.0;
-                this.ctx.fillStyle = 'white';
-                this.drawCircle(5, 5, 2);
-                this.ctx.globalAlpha = 0.7;
-                this.ctx.fillStyle = this._getExplosionColor(block);
-                this.drawCircle(5, 5, this._getExplosionSize(block));
-            default:
-                break;
-        }
+        var instructions = blocks[block.type];
+        blocks[block.type].forEach(function(instruction){
+            if(instruction.type === 'dynamic'){
+                this._executeDynamicInstruction(instruction.value, block);
+            }else{
+                this._executeInstruction(instruction);
+            }
+        }.bind(this));
+            
+        
         this.ctx.restore();
     };
 
@@ -255,6 +133,51 @@ define(function(){
         this.ctx.fillText('paused', 150, 155);
 
         this.ctx.fillRect(0, 0, 10, 10);
+    };
+
+    Renderer.prototype._executeInstruction = function(instruction) {
+        switch(instruction.type){
+            case 'rect':
+                this.ctx.fillStyle = instruction.color;
+                this.ctx.fillRect(instruction.pos[0], instruction.pos[1], instruction.width, instruction.height);
+                break;
+            case 'block':
+                this.ctx.fillStyle = instruction.color;
+                this.ctx.fillRect(0, 0, 10, 10);
+                break;
+            case 'circle':
+                this.ctx.fillStyle = instruction.color;
+                this.drawCircle(instruction.pos[0], instruction.pos[1], instruction.radius);
+                break;
+            case 'triangle':
+                this.ctx.fillStyle = instruction.color;
+                this.drawTriangle(instruction.pos[0][0], 
+                                    instruction.pos[0][1], 
+                                    instruction.pos[1][0], 
+                                    instruction.pos[1][1], 
+                                    instruction.pos[2][0],
+                                    instruction.pos[2][1]);
+                break;
+            case 'alpha':
+                this.ctx.globalAlpha = instruction.value;
+                break;
+            default:
+                break;
+        }
+    };
+
+    Renderer.prototype._executeDynamicInstruction = function(instruction, block) {
+        switch(instruction){
+            case 'explosion':
+                this.ctx.fillStyle = 'white';
+                this.drawCircle(5, 5, 2);
+                this.ctx.globalAlpha = 0.7;
+                this.ctx.fillStyle = this._getExplosionColor(block);
+                this.drawCircle(5, 5, this._getExplosionSize(block));
+                break;
+            default:
+                break;
+        }
     };
 
     Renderer.prototype.drawTriangle = function(x1, y1, x2, y2, x3, y3){

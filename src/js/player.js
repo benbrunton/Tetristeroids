@@ -67,10 +67,10 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             this.movement[1] *= 0.8;
         }
 
-        if(this.engines && Math.random() > 0.7){
+        if(this.engines && Math.random() > 0.5){
             this.messageQueue = this.messageQueue.concat(
                 this.blocks.filter(function(block){
-                    return block.type === 'engine' && Math.random() > 0.8;
+                    return block.type === 'engine' && Math.random() > 0.5;
                 }).map(function(block){
                     return {
                         msg:'explosion',
@@ -160,7 +160,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
                 top = block.location[1];
             }
         });
-        var longestLength = Math.max(bottom - top, right - left);
+        var longestLength = Math.max(bottom - top, right - left, 1);
         return (0.2 / longestLength) + 0.00001;
     };
 

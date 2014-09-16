@@ -25,7 +25,11 @@ define(['blocks', 'context'], function(blocks, render){
         this.ctx.translate(loc[0], loc[1]);
         this.ctx.rotate(element.rotation);
 
-        element.blocks.forEach(this.drawBlock.bind(this));
+        var iLen = element.blocks.length;
+        var i;
+        for(i = 0; i < iLen; i++){
+            this.drawBlock(element.blocks[i]);
+        }
 
         this.ctx.restore();
     };
@@ -82,14 +86,16 @@ define(['blocks', 'context'], function(blocks, render){
         this.ctx.save();
         this.ctx.translate(block.location[0] * 10 - 5, block.location[1] * 10 - 5);
         var instructions = blocks[block.type];
-        blocks[block.type].forEach(function(instruction){
+        var iLen = blocks[block.type].length;
+        var i, instruction;
+        for(i = 0; i < iLen; i++){
+            instruction = blocks[block.type][i];
             if(instruction.type === 'dynamic'){
                 this._executeDynamicInstruction(instruction.value, block);
             }else{
                 this._executeInstruction(instruction);
             }
-        }.bind(this));
-            
+        }
         
         this.ctx.restore();
     };

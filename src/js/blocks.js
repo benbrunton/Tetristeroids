@@ -41,8 +41,8 @@ define(function(){
             {color:SHIP_STANDARD, type:'rect', pos:[1, 7], width:8, height:3},
             {color:'#e3e6f6', type:'circle', pos:[5, 2], radius:2},
             {color:'#e3e6f6', type:'rect', pos:[3, 2], width:4, height:6},
-            {type:'alpha', value:0.6},
-            {color:'#0f143c', type:'rect', pos:[4, 1], width:2, height:5}
+            {color:'#444', type:'rect', pos:[1, 7], width:8, height:1},
+            {color:'#444', type:'rect', pos:[4, 0], width:2, height:6}
         ],
         'missile':[
             {color:'yellow', type:'rect', pos:[4, 2], width:2, height:4}

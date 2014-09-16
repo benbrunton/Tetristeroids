@@ -1,4 +1,4 @@
-define(function(){
+define(['blocks', 'context'], function(blocks, context){
 
     var MIN_CHECK = 100;
 
@@ -102,12 +102,19 @@ define(function(){
         ctx.translate(element.location[0], element.location[1]);
         ctx.fillStyle = 'white';
         ctx.rotate(element.rotation);
-        element.blocks.forEach(function(block){
+        var i = element.blocks.length;
+        var block;
+        while(i--){
+            block = element.blocks[i];
             ctx.save();
             ctx.translate(block.location[0] * 10 - 5, block.location[1] * 10 - 5);
-            ctx.fillRect(0, 0, 10, 10);
+            instructions = blocks[block.type];
+            j = instructions.length;
+            while(j--){
+                context(ctx, instructions[j], false);
+            }
             ctx.restore();
-        });
+        };
 
         ctx.restore();
 

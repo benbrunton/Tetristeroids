@@ -12,6 +12,7 @@ define(function(){
 
     Renderer.prototype.setCamera = function(location) {
         this.camera = location;
+        document.title = Math.floor(location[0]) + ', ' + Math.floor(location[1]);
     };
 
     Renderer.prototype.drawElement = function(element){

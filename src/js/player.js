@@ -129,7 +129,8 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         var power = this.blocks.filter(function(block){
             return block.type === 'engine';
         }).length / 8;
-        return (power / this.blocks.length) + 0.002;
+        var d = Math.max(this.blocks.length, 1);
+        return (power / d) + 0.002;
     };
 
     Player.prototype.max_power = function(){

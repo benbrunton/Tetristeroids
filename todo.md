@@ -16,7 +16,7 @@ grappling hook
 collectables
 better hud
 crew
-animate engines during thrust
+energy shield
 glider (Conways Game Of Life) enemies
 
 Level ideas

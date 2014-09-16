@@ -10,7 +10,6 @@ define(function(){
     }
 
     Level.prototype.setup = function(){
-        console.log('level ' + this.level + ' set up');
         return this.instructions.setup();
     };
 

@@ -25,7 +25,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             {
                 location: [0, 0], 
                 type: 'cockpit',
-                damage: 30
+                damage: 1
             },
             {
                 location: [0, 1],
@@ -54,11 +54,12 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
 
     Player.prototype.update = function(){
 
-        if(this.blocks.length < 1 || !this.blocks.some(function(block){
+        if(!this.stopPlayer && (this.blocks.length < 1 || !this.blocks.some(function(block){
             return block.type === 'cockpit';
-        })){
+        }))){
             // game over
             this.messageQueue.push({msg:'game-over'});
+            this.stopPlayer = true;
         }
 
         if(this.stopPlayer){
@@ -73,15 +74,12 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
                 }).map(function(block){
                     return {
                         msg:'explosion',
-                        size:2,
+                        size:Math.random() * 3,
                         location: this.getBlockLocation([block.location[0], block.location[1]])
                     };
                 }.bind(this))
             );
         }
-
-        // this.rotation += this.circularMovement;
-        // this.circularMovement *= 0.95;
 
         return ShipBase.prototype.update.call(this);
     };
@@ -217,9 +215,6 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         }
 
         this.rotation -= this.rotateAmount();
-        // if(this.circularMovement > -this.max_turn){
-        //     this.circularMovement -= this.rotateAmount();
-        // }
     };
 
     Player.prototype.right = function() {
@@ -228,9 +223,6 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         }
 
         this.rotation += this.rotateAmount();
-        // if(this.circularMovement < this.max_turn){
-        //     this.circularMovement += this.rotateAmount();
-        // }
     };
 
     Player.prototype.fire = function(){
@@ -277,7 +269,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
                 location: [0, 0]
             };
             var location = this.getBlockLocation(block.location);
-            return new SimpleShip([newBlock], location, this.rotation, this.movement, 1000);
+            return new SimpleShip([newBlock], location, this.rotation, [this.movement[0] + Math.random(), this.movement[1] + Math.random()], 1000);
         }.bind(this));
 
         this.messageQueue.push({

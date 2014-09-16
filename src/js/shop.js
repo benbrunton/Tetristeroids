@@ -209,7 +209,7 @@ define(function(){
     };
 
     Shop.prototype.drawButtons = function(data){
-        this.ctx.fillStyle = 'blue';
+        this.ctx.fillStyle = '#0f284c';
         this.ctx.fillRect(300, 350, 80, 30);
         this.ctx.fillStyle = 'white';
         this.ctx.font = '20px Arial';

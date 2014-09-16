@@ -1,5 +1,7 @@
 define(function(){
 
+    var buttonColour = '#0f284c';
+
     function MenuRenderer(ctx){
         this.ctx = ctx;
         this.canvas = ctx.canvas;
@@ -55,29 +57,29 @@ define(function(){
     };
 
     MenuRenderer.prototype.drawNextMission = function(topPos) {
-        this.ctx.fillStyle = 'blue';
+        this.ctx.fillStyle = buttonColour;
         this.ctx.fillRect(80, topPos, 200, 40);
         this.ctx.fillStyle = 'white';
         this.ctx.font = '20px Arial';
-        this.ctx.fillText('continue', 85, topPos + 20);
+        this.ctx.fillText('continue', 90, topPos + 20);
         this.buttons.push({x: 80, y: topPos, w: 200, h: 40, action:'next-level'});
     };
 
     MenuRenderer.prototype.drawStartMission = function(topPos) {
-        this.ctx.fillStyle = 'blue';
+        this.ctx.fillStyle = buttonColour;
         this.ctx.fillRect(80, topPos, 200, 40);
         this.ctx.fillStyle = 'white';
         this.ctx.font = '20px Arial';
-        this.ctx.fillText('begin mission', 85, topPos + 20);
+        this.ctx.fillText('begin mission', 90, topPos + 20);
         this.buttons.push({x: 80, y: topPos, w: 200, h: 40, action:'game'});
     };
 
     MenuRenderer.prototype.drawShop = function(topPos) {
-        this.ctx.fillStyle = 'blue';
+        this.ctx.fillStyle = buttonColour;
         this.ctx.fillRect(80, topPos, 200, 40);
         this.ctx.fillStyle = 'white';
         this.ctx.font = '20px Arial';
-        this.ctx.fillText('modify craft', 85, topPos + 20);
+        this.ctx.fillText('modify craft', 90, topPos + 20);
         this.buttons.push({x: 80, y: topPos, w: 200, h: 40, action:'shop'});
     };
 

@@ -4,9 +4,30 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
 
     var targetLocation = [-4500, -7000];
 
-    var MAX_ELEMENTS = 15;
+    var MAX_ELEMENTS = 25;
     var MAX_DISTANCE = 450;
     var MIN_DISTANCE = 300 * 300;
+
+    var boxBlocks = function(){
+        return [
+            {location: [0, 0], type:'structure'},
+            {location: [1, 0], type:'structure'},
+            {location: [2, 0], type:'structure'},
+            {location: [3, 0], type:'structure'},
+            {location: [0, 1], type:'structure'},
+            {location: [1, 1], type:'structure'},
+            {location: [2, 1], type:'structure'},
+            {location: [3, 1], type:'structure'},
+            {location: [0, 2], type:'structure'},
+            {location: [1, 2], type:'structure'},
+            {location: [2, 2], type:'structure'},
+            {location: [3, 2], type:'structure'},
+            {location: [0, 3], type:'structure'},
+            {location: [1, 3], type:'structure'},
+            {location: [2, 3], type:'structure'},
+            {location: [3, 3], type:'structure'}
+        ];
+    };
 
     var level1 = {
         hud:{
@@ -95,6 +116,21 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
             var elements = [];
             var x = smallElementFactory.getSimpleObjective(targetLocation);
             elements.push(x);
+
+            var wall1 = smallElementFactory.getSimpleStructure([targetLocation[0] - 70, targetLocation[1] - 20], 0, boxBlocks());
+            elements.push(wall1);
+            var wall2 = smallElementFactory.getSimpleStructure([targetLocation[0] + 70, targetLocation[1] - 20], 0, boxBlocks());
+            elements.push(wall2);
+
+            var satellite1 = smallElementFactory.getSatellite(targetLocation, 140, 0, boxBlocks());
+            var satellite2 = smallElementFactory.getSatellite(targetLocation, 140, Math.PI, boxBlocks());
+            elements.push(satellite1);
+            elements.push(satellite2);
+
+            var satellite3 = smallElementFactory.getSatellite(targetLocation, 240, Math.PI/2, boxBlocks());
+            var satellite4 = smallElementFactory.getSatellite(targetLocation, 240, Math.PI * 1.5, boxBlocks());
+            elements.push(satellite3);
+            elements.push(satellite4);
 
             x.on('complete', function(){
                 events.emit('complete');

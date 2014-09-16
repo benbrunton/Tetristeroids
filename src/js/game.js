@@ -114,7 +114,7 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
 
     Game.prototype.getCamera = function() {
         var playerView = this.player.getView();
-        return playerView.location;
+        return playerView.location.slice();
     };
 
     Game.prototype.getElements = function(){
@@ -150,7 +150,10 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
                 this.otherElements.push(new PlayerMissile(message.pos, message.rotation, message.movement.slice(0)));
                 break;
             case 'game-over':
-                this.showIntro();
+                this.otherElements.push(new Explosion(this.getCamera(), 40));
+                setTimeout(function(){
+                    this.showIntro();
+                }.bind(this), 2000);
                 break;
             case 'add-elements':
                 this.otherElements = this.otherElements.concat(message.elements);

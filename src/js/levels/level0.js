@@ -126,7 +126,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 level0.messageQueue.push({
                     message: 'dock at station',
                     color: 'white',
-                    position: [105, 175],
+                    position: [135, 175],
                     font: 15
                 })
                 return [];
@@ -467,7 +467,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
             }else{
                 level0.messages = {};
                 level0.events = {};
-                startLocation = [7500, -8000]; // move closer to the end
+                startLocation = [targetLocation[0]/2, targetLocation[1]/2]; // move closer to the end
                 level0.hud.objectives = true;
             }
 

@@ -50,7 +50,10 @@ define(['shipBase', 'connectedBlocks'], function(ShipBase, ConnectedBlocks){
             if(report.blocks.some(function(b){
                 return b.location[0] === block.location[0] && b.location[1] === block.location[1];
             })){
-                if(!isNaN(block.damage)){
+
+                if(report.type === 'hard'){
+                    block.damage = -1;
+                } else if(!isNaN(block.damage)){
                     block.damage--;
                 }
             }

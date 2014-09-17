@@ -1,11 +1,5 @@
 define(['smallElementFactory', 'events'], function(smallElementFactory, Events) {
 
-    /*
-        todo:
-            - place end objective once credits are over (about 3000)
-            - make approach easier
-     */
-
     var events = new Events();
 
     var mainObjective;
@@ -464,9 +458,13 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 level0.events = {};
                 startLocation = [targetLocation[0]/2, targetLocation[1]/2]; // move closer to the end
                 level0.hud.objectives = true;
-                if(!level0.objectiveAvailable){
-                    level0.createObjective(startLocation);
-                }
+                level0.createObjective(startLocation);
+                level0.messageQueue.push({
+                    message: 'Follow the yellow arrow',
+                    color: 'yellow',
+                    position: [120, 250],
+                    font: 15
+                });
             }
 
             level0.started = true;
@@ -487,14 +485,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 if(complete){
                     return;
                 }
-
-                // level0.messageQueue.push({
-                //     message: 'mission complete',
-                //     color: 'white',
-                //     position: [105, 175],
-                //     font: 25
-                // });
-
+                
                 events.emit('player-stop');
 
                 setTimeout(function(){    

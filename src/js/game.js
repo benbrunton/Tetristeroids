@@ -165,7 +165,13 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
     };
 
     Game.prototype.processCollisions = function() {
-        var allElements = this.otherElements.concat(this.player);
+        var playerView = this.player.getView();
+        var allElements = this.otherElements.filter(function(element){
+            var v = element.getView();
+            return v.type !== 'ignore' && (Math.abs(v.location[0] - playerView.location[0]) < 300 
+                && Math.abs(v.location[1] - playerView.location[1]) < 300);
+        });
+        allElements.push(this.player);
         var i = allElements.length;
         var j, element, element2;
         while(i--){
@@ -178,10 +184,12 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
                 }
                 var el1 = element.getView();
                 var el2 = element2.getView();
-                var report1 = this.collisions.check(el1, el2);
-                var report2 = this.collisions.check(el2, el1);
-                report1 && element.collision(report1);
-                report2 && element2.collision(report2);
+                var report = this.collisions.check(el1, el2);
+                
+                if(report){
+                    report.element1.blocks.length && element.collision(report.element1);
+                    report.element2.blocks.length && element2.collision(report.element2);
+                }
 
             }
         }

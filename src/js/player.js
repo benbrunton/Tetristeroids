@@ -107,7 +107,14 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             case 'player-missile':
                 break;
             default:
-                report.blocks.forEach(this._damageBlock.bind(this));
+                var i = report.blocks.length;
+                while(i--){
+                    this._damageBlock(report.blocks[i]);
+                    if(report.blocks[i].type === 'shield'){
+                        break;
+                    }
+                }
+                
                 var numBlocks = this.blocks.length;
                 this.blocks = this.blocks.filter(function(block){
                     return block.damage > 0;
@@ -253,6 +260,9 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
     };
 
     Player.prototype._damageBlock = function(block){
+        // if(block.type === 'cockpit'){
+        //     debugger;
+        // }
         block.damage--;
         this.messageQueue.push({
             msg: 'explosion',

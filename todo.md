@@ -17,6 +17,7 @@ better hud
 crew
 energy shield
 glider (Conways Game Of Life) enemies
+tetris level
 
 Level ideas
 precision parking with reasonably good collision detection
@@ -48,6 +49,7 @@ levels
 -- some asteroids
 -- some enemies
 -- maze around a couple of pickups
+-- tetrisify delivery
 
 - level 3 - protect the leader - convoy - join forces with another resistance org
 - level 4 - big fight - lead a squad

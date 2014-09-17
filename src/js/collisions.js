@@ -1,6 +1,6 @@
 define(['blocks', 'context'], function(blocks, context){
 
-    var MIN_CHECK = 100;
+    var MIN_CHECK = 150;
 
     function Collisions(){
 
@@ -26,13 +26,7 @@ define(['blocks', 'context'], function(blocks, context){
             return false;
         }
 
-        if(element1.type === 'ignore' || element2.type === 'ignore'){
-            return false;
-        }
-
-        if(element2.noDamage){
-            return false;
-        }
+        
 
         var max1 = this._getLongestRadius(element1);
         var max2 = this._getLongestRadius(element2);
@@ -45,15 +39,33 @@ define(['blocks', 'context'], function(blocks, context){
             return false;
         }
 
-        var blocks = this._getCollidingBlocks(element1, element2);
 
-        if(blocks.length < 1){
+        var blocks = element2.noDamage ? [] : this._getCollidingBlocks(element1, element2);
+        var el2blocks = element1.noDamage ? [] : this._getCollidingBlocks(element2, element1);
+
+        if(blocks.length < 1 && el2blocks.length <1){
             return false;
         }
 
+        var type = blocks.some(function(block){
+            return block.type === 'shield';
+        }) ? 'hard':'soft';
+
+        var type2 = el2blocks.some(function(block){
+            return block.type === 'shield';
+        }) ? 'hard' : 'soft';
+
         return {
-            collided: element2,
-            blocks: blocks
+            element1: {
+                collided: element2,
+                blocks: blocks,
+                type:type2
+            }, 
+            element2: {
+                collided:element1,
+                blocks:el2blocks,
+                type:type
+            }
         };
     };
 
@@ -86,7 +98,6 @@ define(['blocks', 'context'], function(blocks, context){
 
             if(this._compare(blockData.data, drawElement2.data)){
                 blocks.push(block);
-
             }
         }
 
@@ -108,11 +119,12 @@ define(['blocks', 'context'], function(blocks, context){
             block = element.blocks[i];
             ctx.save();
             ctx.translate(block.location[0] * 10 - 5, block.location[1] * 10 - 5);
-            instructions = blocks[block.type];
-            j = instructions.length;
-            while(j--){
-                context(ctx, instructions[j], false);
-            }
+            ctx.fillRect(0, 0, 10, 10);
+            // instructions = blocks[block.type];
+            // j = instructions.length;
+            // while(j--){
+            //     context(ctx, instructions[j], false);
+            // }
             ctx.restore();
         };
 

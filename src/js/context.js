@@ -16,8 +16,8 @@ define(function(){
         ctx.closePath();
     }
 
-    return function(ctx, instruction, color){
-        if(color && instruction.color){
+    return function(ctx, instruction, display){
+        if(display && instruction.color){
             ctx.fillStyle = instruction.color;
         }
         switch(instruction.type){
@@ -40,6 +40,7 @@ define(function(){
                             instruction.pos[2][1]);
                 break;
             case 'alpha':
+                if(!display){break;}
                 ctx.globalAlpha = instruction.value;
                 break;
             case 'font':

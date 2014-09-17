@@ -1,6 +1,14 @@
 define(['smallElementFactory', 'events'], function(smallElementFactory, Events) {
 
+    /*
+        todo:
+            - place end objective once credits are over (about 3000)
+            - make approach easier
+     */
+
     var events = new Events();
+
+    var mainObjective;
 
     // position of objective
     var targetLocation = [6500, -10000];
@@ -62,34 +70,35 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
         ];
     };
 
-    var structures = [
+    var structures = function(){
+        return [
+            smallElementFactory.getSimpleStructure([targetLocation[0]-70, targetLocation[1]-20], 0, boxBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]-70, targetLocation[1]-60], 0, boxBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]-70, targetLocation[1]+20], 0, boxBlocks()),
 
-        smallElementFactory.getSimpleStructure([targetLocation[0]-70, targetLocation[1]-20], 0, boxBlocks()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]-70, targetLocation[1]-60], 0, boxBlocks()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]-70, targetLocation[1]+20], 0, boxBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]-20], 0, boxBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]-60], 0, boxBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]+20], 0, boxBlocks()),
+            
+            smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]-100], 0, cornerBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]-100], r2, cornerBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]+100], r3, cornerBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]+100], r4, cornerBlocks()),
 
-        smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]-20], 0, boxBlocks()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]-60], 0, boxBlocks()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]+20], 0, boxBlocks()),
-        
-        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]-100], 0, cornerBlocks()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]-100], r2, cornerBlocks()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]+100], r3, cornerBlocks()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]+100], r4, cornerBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]-65, targetLocation[1]-220], 0, wallBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]-65, targetLocation[1]+220], 0, wallBlocks()),
 
-        smallElementFactory.getSimpleStructure([targetLocation[0]-65, targetLocation[1]-220], 0, wallBlocks()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]-65, targetLocation[1]+220], 0, wallBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]+5, targetLocation[1]-220], 0, wallBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]+5, targetLocation[1]+220], 0, wallBlocks()),
 
-        smallElementFactory.getSimpleStructure([targetLocation[0]+5, targetLocation[1]-220], 0, wallBlocks()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]+5, targetLocation[1]+220], 0, wallBlocks()),
-
-        smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]-35], r2, wallBlocks()),
-        smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]-35], r2, wallBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]-35], r2, wallBlocks()),
+            smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]-35], r2, wallBlocks()),
 
 
-        smallElementFactory.getSatellite(targetLocation, 140, 0, satelliteBlocks()),
-        smallElementFactory.getSatellite(targetLocation, 140, r3, satelliteBlocks())
-    ];
+            smallElementFactory.getSatellite(targetLocation, 140, 0, satelliteBlocks()),
+            smallElementFactory.getSatellite(targetLocation, 140, r3, satelliteBlocks())
+        ];
+    };
 
     var proximityEvents = [
         {
@@ -136,6 +145,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
 
     var level0 = {
         started: false,
+        objectiveAvailable: false,
         hud:{
             cash: false,
             objectives: false
@@ -148,6 +158,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
             }]
         },
         messageQueue: [],
+        eventQueue:[],
         messages: {
             20: {
                 message: 'hold ↑',
@@ -284,6 +295,15 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
             2990: {
                 execute:function(){
                     level0.hud.objectives = true;
+                    return [];
+                }
+            },
+
+            3000: {
+                execute:function(playerView){
+                    if(!level0.objectiveAvailable){
+                        level0.createObjective(playerView.location);
+                    }
                     return [];
                 }
             },
@@ -435,6 +455,30 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
         },
 
         setup: function() {
+            
+
+            if(!level0.started){
+                level0.hud.objectives = false;
+            }else{
+                level0.messages = {};
+                level0.events = {};
+                startLocation = [targetLocation[0]/2, targetLocation[1]/2]; // move closer to the end
+                level0.hud.objectives = true;
+                if(!level0.objectiveAvailable){
+                    level0.createObjective(startLocation);
+                }
+            }
+
+            level0.started = true;
+
+            return {
+                elements: [],
+                playerLocation: startLocation.slice()
+            };
+        },
+
+        createObjective: function(pos){
+            targetLocation = [pos[0] + 1000, pos[1] - 1500];
             var x = smallElementFactory.getSimpleObjective(targetLocation);
             var elements = [x];
             var complete = false;
@@ -460,28 +504,18 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
 
             });
 
-            elements = elements.concat(structures);
-
-            if(!level0.started){
-                level0.hud.objectives = false;
-            }else{
-                level0.messages = {};
-                level0.events = {};
-                startLocation = [targetLocation[0]/2, targetLocation[1]/2]; // move closer to the end
-                level0.hud.objectives = true;
-            }
-
-            level0.started = true;
-
-            return {
-                elements: elements,
-                playerLocation: startLocation.slice()
-            };
+            elements = elements.concat(structures());
+            level0.objectiveAvailable = true;
+            level0.eventQueue.push({
+                    msg: 'add-elements',
+                    elements: elements
+            });
         },
 
         update:function(time, playerPos){
 
-            var events = [];
+            var events = level0.eventQueue.slice();
+            level0.eventQueue = [];
 
             proximityEvents.forEach(function(evt){
                 if(evt.check(playerPos)){

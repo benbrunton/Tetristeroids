@@ -86,10 +86,10 @@ define(['blocks', 'context'], function(blocks, render){
         this.ctx.save();
         this.ctx.translate(block.location[0] * 10 - 5, block.location[1] * 10 - 5);
         var instructions = blocks[block.type];
-        var iLen = blocks[block.type].length;
+        var iLen = instructions.length;
         var i, instruction;
         for(i = 0; i < iLen; i++){
-            instruction = blocks[block.type][i];
+            instruction = instructions[i];
             if(instruction.type === 'dynamic'){
                 this._executeDynamicInstruction(instruction.value, block);
             }else{

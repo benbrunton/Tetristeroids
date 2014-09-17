@@ -5,7 +5,6 @@ Todo:
 enemy spaceships
 blocks need to hold data about how they affect ship etc
 end of levels should have a star wars style vertical scroll
-abstract block renderer
 prevent unfeasible ships
 save player state and current level to localStorage
 multibrowser support

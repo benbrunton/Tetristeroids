@@ -167,7 +167,6 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
     Game.prototype.processCollisions = function() {
         var allElements = this.otherElements.concat(this.player);
         var i = allElements.length;
-        var j = i;
         var j, element, element2;
         while(i--){
             j = i;

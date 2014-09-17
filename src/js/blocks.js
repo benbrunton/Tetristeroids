@@ -45,7 +45,10 @@ define(function(){
             {color:'#444', type:'rect', pos:[4, 0], width:2, height:6}
         ],
         'missile':[
-            {color:'yellow', type:'rect', pos:[4, 2], width:2, height:4}
+            {type:'alpha', value:0.5},
+            {color:'yellow', type:'rect', pos:[4, 2], width:2, height:4},
+            {type:'alpha', value:0.2},
+            {color:'gold', type:'rect', pos:[4, 1], width:2, height:4}
         ],
         'bumper':[
             {type:'alpha', value:0.4},
@@ -101,8 +104,10 @@ define(function(){
             {type:'circle', color:SHIP_STANDARD, pos:[5,5], radius:2}
         ],
         'energy-shield':[
+            {type:'alpha', value:0.3},
+            {type:'rect', color:'gold', pos:[-1, -1], width:12, height:12},
             {type:'alpha', value:0.2},
-            {type:'block', color:'gold'}
+            {type:'circle', color:'yellow', pos:[5,5], radius:10}
         ],
         'none':[
             {type:'block', color:'#ccc'},

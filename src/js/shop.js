@@ -18,6 +18,9 @@ define(['blocks', 'context'], function(blocks, context){
             {name: 'engine', level:0, price: 450, instruction: 'engine'},
             {name: 'cockpit', level:0, price: 300, instruction: 'cockpit'},
             {name: 'shield', level:0, price: 200, instruction: 'shield'},
+            {name: 'aero', level:0, price:150, instruction:'wing'},
+
+
             {name: 'none', level:0, price:0, instruction: 'destroy'}
         ];
 

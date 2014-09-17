@@ -10,16 +10,17 @@ save player state and current level to localStorage
 multibrowser support
 kongregate api
 achievements
-more instruction
+let player know controls
 grappling hook
 collectables
 better hud
 crew
 glider (Conways Game Of Life) enemies
 tetris level
+centre of gravity calculation
 
 Level ideas
-precision parking with reasonably good collision detection
+precision parking with reasonably good collision detection - tetris!
 
 story
 year is 3014

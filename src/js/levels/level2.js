@@ -1,6 +1,12 @@
-// do a mission for the resistance
-// collect and deliver
-// add some bad guy ships
+/*
+    todo
+    - tetrisify level
+    --- collect items
+      --- player can carry items
+      --- collectable items look interesting
+    --- drop off in connected way
+    --- add bad guys
+ */
 
 define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events, smallElementFactory, BadFighter){
     var events = new Events();
@@ -38,8 +44,13 @@ define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events,
         messageQueue:[],
         messages:{},
         setup: function(){
+
+            var collectable1 = smallElementFactory.getCollectable(location1);
+            collectable1.blocks = [
+                {type:'structure', location:[0, 0]}
+            ];
+
             var elements = [];
-            
             var collectables = [
                 smallElementFactory.getCollectable(location1),
                 smallElementFactory.getCollectable(location2),

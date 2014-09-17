@@ -2,6 +2,7 @@ Space Rebel game
 
 Todo:
 
+energy shield
 enemy spaceships
 blocks need to hold data about how they affect ship etc
 end of levels should have a star wars style vertical scroll
@@ -15,7 +16,6 @@ grappling hook
 collectables
 better hud
 crew
-energy shield
 glider (Conways Game Of Life) enemies
 tetris level
 

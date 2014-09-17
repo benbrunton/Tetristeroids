@@ -119,12 +119,12 @@ define(['blocks', 'context'], function(blocks, context){
             block = element.blocks[i];
             ctx.save();
             ctx.translate(block.location[0] * 10 - 5, block.location[1] * 10 - 5);
-            ctx.fillRect(0, 0, 10, 10);
-            // instructions = blocks[block.type];
-            // j = instructions.length;
-            // while(j--){
-            //     context(ctx, instructions[j], false);
-            // }
+            // ctx.fillRect(0, 0, 10, 10);
+            instructions = blocks[block.type];
+            j = instructions.length;
+            while(j--){
+                context(ctx, instructions[j], false);
+            }
             ctx.restore();
         };
 

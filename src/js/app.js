@@ -135,6 +135,7 @@ define(
 
                     //hack
                     var playerEngines = false;
+                    var playerShield = false;
 
                     var i = keys.length;
                     while(i--){
@@ -155,13 +156,24 @@ define(
                             case 'space':
                                 game.playerFires();
                                 break;
+                            case 'shift':
+                                game.playerShield();
+                                playerShield = true;
+                                break;
                             default:
                                 break;
                         }
                     }
 
+
+                    // hack #2
+
                     if(!playerEngines){
                         game.player.cutEngine();
+                    }
+
+                    if(!playerShield){
+                        game.player.shieldDown();
                     }
                 },
 

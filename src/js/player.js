@@ -16,10 +16,14 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         this.circularMovement = 0;
         this.max_turn = 1.5;
 
+        this.shieldUp = false;
+        this.lockShields = false;
+        this.shieldCharge = 0;
+
         this.blocks = [
             {
                 location: [0, -1], 
-                type: 'shield',
+                type: 'bumper',
                 damage: 200
             },
             {
@@ -35,12 +39,12 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             },
             {
                 location: [1, -1], 
-                type: 'shield',
+                type: 'bumper',
                 damage: 200
             },
             {
                 location: [-1, -1], 
-                type: 'shield',
+                type: 'bumper',
                 damage: 200
             }
         ];
@@ -81,7 +85,39 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             );
         }
 
+        if(this.shieldUp){
+            if(this.shieldCharge < 1){
+                this.shieldUp = false;
+                this.lockShields = true;
+            }else{
+                this.shieldCharge--;
+            }
+        }else{
+            if(this.shieldCharge < this._getMaxShield()){
+                this.shieldCharge++;
+            }
+        }
+
+
         return ShipBase.prototype.update.call(this);
+    };
+
+    Player.prototype.getView = function() {
+        var v = ShipBase.prototype.getView.call(this);
+        if(this.shieldUp){
+            var energyBlocks = v.blocks.map(function(block){
+                return {
+                    type:'energy-shield',
+                    location:block.location.slice()
+                }
+            });
+            v.blocks = v.blocks.concat(energyBlocks);
+        }
+
+        v.shieldCharge = this.shieldCharge;
+        v.maxShield = this._getMaxShield();
+
+        return v;
     };
 
 
@@ -92,12 +128,19 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         this.blocks = JSON.parse(this.cachedBlocks);
         this.cash = this.cachedCash;
         this.stopPlayer = false;
+        this.lockShields = false;
+        this.shieldUp = false;
+        this.shieldCharge = this._getMaxShield();
     };
 
 
     Player.prototype.collision = function(report) {
         if(this.stopPlayer){
             return;
+        }
+
+        if(this.shieldUp){
+            return;    
         }
 
         switch(report.collided.type){
@@ -110,9 +153,6 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
                 var i = report.blocks.length;
                 while(i--){
                     this._damageBlock(report.blocks[i]);
-                    if(report.blocks[i].type === 'shield'){
-                        break;
-                    }
                 }
                 
                 var numBlocks = this.blocks.length;
@@ -247,6 +287,17 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         this.lastFired = Date.now();
     };
 
+    Player.prototype.shield = function() {
+        if(this.shieldCharge > 1 && this.lockShields === false){
+            this.shieldUp = true;
+        }
+    };
+
+    Player.prototype.shieldDown = function() {
+        this.shieldUp = false;
+        this.lockShields = false;
+    };
+
     Player.prototype.getBlockLocation = function(loc){
         var s = Math.sin(this.rotation);
         var c = Math.cos(this.rotation);
@@ -260,9 +311,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
     };
 
     Player.prototype._damageBlock = function(block){
-        // if(block.type === 'cockpit'){
-        //     debugger;
-        // }
+
         block.damage--;
         this.messageQueue.push({
             msg: 'explosion',
@@ -290,6 +339,13 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
 
         return blocks.connected;
         
+    };
+
+
+    Player.prototype._getMaxShield = function() {
+        return this.blocks.filter(function(block){
+            return block.type === 'shield';
+        }).length * 200;
     };
 
 

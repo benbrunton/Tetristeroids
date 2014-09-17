@@ -217,5 +217,9 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
         this.player.fire();
     };
 
+    Game.prototype.playerShield = function() {
+        this.player.shield();
+    };
+
     return Game;
 });

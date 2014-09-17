@@ -175,7 +175,7 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events', 'connectedBlocks'], 
             var blocks = [
                 {
                     location: [0, -2],
-                    type: 'shield'
+                    type: 'bumper'
                 },
                 {
                     location: [0, -1],
@@ -222,7 +222,7 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events', 'connectedBlocks'], 
                 },
                 {
                     location: [0, -2],
-                    type: 'shield'
+                    type: 'bumper'
                 },
                 {
                     location: [0, -1],

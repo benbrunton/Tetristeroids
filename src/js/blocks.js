@@ -47,7 +47,7 @@ define(function(){
         'missile':[
             {color:'yellow', type:'rect', pos:[4, 2], width:2, height:4}
         ],
-        'shield':[
+        'bumper':[
             {type:'alpha', value:0.4},
             {color:'#ffff98', type:'circle', pos:[5,5], radius:5},
             {type:'alpha', value:1.0},
@@ -93,6 +93,16 @@ define(function(){
         ],
         'explosion':[
             {type:'dynamic', value:'explosion'}
+        ],
+        'shield':[
+            {type:'block', color:SHIP_STANDARD},
+            {type:'circle', color:'#ffff98', pos:[5,5], radius:4},
+            {type:'circle', color:'#1c4226', pos:[5,5], radius:3},
+            {type:'circle', color:SHIP_STANDARD, pos:[5,5], radius:2}
+        ],
+        'energy-shield':[
+            {type:'alpha', value:0.2},
+            {type:'block', color:'gold'}
         ],
         'none':[
             {type:'block', color:'#ccc'},

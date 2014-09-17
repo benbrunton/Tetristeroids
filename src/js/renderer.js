@@ -35,8 +35,6 @@ define(['blocks', 'context'], function(blocks, render){
     };
 
     Renderer.prototype.drawHud = function(instructions, elements, messages) {
-        var cash = 0;
-
         if(instructions.objectives){
             elements.filter(function(element){
                 return element.type === 'objective';
@@ -45,15 +43,9 @@ define(['blocks', 'context'], function(blocks, render){
 
         elements.forEach(function(element){
             if(element.type === 'player'){
-                cash = element.cash;
+                this._drawPlayerDetails(element, instructions);
             }
-        });
-
-        if(instructions.cash){
-            this.ctx.fillStyle = 'white';
-            this.ctx.font = '14px Arial';
-            this.ctx.fillText('cash : £' + cash, 320, 20);
-        }
+        }.bind(this));
 
         messages.forEach(function(message){
             this.messages.push({time: 0, message: message});
@@ -219,6 +211,24 @@ define(['blocks', 'context'], function(blocks, render){
         }
 
         return 'white';
+    };
+
+    Renderer.prototype._drawPlayerDetails = function(element, instructions) {
+        var cash = 0;
+
+        if(element.type === 'player'){
+            cash = element.cash;
+        }
+
+        if(instructions.cash){
+            this.ctx.fillStyle = 'white';
+            this.ctx.font = '14px Arial';
+            this.ctx.fillText('cash : £' + cash, 300, 20);
+        }
+
+        if(element.maxShield > 0){
+           this.ctx.fillText('shield :' + element.shieldCharge + '/' + element.maxShield, 300, 35); 
+        }
     };
 
     return Renderer;

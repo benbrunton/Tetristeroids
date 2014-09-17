@@ -11,22 +11,24 @@ define(['blocks', 'context'], function(blocks, context){
         this.updates = {};
 
         this.items = [
-            {name: 'shield', level:0, price: 200, instruction:'shield'},
+            {name: 'bumper', level:0, price: 200, instruction:'bumper'},
             //{name: 'generator', level:0, price: 200, instruction: 'generator'},
             {name: 'standard-gun', level:0, price: 500, instruction: 'gun'},
             {name: 'solid', level:0, price: 150, instruction: 'fuselage'},
             {name: 'engine', level:0, price: 450, instruction: 'engine'},
             {name: 'cockpit', level:0, price: 300, instruction: 'cockpit'},
+            {name: 'shield', level:0, price: 200, instruction: 'shield'},
             {name: 'none', level:0, price:0, instruction: 'destroy'}
         ];
 
         this.damage = {
-            'shield' : 100,
+            'bumper' : 100,
             'generator' : 4,
             'standard-gun' : 2,
             'solid': 4,
             'engine': 10,
-            'cockpit' :10
+            'cockpit' :10,
+            'shield': 2
         };
     }
 

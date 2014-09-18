@@ -117,19 +117,18 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             v.blocks = v.blocks.concat(energyBlocks);
         }
 
-        var pickups = [];
-        this.carrying.forEach(function(pickup){
-            pickups = pickups.concat(pickup.blocks.map(function(block){
-                return {
-                    type: block.type,
-                    location: [block.location[0] + pickup.location[0], block.location[1] + pickup.location[1] - 4]
-                };
-            }));
-        });
+        // var pickups = [];
+        // this.carrying.forEach(function(pickup){
+        //     pickups = pickups.concat(pickup.blocks.map(function(block){
+        //         return {
+        //             type: block.type,
+        //             location: [block.location[0] + pickup.location[0], block.location[1] + pickup.location[1] - 4]
+        //         };
+        //     }));
+        // });
 
 
-        v.blocks = v.blocks.concat(pickups);
-
+        v.subElements = this.carrying;
         v.shieldCharge = this.shieldCharge;
         v.maxShield = this._getMaxShield();
 
@@ -384,20 +383,32 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
 
     Player.prototype._collect = function(object) {
         var location = null;
+        var carryLocation = null;
+
+        if(this.carrying.some(function(item){
+            return item.id === object.id;
+        })){
+            return;
+        }
+
         this.blocks.filter(function(block){
             return block.type === 'electro-magnet';
         }).forEach(function(block){
             if(!this.carrying.some(function(pickup){
-                return pickup.location[0] === block.location[0] && pickup.location[1] === block.location[1];
+                return pickup.carryPos[0] === block.location[0] && pickup.carryPos[1] === block.location[1];
             })){
-                location = block.location.slice();
+                carryLocation = block.location.slice();
+                location = [block.location[0], block.location[1] - 5];
             }
         }.bind(this));
 
         this.carrying.push({
+            rotation:0,
+            carryPos: carryLocation,
             location:location,
             blocks:object.blocks,
-            type:object.type
+            type:object.type,
+            id:object.id
         });
     };
 
@@ -409,7 +420,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
                 location: this.getBlockLocation([item.location[0], item.location[1] - 5]),
                 isAlive:true,
                 id:item.id,
-                rotation: this.rotation,
+                rotation: this.rotation + item.rotation,
                 pickup:true,
                 movement:this.movement.slice()
             };
@@ -427,6 +438,16 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         switch(key){
             case 'enter':
                 this._dropAll();
+                break;
+            case 'z':
+                this.carrying.forEach(function(pickup){
+                    pickup.rotation -= Math.PI/20;
+                });
+                break;
+            case 'x':
+                this.carrying.forEach(function(pickup){
+                    pickup.rotation += Math.PI/20;
+                });
                 break;
         }
     };

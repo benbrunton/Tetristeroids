@@ -12,7 +12,7 @@ define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events,
     var events = new Events();
     var startLocation = [0, 0];
 
-    var location1 = [2000, 1350];
+    var location1 = [200, 135];
     var location2 = [1000, -2350];
     var location3 = [-2300, -1350];
     var location4 = [3200, 3350];
@@ -45,15 +45,26 @@ define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events,
         messages:{},
         setup: function(){
 
-            // var collectable1 = smallElementFactory.getCollectable(location1);
-            // collectable1.blocks = [
-            //     {type:'structure', location:[0, 0]}
-            // ];
+            var collectable1 = smallElementFactory.getCollectable(location1);
+            collectable1.blocks = [
+                {type:'structure', location:[0, 0]},
+                {type:'structure', location:[0, -1]},
+                {type:'structure', location:[-1, 0]},
+                {type:'structure', location:[1, 0]}
+            ];
+
+            var collectable2 = smallElementFactory.getCollectable(location2);
+            collectable2.blocks = [
+                {type:'structure', location:[0, 0]},
+                {type:'structure', location:[0, -1]},
+                {type:'structure', location:[-1, -1]},
+                {type:'structure', location:[0, 1]}
+            ];
 
             var elements = [];
             var collectables = [
-                smallElementFactory.getCollectable(location1),
-                smallElementFactory.getCollectable(location2),
+                collectable1,
+                collectable2,
                 smallElementFactory.getCollectable(location3),
                 smallElementFactory.getCollectable(location4)
             ];
@@ -63,13 +74,7 @@ define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events,
             level2.eventQueue = [];
 
             collectables.forEach(function(collectable){
-                
-                collectable.on('complete', function(){
-                    // setTimeout(function(){
-                    //     collectable.isAlive = false;
-                    // },50);
-                    dropoff.type = 'objective';
-                });
+                collectable.on('complete', function(){dropoff.type = 'objective';});
             });
             
 
@@ -80,7 +85,7 @@ define(['events', 'smallElementFactory', 'enemies/badFighter'], function(Events,
                 if(collectables[currentCollectable]){
                     level2.eventQueue.push({
                         msg: 'add-elements',
-                        elements: collectables[currentCollectable]
+                        elements: [collectables[currentCollectable]]
                     });
                 }else{
                     events.emit('complete');

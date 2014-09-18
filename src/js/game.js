@@ -207,7 +207,6 @@ define(['player', 'playerMissile', 'explosion', 'collisions', 'shipBase'], funct
 
 
     Game.prototype._returnFullElement = function(element) {
-        // getView, update, collision
         if(typeof element.getView === 'function' 
             && typeof element.update === 'function' 
             && typeof element.collision === 'function'){
@@ -248,7 +247,6 @@ define(['player', 'playerMissile', 'explosion', 'collisions', 'shipBase'], funct
     };
 
     Game.prototype.playerAction = function(key) {
-        // context sensitive actions
         this.player.action(key);
     };
 

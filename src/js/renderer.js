@@ -17,21 +17,32 @@ define(['blocks', 'context'], function(blocks, render){
 
     Renderer.prototype.drawElement = function(element){
         var loc = element.location;
-        var i = 0;
-        var l = element.blocks.length;
-
+        
         this.ctx.save();
         this.ctx.translate(-(this.camera[0] - 200), -(this.camera[1] - 200));
         this.ctx.translate(loc[0], loc[1]);
-        this.ctx.rotate(element.rotation);
+        this.drawSubElement(element);
 
+        var i = element.subElements ? element.subElements.length : 0;
+        var subElement;
+        while(i--){
+            subElement = element.subElements[i];
+            this.ctx.save();
+            this.ctx.translate(subElement.location[0] * 10, subElement.location[1] * 10);
+            this.drawSubElement(element.subElements[i]);
+            this.ctx.restore();
+        }
+
+        this.ctx.restore();
+    };
+
+    Renderer.prototype.drawSubElement = function(element) {
+        this.ctx.rotate(element.rotation);
         var iLen = element.blocks.length;
         var i;
         for(i = 0; i < iLen; i++){
             this.drawBlock(element.blocks[i]);
         }
-
-        this.ctx.restore();
     };
 
     Renderer.prototype.drawHud = function(instructions, elements, messages) {

@@ -20,6 +20,8 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         this.lockShields = false;
         this.shieldCharge = 0;
 
+        this.pickDelay = {};
+
 
         this.carrying = [];
 
@@ -155,7 +157,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             return;
         }
 
-        if(report.collided.pickup && this._hasCarryCapacity()){
+        if(report.collided.pickup && this._hasCarryCapacity() && !this.pickDelay[report.collided.id]){
             this._collect(report.collided); // blocks && subtype
             this.messageQueue.push({msg:'kill', id:report.collided.id});
             return;  
@@ -164,6 +166,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         if(report.collided.pickup && this.blocks.some(function(element){
             return element.type === 'electro-magnet';
         })){
+            this.pickDelay = {};
             return;
         }
 
@@ -420,6 +423,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
 
     Player.prototype._dropAll = function() {
         var droppedItems = this.carrying.map(function(item){
+            this.pickDelay[item.id] = true;
             return {
                 blocks: item.blocks,
                 type:item.type,

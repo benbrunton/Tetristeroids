@@ -167,11 +167,11 @@ define(['blocks', 'context'], function(blocks, context){
           if (block.location[0] < maxRight) {
             minLeft = block.location[0];
           }
-          if (block.location[0] > maxTop) {
-            maxTop = block.location[0];
+          if (block.location[1] > maxTop) {
+            maxTop = block.location[1];
           }
-          if (block.location[0] > minBottom) {
-            minBottom = block.location[0];
+          if (block.location[1] > minBottom) {
+            minBottom = block.location[1];
           }
         });
         

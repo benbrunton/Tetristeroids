@@ -157,6 +157,17 @@ define(['blocks', 'context'], function(blocks, render){
                 this.ctx.fillStyle = this._getExplosionColor(block);
                 this.drawCircle(5, 5, this._getExplosionSize(block));
                 break;
+            case 'counter':
+                this.ctx.fillStyle = 'white';
+                this.ctx.fillRect(0, 0, 19, 19);
+                this.ctx.fillStyle = 'black';
+                this.ctx.font = '12px Arial';
+                var count = block.counter.count.toString();
+                if(count.length < 2){
+                    count = '0' + count;
+                }
+                this.ctx.fillText(count, 3, 14);
+                break;
             default:
                 break;
         }

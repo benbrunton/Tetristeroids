@@ -10,8 +10,16 @@ define(function(){
 
     return {
         'solid':[
-            {color:SHIP_STANDARD, type:'rect', pos:[0, 0], width:10, height:10},
+            {color:SHIP_STANDARD, type:'block'},
             {color:SHIP_FOREGROUND, type:'rect', pos:[2, 0], width:6, height:10}
+        ],
+        'tetris':[
+            {type:'alpha', value:0.4},
+            {type:'block', color:'red'}
+        ],
+        'tetris-board':[
+            {type:'alpha', value:0.5},
+            {type:'block', color:'#ccc'}
         ],
         'aero':[
             {color:SHIP_STANDARD, type:'rect', pos:[0,0], width:2, height:10},
@@ -114,6 +122,9 @@ define(function(){
             {type:'rect', pos:[2, 0], width:2, height:5, color:'gold'},
             {type:'rect', pos:[6, 0], width:2, height:5, color:'gold'},
             {color:'#1c4226', type:'rect', pos:[0, 5], width:10, height:2}
+        ],
+        'counter':[
+            {type:'dynamic', value:'counter'}
         ],
         'none':[
             {type:'block', color:'#ccc'},

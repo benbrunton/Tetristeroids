@@ -26,7 +26,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         this.blocks = [
             {
                 location: [0, -1], 
-                type: 'bumper',
+                type: 'electro-magnet',//'bumper',
                 damage: 200
             },
             {
@@ -159,6 +159,12 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             this._collect(report.collided); // blocks && subtype
             this.messageQueue.push({msg:'kill', id:report.collided.id});
             return;  
+        }
+
+        if(report.collided.pickup && this.blocks.some(function(element){
+            return element.type === 'electro-magnet';
+        })){
+            return;
         }
 
         if(this.shieldUp){
@@ -398,7 +404,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
                 return pickup.carryPos[0] === block.location[0] && pickup.carryPos[1] === block.location[1];
             })){
                 carryLocation = block.location.slice();
-                location = [block.location[0], block.location[1] - 5];
+                location = [block.location[0], block.location[1] - 2];
             }
         }.bind(this));
 
@@ -417,7 +423,7 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             return {
                 blocks: item.blocks,
                 type:item.type,
-                location: this.getBlockLocation([item.location[0], item.location[1] - 5]),
+                location: this.getBlockLocation([item.location[0], item.location[1]]),
                 isAlive:true,
                 id:item.id,
                 rotation: this.rotation + item.rotation,

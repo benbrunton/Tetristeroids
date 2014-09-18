@@ -1,6 +1,6 @@
 define(['events', 'collisions'], function(Events, Collisions){
 
-    // emits complete event when lines === 10
+    var LINES = 15;
 
 
     function Tetris(location){
@@ -33,7 +33,7 @@ define(['events', 'collisions'], function(Events, Collisions){
         i = 10;
         var j;
         while(i--){
-            j = 15;
+            j = LINES;
             while(j--){
                 boardBlocks.push({type:'tetris-board', location:[i-5, j]});    
             }
@@ -57,8 +57,12 @@ define(['events', 'collisions'], function(Events, Collisions){
         var output = this.messageQueue;
         this.messageQueue = [];
 
-
+        this._checkLine();
         this.timedUpdate();
+
+        if(this.counter.count === 10){
+            this.events.emit('complete');
+        }
 
         return output;
     };
@@ -71,14 +75,13 @@ define(['events', 'collisions'], function(Events, Collisions){
                 }
             }.bind(this));
 
-            //this._checkLine();
+
             this.lastUpdated = Date.now();
         }
     };
 
     Tetris.prototype.collision = function(report) {
         if(report.collided.pickup){
-            // this.counter.count++;
             this.messageQueue.push({
                 msg:'kill',
                 id:report.collided.id
@@ -104,6 +107,39 @@ define(['events', 'collisions'], function(Events, Collisions){
 
     Tetris.prototype.on = function(event, callback) {
         this.events.on(event, callback);
+    };
+
+    Tetris.prototype._checkLine = function() {
+        var i = LINES;
+        var allBlocks = [];
+        this.pieces.forEach(function(piece){
+            allBlocks = allBlocks.concat(piece.blocks.map(function(block){
+                return {
+                    location: [block.location[0] + piece.location[0], block.location[1] + piece.location[1]]
+                };
+            }));
+        });
+        var thisLine;
+        while(i--){
+            thisLine = allBlocks.filter(function(block){
+                return block.location[1] === i;
+            });
+
+            if(thisLine.length > 9){
+                this.pieces.forEach(function(piece){
+                    piece.blocks = piece.blocks.filter(function(block){
+                        return block.location[1] + piece.location[1] !== i;
+                    });
+
+                    piece.blocks.forEach(function(block){
+                        if(block.location[1] + piece.location[1] < i){
+                            block.location[1]++;
+                        }
+                    });
+                });
+                this.counter.count++;
+            }
+        }
     };
 
     Tetris.prototype._addPiece = function(report) {
@@ -141,6 +177,9 @@ define(['events', 'collisions'], function(Events, Collisions){
 
         if(this._validMove(newPiece)){
             this.pieces.push(newPiece);    
+        }else{
+            this.pieces = [];
+            this.counter.count = 0;
         }
         
     };
@@ -177,7 +216,7 @@ define(['events', 'collisions'], function(Events, Collisions){
         });
 
         return freeSpace && piece.blocks.every(function(block){
-            return newPiece.location[1] + block.location[1] <= 16;
+            return newPiece.location[1] + block.location[1] <= LINES + 1;
         });
     };
 

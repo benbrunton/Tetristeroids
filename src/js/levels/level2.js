@@ -48,6 +48,12 @@ define(['events', 'smallElementFactory', 'enemies/badFighter', 'tetris'], functi
             ],
             [
                 {type:'structure', location:[0, 0]},
+                {type:'structure', location:[0, -1]},
+                {type:'structure', location:[1, -1]},
+                {type:'structure', location:[0, 1]}
+            ],
+            [
+                {type:'structure', location:[0, 0]},
                 {type:'structure', location:[1, 0]},
                 {type:'structure', location:[0, 1]},
                 {type:'structure', location:[1, 1]}
@@ -76,6 +82,7 @@ define(['events', 'smallElementFactory', 'enemies/badFighter', 'tetris'], functi
         var element = smallElementFactory.getCollectable(location);
         element.type = 'tetris';
         element.blocks = blocks[type];
+        element.rotation = Math.random() * (Math.PI * 2);
 
         return element;
     }

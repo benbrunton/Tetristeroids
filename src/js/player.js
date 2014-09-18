@@ -20,6 +20,9 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         this.lockShields = false;
         this.shieldCharge = 0;
 
+
+        this.carrying = [];
+
         this.blocks = [
             {
                 location: [0, -1], 
@@ -114,6 +117,19 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
             v.blocks = v.blocks.concat(energyBlocks);
         }
 
+        var pickups = [];
+        this.carrying.forEach(function(pickup){
+            pickups = pickups.concat(pickup.blocks.map(function(block){
+                return {
+                    type: block.type,
+                    location: [block.location[0] + pickup.location[0], block.location[1] + pickup.location[1] - 4]
+                };
+            }));
+        });
+
+
+        v.blocks = v.blocks.concat(pickups);
+
         v.shieldCharge = this.shieldCharge;
         v.maxShield = this._getMaxShield();
 
@@ -135,8 +151,15 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
 
 
     Player.prototype.collision = function(report) {
+
         if(this.stopPlayer){
             return;
+        }
+
+        if(report.collided.pickup && this._hasCarryCapacity()){
+            this._collect(report.collided); // blocks && subtype
+            this.messageQueue.push({msg:'kill', id:report.collided.id});
+            return;  
         }
 
         if(this.shieldUp){
@@ -146,6 +169,9 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         switch(report.collided.type){
             case 'cash':
                 this.cash += report.collided.value;
+                break;
+            case 'objective':
+                
                 break;
             case 'player-missile':
                 break;
@@ -346,6 +372,63 @@ define(['shipBase', 'connectedBlocks', 'enemies/simpleShip'], function(ShipBase,
         return this.blocks.filter(function(block){
             return block.type === 'shield';
         }).length * 200;
+    };
+
+    Player.prototype._hasCarryCapacity = function() {
+        var slots = this.blocks.filter(function(block){
+            return block.type === 'electro-magnet';
+        }).length;
+
+        return slots > this.carrying.length;
+    };
+
+    Player.prototype._collect = function(object) {
+        var location = null;
+        this.blocks.filter(function(block){
+            return block.type === 'electro-magnet';
+        }).forEach(function(block){
+            if(!this.carrying.some(function(pickup){
+                return pickup.location[0] === block.location[0] && pickup.location[1] === block.location[1];
+            })){
+                location = block.location.slice();
+            }
+        }.bind(this));
+
+        this.carrying.push({
+            location:location,
+            blocks:object.blocks,
+            type:object.type
+        });
+    };
+
+    Player.prototype._dropAll = function() {
+        var droppedItems = this.carrying.map(function(item){
+            return {
+                blocks: item.blocks,
+                type:item.type,
+                location: this.getBlockLocation([item.location[0], item.location[1] - 5]),
+                isAlive:true,
+                id:item.id,
+                rotation: this.rotation,
+                pickup:true,
+                movement:this.movement.slice()
+            };
+        }.bind(this));
+
+        this.messageQueue.push({
+            msg:'add-elements',
+            elements: droppedItems
+        });
+
+        this.carrying = [];
+    };
+
+    Player.prototype.action = function(key){
+        switch(key){
+            case 'enter':
+                this._dropAll();
+                break;
+        }
     };
 
 

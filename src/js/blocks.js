@@ -109,6 +109,12 @@ define(function(){
             {type:'alpha', value:0.2},
             {type:'circle', color:'yellow', pos:[5,5], radius:10}
         ],
+        'electro-magnet':[
+            {type:'rect', pos:[0, 5], width:10, height:5, color:SHIP_STANDARD},
+            {type:'rect', pos:[2, 0], width:2, height:5, color:'gold'},
+            {type:'rect', pos:[6, 0], width:2, height:5, color:'gold'},
+            {color:'#1c4226', type:'rect', pos:[0, 5], width:10, height:2}
+        ],
         'none':[
             {type:'block', color:'#ccc'},
             {type:'font', color:'red', font:'10px Arial', pos:[3, 8], text:'x'}

@@ -1,6 +1,11 @@
 define(function(){
 
-    function ShipBase(){}
+    function ShipBase(){
+        this.pickup = false,
+        this.id = 0;
+        this.movement = [0, 0];
+        this.messageQueue = [];
+    }
 
     ShipBase.prototype.getView = function() {
         return {
@@ -9,7 +14,9 @@ define(function(){
             type: this.type,
             rotation:this.rotation,
             cash: this.cash,
-            movement:this.movement
+            movement:this.movement,
+            pickup:this.pickup,
+            id:this.id
         };
     };
 

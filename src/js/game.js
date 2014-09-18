@@ -1,4 +1,4 @@
-define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, PlayerMissile, Explosion, Collisions){
+define(['player', 'playerMissile', 'explosion', 'collisions', 'shipBase'], function(Player, PlayerMissile, Explosion, Collisions, ShipBase){
 
     function Game(levels){
         this.player = new Player();
@@ -156,12 +156,22 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
                 }.bind(this), 2000);
                 break;
             case 'add-elements':
-                this.otherElements = this.otherElements.concat(message.elements);
+                var newElements = message.elements.map(this._returnFullElement.bind(this));
+                this.otherElements = this.otherElements.concat(newElements);
                 break;
             case 'explosion':
                 this.otherElements.push(new Explosion(message.location, message.size));
                 break;
+            case 'kill':
+                this.otherElements = this.otherElements.filter(function(element){
+                    var id = element.getView().id;
+                    return id !== message.id;
+                });
+                break;
+            default:
+                break;
         }
+
     };
 
     Game.prototype.processCollisions = function() {
@@ -196,6 +206,22 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
     };
 
 
+    Game.prototype._returnFullElement = function(element) {
+        // getView, update, collision
+        if(typeof element.getView === 'function' 
+            && typeof element.update === 'function' 
+            && typeof element.collision === 'function'){
+            return element;
+        }
+
+         var updatedElement = new ShipBase();
+         for(var i in element){
+            updatedElement[i] = element[i];
+         }
+         return updatedElement;
+
+    };
+
 
     Game.prototype.movePlayerForward = function(){
         this.player.forward();
@@ -219,6 +245,11 @@ define(['player', 'playerMissile', 'explosion', 'collisions'], function(Player, 
 
     Game.prototype.playerShield = function() {
         this.player.shield();
+    };
+
+    Game.prototype.playerAction = function(key) {
+        // context sensitive actions
+        this.player.action(key);
     };
 
     return Game;

@@ -160,6 +160,11 @@ define(
                                 game.playerShield();
                                 playerShield = true;
                                 break;
+                            case 'enter':   //fallthrough
+                            case 'z':       //fallthrough
+                            case 'x': 
+                                game.playerAction(keys[i]);
+                                break;
                             default:
                                 break;
                         }

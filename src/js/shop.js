@@ -19,6 +19,8 @@ define(['blocks', 'context'], function(blocks, context){
             {name: 'cockpit', level:0, price: 300, instruction: 'cockpit'},
             {name: 'shield', level:0, price: 200, instruction: 'shield'},
             {name: 'aero', level:0, price:150, instruction:'wing'},
+            {name: 'electro-magnet', level:0, price:100, instruction:'electro magnet'},
+
 
 
             {name: 'none', level:0, price:0, instruction: 'destroy'}
@@ -221,14 +223,15 @@ define(['blocks', 'context'], function(blocks, context){
         this.ctx.fillText('done', 320, 372);
 
         var xPos = 50;
+        var yPos = 220;
         
         this.items.forEach(function(item){
             this.ctx.save();
-            this.ctx.translate(xPos, 300);
+            this.ctx.translate(xPos, yPos);
             this.ctx.scale(2, 2);
             this.drawElement(item.name);
             this.buttons.push({
-                x: xPos, y: 300, w: 20, h: 20, execute:function(){
+                x: xPos, y: yPos, w: 20, h: 20, execute:function(){
                     this.selectedItem = item.name;
                 }.bind(this),
                 rollover:function(){

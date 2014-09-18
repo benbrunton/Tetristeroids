@@ -2,6 +2,7 @@ Space Rebel game
 
 Todo:
 
+shrink collisions to half size
 enemy spaceships
 blocks need to hold data about how they affect ship etc
 end of levels should have a star wars style vertical scroll

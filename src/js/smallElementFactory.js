@@ -22,7 +22,11 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events', 'connectedBlocks'], 
             return this.getObjective(pos, 'objective');
         },
         getCollectable: function(pos){
-            return this.getObjective(pos, 'collectable');
+            var collectable = this.getObjective(pos, 'collectable');
+            collectable.pickup = true;
+            collectable.noDamage = false;
+            collectable.subtype = 'collectable';
+            return collectable;
         },
         getObjective: function(pos, type){
             var blocks = [];
@@ -42,7 +46,7 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events', 'connectedBlocks'], 
 
             objective.collision = function(report){
                 if(report.collided.type === 'player'){
-                    this.emit('complete');   
+                    this.emit('complete');
                 }
             };
 
@@ -79,6 +83,7 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events', 'connectedBlocks'], 
 
         getSimpleElement: function(type, pos, rotation, blocks, noDamage){
             var events = new Events();
+            var id = window.getID();
 
             return {
                 messageQueue:[],
@@ -87,6 +92,8 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events', 'connectedBlocks'], 
                 blocks:blocks,
                 type: type,
                 rotation:rotation,
+                noDamage:noDamage,
+                id:id,
                 update: function(){
                     var messages = this.messageQueue;
                     this.messageQueue = [];
@@ -139,7 +146,10 @@ define(['enemies/simpleShip', 'enemies/asteroid', 'events', 'connectedBlocks'], 
                         blocks: this.blocks,
                         movement:[0, 0],
                         rotation:this.rotation,
-                        noDamage:noDamage
+                        noDamage:this.noDamage,
+                        pickup:this.pickup||false,
+                        id:this.id,
+                        subtype:this.subtype||'none'
                     };
                 },
                 on: function(event, callback){

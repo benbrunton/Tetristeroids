@@ -73,7 +73,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
             smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]-20], 0, boxBlocks()),
             smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]-60], 0, boxBlocks()),
             smallElementFactory.getSimpleStructure([targetLocation[0]+30, targetLocation[1]+20], 0, boxBlocks()),
-            
+
             smallElementFactory.getSimpleStructure([targetLocation[0]-100, targetLocation[1]-100], 0, cornerBlocks()),
             smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]-100], r2, cornerBlocks()),
             smallElementFactory.getSimpleStructure([targetLocation[0]+100, targetLocation[1]+100], r3, cornerBlocks()),
@@ -104,7 +104,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 return !this.done && (Math.abs(pos[0] - targetLocation[0]) < minR && Math.abs(pos[1] - targetLocation[1]) < minR);
             },
             execute:function(){
-                
+
 
                 // space bus
                 var bus = smallElementFactory.getSpaceBus([targetLocation[0] - 250, targetLocation[1] - 250], r3 + 0.02, [-1.5, 4], 1000);
@@ -221,7 +221,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                     rebelShip.type = 'ignore';
                     return [{
                         msg: 'add-elements',
-                        elements: rebelShip
+                        elements: [rebelShip]
                     }];
                 }
             },
@@ -242,7 +242,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                         },
                         {
                             msg: 'standard-player-fire',
-                            pos: [location[0] + 10, location[1] + 10], 
+                            pos: [location[0] + 10, location[1] + 10],
                             rotation: 1.1 * Math.PI,
                             movement: [-0.1, 0]
                         },
@@ -268,10 +268,10 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                     var location2 = playerView.location.slice();
                     location1[0] -= 210;
                     location1[1] -= 60;
-                    
+
                     location2[0] -= 210;
                     location2[1] += 60;
-                    
+
                     var elements = [];
                     var federationShip1 = smallElementFactory.getSimpleFedShip(location1, 0.5 * Math.PI, [7, 0], 1000);
                     var federationShip2 = smallElementFactory.getSimpleFedShip(location2, 0.5 * Math.PI, [7, 0.1], 1000);
@@ -304,19 +304,19 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
 
             3100: {
                 execute: function(playerView){
-                    
+
                     var location1 = playerView.location.slice();
                     var location2 = playerView.location.slice();
                     var location3 = playerView.location.slice();
                     location1[0] -= 210;
                     location1[1] += 200;
-                    
+
                     location2[0] -= 245;
                     location2[1] += 155;
 
                     location3[0] -= 190;
                     location3[1] += 140;
-                    
+
                     var elements = [];
                     var federationShip1 = smallElementFactory.getSimpleFedShip(location1, 0.3 * Math.PI, [4, -6], 1000);
                     var federationShip2 = smallElementFactory.getSimpleFedShip(location2, 0.3 * Math.PI, [4.2, -6.2], 1000);
@@ -355,7 +355,7 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
             3155: {
                 execute: function(playerView){
                     var location = playerView.location.slice();
-                    
+
                     location[0] += 40;
                     location[1] -= 100;
                     return [
@@ -444,12 +444,12 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                         msg: 'add-elements',
                         elements: elements
                     }];
-                } 
+                }
             }
         },
 
         setup: function() {
-            
+
 
             if(!level0.started){
                 level0.hud.objectives = false;
@@ -485,10 +485,10 @@ define(['smallElementFactory', 'events'], function(smallElementFactory, Events) 
                 if(complete){
                     return;
                 }
-                
+
                 events.emit('player-stop');
 
-                setTimeout(function(){    
+                setTimeout(function(){
                     events.emit('complete');
                 }, 3000);
                 complete = true;

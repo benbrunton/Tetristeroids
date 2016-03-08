@@ -23,14 +23,6 @@ centre of gravity calculation
 Level ideas
 precision parking with reasonably good collision detection - tetris!
 
-story
-year is 3014
-2 main powers
-    - earth - good
-    - alliance? - bad
-underground resistance against rebels
-player is a displaced refugee
-
 levels
 - level 0 - intro
 -- opening credits

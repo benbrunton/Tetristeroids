@@ -97,7 +97,7 @@ define(['events', 'smallElementFactory', 'enemies/badFighter', 'tetris'], functi
             msg: 'begin mission',
             options: [{
                 type: 'shop',
-                level: 1
+                level: 2
             }, {
                 type: 'next mission'
             }]

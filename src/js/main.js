@@ -1,4 +1,4 @@
-require(['App'], function(App){
+require(['app'], function(App){
     var app = App.getNew();
 
     document.querySelector('#game_viewport').style.display = 'block';

@@ -108,6 +108,7 @@ define(['blocks', 'context'], function(blocks, context){
 
     Collisions.prototype._drawElement = function(element) {
         var ctx = this.ctx;
+        var instructions, j;
         
         ctx.clearRect(0, 0, this.width, this.height);
         ctx.translate(element.location[0], element.location[1]);
@@ -126,7 +127,7 @@ define(['blocks', 'context'], function(blocks, context){
                 context(ctx, instructions[j], false);
             }
             ctx.restore();
-        };
+        }
 
         ctx.restore();
 
@@ -149,9 +150,17 @@ define(['blocks', 'context'], function(blocks, context){
     };
 
     Collisions.prototype._getLongestRadius = function(element) {
-        return Math.max.apply(null, element.blocks.map(function(block){
+        if(element._longestRadius){
+            
+            return element._longestRadius;
+        }
+        
+        var longestRadius = Math.max.apply(null, element.blocks.map(function(block){
             return Math.max(block.location[0], block.location[1]);
         })) * 9 + 10;
+        
+        element._longestRadius = longestRadius;
+        return element._longestRadius;
     };
 
     Collisions.prototype._setWidths = function(element){

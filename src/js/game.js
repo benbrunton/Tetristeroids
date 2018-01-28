@@ -130,7 +130,7 @@ define(['player', 'playerMissile', 'explosion', 'collisions', 'shipBase'], funct
             return element.getView();
         });
 
-        return elements.concat(otherElements);;
+        return elements.concat(otherElements);
     };
 
 

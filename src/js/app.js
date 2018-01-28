@@ -35,6 +35,10 @@ define(
                     App.game = new Game(levels);
                     App.scenery = new Scenery();
                     App.renderer = new Renderer(App.ctx);
+                    App.backupCanvas = document.createElement('canvas');
+                    App.backupCanvas.width = App.backupCanvas.height = 400;
+                    App.backupCtx = App.backupCanvas.getContext('2d');
+                    App.backupRenderer = new Renderer(App.backupCtx);
                     App.menuRenderer = new MenuRenderer(App.ctx);
                     App.shop = new Shop(App.ctx);
 
@@ -81,9 +85,10 @@ define(
                 },
 
                 draw : function(){
-                    App.ctx.fillStyle = '#000000';
-                    App.ctx.fillRect(0, 0, 400, 400);
+                    App.backupCtx.fillStyle = '#000000';
+                    App.backupCtx.fillRect(0, 0, 400, 400);
                     App.renderer.setCamera(App.game.getCamera());
+                    App.backupRenderer.setCamera(App.game.getCamera());
                     var gameElements = App.game.getElements();
                     App.drawList(App.scenery.getElements());
                     App.drawList(gameElements);
@@ -127,7 +132,8 @@ define(
                 },
 
                 drawList: function(list){
-                    list.forEach(App.renderer.drawElement.bind(App.renderer));
+                    list.forEach(App.renderer.drawElement.bind(App.backupRenderer));
+                    App.ctx.drawImage(App.backupCanvas, 0, 0);
                 },
 
                 handleKeys: function(keys){
